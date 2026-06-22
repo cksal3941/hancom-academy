@@ -1,0 +1,50 @@
+.footer {
+  background: #111827;
+  color: rgba(255, 255, 255, 0.65);
+  padding: 48px 0;
+  font-size: 0.875rem;
+}
+
+.footer__inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 4rem;
+  flex-wrap: wrap;
+}
+
+.footer__logo {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+.footer__copy {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.78rem;
+}
+
+.footer__nav ul {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer__nav a {
+  color: rgba(255, 255, 255, 0.65);
+  transition: color 0.2s;
+}
+
+.footer__nav a:hover {
+  color: var(--white);
+}
+
+.footer__contact p {
+  line-height: 1.9;
+}
+
+.footer__contact strong {
+  color: var(--white);
+  font-size: 1rem;
+}

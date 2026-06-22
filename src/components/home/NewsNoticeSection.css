@@ -1,0 +1,15 @@
+.news-notice {
+  width: 100%;
+  height: 100%;
+  background: #FAFCFF;
+  display: flex;
+  align-items: center;
+}
+
+.news-notice__inner {
+  display: flex;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}

@@ -1,0 +1,30 @@
+.academy-intro {
+  background: #0d1b3e;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.academy-intro__inner {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 5rem;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.academy-intro__left {
+  display: flex;
+  flex-direction: column;
+}
+
+.academy-intro__right {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.academy-intro__card {
+  height: 110px;
+}

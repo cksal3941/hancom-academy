@@ -1,0 +1,33 @@
+.edu-field {
+  background: #f4f6fb;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.edu-field > .container {
+  width: 100%;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.edu-field__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.edu-field__card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 36px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.edu-field__icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}

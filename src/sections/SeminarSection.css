@@ -1,0 +1,44 @@
+.seminar {
+  background: #f9f9f9;
+  /* flex: 1 — above-fold에서 제어 */
+  display: flex;
+  align-items: center;
+}
+
+.seminar__inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.seminar__head {
+  flex-shrink: 0;
+  width: 200px;
+}
+
+.seminar__cards {
+  flex: 1;
+  display: flex;
+  gap: 14px;
+  min-height: 0;
+}
+
+.seminar__card--featured {
+  flex: 1.4;
+  min-height: 120px;
+}
+
+.seminar__card-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.seminar__card-group .seminar__card {
+  flex: 1;
+  min-height: 50px;
+}

@@ -1,0 +1,11 @@
+/* ── Header + MainVisual + SeminarSection = 100vh ── */
+.above-fold {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* MainVisual: 3/4, NewsNoticeSection: 1/4 */
+.above-fold > .main-visual   { flex: 3; min-height: 0; }
+.above-fold > .news-notice   { flex: 1; min-height: 0; }
