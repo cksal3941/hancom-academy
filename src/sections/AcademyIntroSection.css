@@ -1,5 +1,5 @@
 .academy-intro {
-  background: #0d1b3e;
+  background: var(--color-bg-dark);
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -10,8 +10,8 @@
   display: grid;
   grid-template-columns: 1fr 1.5fr;
   gap: 5rem;
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-top: var(--section-py);
+  padding-bottom: var(--section-py);
 }
 
 .academy-intro__left {

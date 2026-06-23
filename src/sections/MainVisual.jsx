@@ -16,7 +16,7 @@ const slides = [slide1, slide2, slide3, slide4, slide5]
 export default function MainVisual() {
   const swiperRef = useRef(null)
   const [activeIndex, setActiveIndex] = useState(0)
-  const [progress, setProgress] = useState(1)
+  const [fillKey, setFillKey] = useState(0)
   const [isPlaying, setIsPlaying] = useState(true)
 
   const handlePrev = () => {
@@ -56,8 +56,10 @@ export default function MainVisual() {
           onSwiper={(swiper) => {
             swiperRef.current = swiper
           }}
-          onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-          onAutoplayTimeLeft={(_, __, ratio) => setProgress(ratio)}
+          onSlideChange={(swiper) => {
+            setActiveIndex(swiper.realIndex)
+            setFillKey(k => k + 1)
+          }}
           className="main-visual__swiper"
         >
           {slides.map((slide, index) => (
@@ -70,35 +72,38 @@ export default function MainVisual() {
         </Swiper>
 
         <div className="main-visual__controls">
-          <button
-            type="button"
-            className="main-visual__control-btn"
-            onClick={handlePrev}
-          >
-            Prev
-          </button>
-          <div className="main-visual__pagination">
-            {String(activeIndex + 1).padStart(2, '0')} - {String(slides.length).padStart(2, '0')}
-          </div>
           <div className="main-visual__progress-bar">
             <div
-              className="main-visual__progress-fill"
-              style={{ width: `${progress * 100}%` }}
+              key={fillKey}
+              className={`main-visual__progress-fill${isPlaying ? '' : ' main-visual__progress-fill--paused'}`}
             />
           </div>
           <button
             type="button"
             className="main-visual__control-btn"
-            onClick={handleNext}
+            onClick={handlePrev}
+            aria-label="이전 슬라이드"
           >
-            Next
+            <i className="fas fa-chevron-left" />
+          </button>
+          <div className="main-visual__pagination">
+            {String(activeIndex + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
+          </div>
+          <button
+            type="button"
+            className="main-visual__control-btn"
+            onClick={handleNext}
+            aria-label="다음 슬라이드"
+          >
+            <i className="fas fa-chevron-right" />
           </button>
           <button
             type="button"
             className="main-visual__control-btn"
             onClick={togglePlay}
+            aria-label={isPlaying ? '일시정지' : '재생'}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            <i className={`fas ${isPlaying ? 'fa-pause' : 'fa-play'}`} />
           </button>
         </div>
       </div>

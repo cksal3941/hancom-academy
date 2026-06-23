@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 80px 24px;
+  padding: var(--section-py) var(--container-px);
   gap: 16px;
 }
 
@@ -17,21 +17,21 @@
 .coming-soon__title {
   font-size: 2rem;
   font-weight: 800;
-  color: var(--text);
+  color: var(--color-brand);
 }
 
 .coming-soon__desc {
   font-size: 1rem;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   line-height: 1.8;
 }
 
 .coming-soon__desc code {
   font-family: monospace;
-  background: var(--bg-light);
+  background: var(--color-bg-subtle);
   padding: 2px 8px;
-  border-radius: 4px;
-  color: var(--primary);
+  border-radius: var(--radius-sm);
+  color: var(--color-accent);
   font-size: 0.9em;
 }
 
@@ -40,14 +40,14 @@
   display: inline-flex;
   align-items: center;
   padding: 12px 28px;
-  background: var(--primary);
-  color: var(--white);
+  background: var(--color-accent);
+  color: var(--color-surface);
   border-radius: 6px;
   font-size: 0.9rem;
-  font-weight: 600;
-  transition: background 0.2s;
+  font-weight: var(--fw-semibold);
+  transition: background var(--transition);
 }
 
 .coming-soon__btn:hover {
-  background: var(--primary-dark);
+  background: var(--color-accent-dark);
 }

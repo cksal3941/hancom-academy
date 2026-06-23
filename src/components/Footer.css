@@ -1,6 +1,6 @@
 .footer {
-  background: #111827;
-  color: rgba(255, 255, 255, 0.65);
+  background: var(--color-footer);
+  color: var(--color-surface-dim);
   padding: 48px 0;
   font-size: 0.875rem;
 }
@@ -15,13 +15,13 @@
 .footer__logo {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--white);
+  color: var(--color-surface);
   letter-spacing: 0.06em;
   margin-bottom: 8px;
 }
 
 .footer__copy {
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--color-surface-faint);
   font-size: 0.78rem;
 }
 
@@ -32,12 +32,12 @@
 }
 
 .footer__nav a {
-  color: rgba(255, 255, 255, 0.65);
-  transition: color 0.2s;
+  color: var(--color-surface-dim);
+  transition: color var(--transition);
 }
 
 .footer__nav a:hover {
-  color: var(--white);
+  color: var(--color-surface);
 }
 
 .footer__contact p {
@@ -45,6 +45,6 @@
 }
 
 .footer__contact strong {
-  color: var(--white);
+  color: var(--color-surface);
   font-size: 1rem;
 }

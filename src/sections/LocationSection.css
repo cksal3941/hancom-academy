@@ -1,5 +1,5 @@
 .location {
-  background: linear-gradient(130deg, #0a1643 0%, #1e4fcc 70%, #4a7fff 100%);
+  background: linear-gradient(130deg, #0a1643 0%, var(--color-accent) 70%, #4a7fff 100%);
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -10,8 +10,8 @@
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   gap: 4rem;
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-top: var(--section-py);
+  padding-bottom: var(--section-py);
 }
 
 .location__info {

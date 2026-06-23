@@ -1,5 +1,5 @@
 .seminar {
-  background: #f9f9f9;
+  background: var(--color-bg-subtle);
   /* flex: 1 — above-fold에서 제어 */
   display: flex;
   align-items: center;

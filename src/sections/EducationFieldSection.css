@@ -1,5 +1,5 @@
 .edu-field {
-  background: #f4f6fb;
+  background: var(--color-bg-subtle);
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -7,8 +7,8 @@
 
 .edu-field > .container {
   width: 100%;
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-top: var(--section-py);
+  padding-bottom: var(--section-py);
 }
 
 .edu-field__grid {
@@ -18,8 +18,8 @@
 }
 
 .edu-field__card {
-  background: var(--white);
-  border-radius: 12px;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
   padding: 36px 24px;
   display: flex;
   flex-direction: column;
