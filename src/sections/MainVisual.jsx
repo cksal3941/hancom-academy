@@ -71,7 +71,7 @@ export default function MainVisual() {
           ))}
         </Swiper>
 
-        <div className="main-visual__controls">
+        <div className="main-visual__controls" data-aos="fade-up" data-aos-delay="200">
           <div className="main-visual__progress-bar">
             <div
               key={fillKey}

@@ -1,23 +1,88 @@
-.top-btn {
+.top-button {
   position: fixed;
-  right: 24px;
-  bottom: 32px;
+  right: 40px;
+  bottom: 40px;
   z-index: 200;
-  width: 48px;
-  height: 48px;
+
+  width: var(--topbtn-size);
+  height: var(--topbtn-size);
   border-radius: 50%;
-  background: var(--color-accent);
-  color: var(--color-surface);
-  font-size: 1.1rem;
-  font-weight: var(--fw-bold);
+  border: none;
+  background: var(--topbtn-bg);
+  cursor: pointer;
+  padding: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-primary);
-  transition: background var(--transition), transform var(--transition);
+
+  box-shadow: var(--topbtn-shadow);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease,
+    transform 0.3s ease,
+    background var(--transition);
 }
 
-.top-btn:hover {
-  background: var(--color-accent-dark);
-  transform: translateY(-2px);
+.top-button--visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* ── SVG 원형 프로그레스 ── */
+.top-button__progress {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.top-button__track {
+  fill: none;
+  stroke: var(--topbtn-track);
+  stroke-width: var(--topbtn-stroke);
+}
+
+.top-button__bar {
+  fill: none;
+  stroke: var(--topbtn-bar);
+  stroke-width: var(--topbtn-stroke);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.15s linear;
+}
+
+/* ── 화살표 아이콘 ── */
+.top-button__icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--topbtn-icon);
+  transition: color var(--transition);
+}
+
+/* ── 호버 ── */
+.top-button:hover,
+.top-button--complete {
+  background: var(--topbtn-hover-bg);
+}
+
+.top-button:hover .top-button__icon,
+.top-button--complete .top-button__icon {
+  color: var(--topbtn-hover-icon);
+}
+
+.top-button:hover .top-button__track,
+.top-button--complete .top-button__track {
+  stroke: rgba(255, 255, 255, 0.25);
+}
+
+.top-button:hover .top-button__bar,
+.top-button--complete .top-button__bar {
+  stroke: var(--color-surface);
 }

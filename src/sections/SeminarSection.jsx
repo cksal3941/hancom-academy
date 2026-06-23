@@ -7,17 +7,17 @@ import './SeminarSection.css'
 export default function SeminarSection() {
   return (
     <section className="seminar">
-      {/* 타이틀 영역 — 중앙 정렬, max-width 제한 */}
+      {/* 타이틀 영역 */}
       <div className="seminar__head">
-        <p className="seminar__label">INFO SESSION</p>
-        <h2 className="seminar__title">교육 설명회</h2>
-        <p className="seminar__desc">
+        <p className="seminar__label" data-aos="fade-up">INFO SESSION</p>
+        <h2 className="seminar__title" data-aos="fade-up" data-aos-delay="100">교육 설명회</h2>
+        <p className="seminar__desc" data-aos="fade-up" data-aos-delay="200">
           한글과 컴퓨터 학원의 수업 방식과 학습 과정을 설명회 영상으로 확인해보세요.
         </p>
       </div>
 
-      {/* 슬라이드 영역 — 100vw, max-width 없음 */}
-      <div className="seminar__slider-wrap">
+      {/* 슬라이드 wrapper에만 AOS 적용 — track/slide 내부 제외 */}
+      <div className="seminar__slider-wrap" data-aos="fade-up" data-aos-delay="250">
         <Swiper
           modules={[Autoplay]}
           slidesPerView="auto"

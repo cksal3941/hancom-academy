@@ -16,23 +16,26 @@ export default function LocationSection() {
       <div className="location__inner">
         {/* 타이틀 영역 */}
         <div className="location__head">
-          <p className="location__label">LOCATION</p>
-          <h2 className="location__title">오시는 길</h2>
+          <p className="location__label" data-aos="fade-up">LOCATION</p>
+          <h2 className="location__title" data-aos="fade-up" data-aos-delay="100">오시는 길</h2>
         </div>
 
-        {/* 탭 */}
-        <LocationTabs
-          locations={locationData}
-          selectedId={selectedId}
-          onSelect={setSelectedId}
-        />
+        {/* 탭 — wrapper에만 AOS */}
+        <div data-aos="fade-up" data-aos-delay="150">
+          <LocationTabs
+            locations={locationData}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
+          />
+        </div>
 
         {/* 지점 정보 + 지도 */}
         <div className="location__content">
-          <div className="location__info">
+          <div className="location__info" data-aos="fade-right" data-aos-delay="200">
             <LocationInfoCard location={selected} />
           </div>
-          <div className="location__map">
+          {/* MapBox wrapper에만 AOS — 지도 내부 DOM에는 미적용 */}
+          <div className="location__map" data-aos="fade-left" data-aos-delay="250">
             <MapBox lat={selected.lat} lng={selected.lng} name={selected.name} />
           </div>
         </div>

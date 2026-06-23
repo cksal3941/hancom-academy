@@ -56,7 +56,7 @@ export default function AcademyIntroSection() {
 
       <div className="academy-intro__overlay" aria-hidden="true" />
 
-      {/* 수직 마퀴 텍스트 */}
+      {/* 수직 마퀴 텍스트 — AOS 제외 */}
       <div className="academy-intro__marquee" aria-hidden="true">
         <div className="academy-intro__marquee-track">
           {MARQUEE_ITEMS.map(i => (
@@ -70,24 +70,26 @@ export default function AcademyIntroSection() {
       <div className="academy-intro__inner">
         {/* 왼쪽 콘텐츠 */}
         <div className="academy-intro__left">
-          <p className="academy-intro__label">&nbsp;WHY US</p>
-          <h2 className="academy-intro__title">
+          <p className="academy-intro__label" data-aos="fade-right">&nbsp;WHY US</p>
+          <h2 className="academy-intro__title" data-aos="fade-right" data-aos-delay="100">
             검증된 교육 시스템
           </h2>
-          <p className="academy-intro__desc">
+          <p className="academy-intro__desc" data-aos="fade-right" data-aos-delay="200">
             한글과 컴퓨터 학원은 20여 년간 알고리즘과 코딩 교육을<br />
              이어오며 정보올림피아드, 국제대회, 입시, IT 분야에서<br />
              두각을 나타내는 인재들을 배출해왔습니다.
           </p>
-          <p className="academy-intro__desc">
+          <p className="academy-intro__desc" data-aos="fade-right" data-aos-delay="200">
             검증된 교육 경험과 최상위권 멘토진을 바탕으로,<br /> 체계적인 문제 분석 및 논리적 사고 중심의<br /> 알고리즘 수업을 통해 여러분의 성장을 이끌겠습니다.
           </p>
         </div>
 
-        {/* 오른쪽 카드 목록 */}
+        {/* 오른쪽 카드 목록 — wrapper div로 AOS 분리 */}
         <div className="academy-intro__right">
-          {academyIntroData.map(item => (
-            <AcademyIntroCard key={item.id} {...item} />
+          {academyIntroData.map((item, i) => (
+            <div key={item.id} data-aos="fade-up" data-aos-delay={i * 100}>
+              <AcademyIntroCard {...item} />
+            </div>
           ))}
         </div>
       </div>

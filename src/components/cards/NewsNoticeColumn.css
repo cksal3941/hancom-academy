@@ -16,7 +16,7 @@
 }
 
 .news-notice-col__title {
-  font-size: var(--font-xl);
+  font-size: var(--font-md);
   font-weight: var(--fw-bold);
   color: var(--color-brand);
   margin-bottom: 16px;
