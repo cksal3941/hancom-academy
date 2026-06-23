@@ -15,11 +15,11 @@ No test framework is configured.
 
 ## Architecture
 
-Single-page React 19 app built with Vite 6, written in plain JavaScript (no TypeScript). Korean-language academy (한컴아카데미) website.
+Single-page React 19 app built with Vite 8, written in plain JavaScript (no TypeScript). Korean-language academy (한컴아카데미) website. Uses react-router-dom v7 and Swiper v12.
 
 ### Routing
 
-`src/router.jsx` uses React Router v6 `createBrowserRouter`. The layout shell (`App.jsx`) wraps all routes via `<Outlet>`. Only `HomePage` is fully implemented; all other paths render `ComingSoonPage`.
+`src/router.jsx` uses `createBrowserRouter`. The layout shell (`App.jsx`) wraps all routes via `<Outlet>`. Only `HomePage` is fully implemented; all other paths render `ComingSoonPage`.
 
 ```
 /                  → HomePage
@@ -41,18 +41,20 @@ sections/          — full-viewport (100vh) content blocks used only in HomePag
                      (MainVisual, SeminarSection, LocationSection)
 components/        — reusable UI: Header, Footer, FloatingQuickMenu, TopButton
   home/            — home-page-specific section components
-                     (NewsNoticeSection, EducationFieldSection, AcademyIntroSection)
+                     (NewsNoticeSection, EducationFieldSection, AcademyIntroSection, LocationSection)
   cards/           — card sub-components: NewsNoticeColumn, NewsNoticeItem,
                      EducationFieldCard, AcademyIntroCard
+  location/        — LocationInfoCard, LocationTabs, MapBox
 data/              — static JS arrays: newsData.js, noticeData.js, openingNewsData.js,
-                     educationFieldsData.js, academyIntroData.js
+                     educationFieldsData.js, academyIntroData.js, locationData.js,
+                     quickMenuData.js, seminarData.js, footerData.js
 ```
 
 ### Implementation status
 
-Implemented: `MainVisual`, `NewsNoticeSection`, `EducationFieldSection`, `AcademyIntroSection`.
+Implemented: `MainVisual`, `NewsNoticeSection`, `EducationFieldSection`, `AcademyIntroSection`, `LocationSection`, `FloatingQuickMenu`, `TopButton`, `Footer`.
 
-Skeletons (`.ph` divs + `skeleton-tag` label): `SeminarSection`, `LocationSection`, `FloatingQuickMenu`. When implementing a section, replace the skeleton markup with real content.
+Skeletons (`.ph` divs + `skeleton-tag` label): `SeminarSection`. When implementing a section, replace the skeleton markup with real content.
 
 ### AcademyIntroSection
 
@@ -97,6 +99,6 @@ Skeleton utilities also live in `index.css`: `.ph` (dark placeholder), `.ph--lig
 ## Key details
 
 - `@vitejs/plugin-react` uses the **Oxc** transformer (not Babel or SWC). React Compiler is not enabled.
-- `@types/react` and `@types/react-dom` are devDependencies for IDE/JSDoc type hints only — the project has no TypeScript.
+- `@types/react` and `@types/react-dom` are devDependencies for IDE/JSDoc type hints only — no TypeScript.
 - ESLint uses **flat config** (`eslint.config.js`, ESLint 10). Plugins: `eslint-plugin-react-hooks` and `eslint-plugin-react-refresh`.
 - `src/App.css` is currently unused.
