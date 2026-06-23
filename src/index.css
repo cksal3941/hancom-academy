@@ -131,3 +131,13 @@ ul { list-style: none; }
   border-radius: var(--radius-sm);
   margin-bottom: 20px;
 }
+
+/* ── Scroll Snap ── */
+html {
+  scroll-snap-type: y proximity;
+}
+
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}

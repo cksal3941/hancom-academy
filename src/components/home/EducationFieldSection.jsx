@@ -4,7 +4,7 @@ import './EducationFieldSection.css'
 
 export default function EducationFieldSection() {
   return (
-    <section className="edu-field">
+    <section className="edu-field snap-section snap-section--full">
       <div className="edu-field__inner">
         <div className="edu-field__head">
           <p className="edu-field__label" data-aos="fade-up">COURSES</p>

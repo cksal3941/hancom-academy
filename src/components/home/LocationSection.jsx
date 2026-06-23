@@ -10,7 +10,7 @@ export default function LocationSection() {
   const selected = locationData.find(loc => loc.id === selectedId)
 
   return (
-    <section className="location">
+    <section className="location snap-section snap-section--full">
       <div className="location__overlay" aria-hidden="true" />
 
       <div className="location__inner">

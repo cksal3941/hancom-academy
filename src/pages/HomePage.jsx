@@ -10,7 +10,7 @@ export default function HomePage() {
   return (
     <>
       {/* Header + MainVisual + NewsNoticeSection = 100vh */}
-      <div className="above-fold">
+      <div className="above-fold snap-section snap-section--full">
         <MainVisual />
         <NewsNoticeSection />
       </div>
