@@ -1,0 +1,115 @@
+.academy-intro {
+  position: relative;
+  min-height: 100vh;
+}
+
+.academy-intro__canvas-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.academy-intro__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(5, 5, 20, 0.4);
+  pointer-events: none;
+}
+
+/* ── 수직 마퀴 ── */
+@keyframes marqueeUp {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+
+.academy-intro__marquee {
+  position: absolute;
+  left: -40px;
+  top: 0;
+  bottom: 0;
+  width: 280px;
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-start;
+}
+
+.academy-intro__marquee-track {
+  display: flex;
+  flex-direction: column;
+  /* padding-top: 60px; */
+  animation: marqueeUp 200s linear infinite;
+}
+
+.academy-intro__marquee-text {
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  font-size: 7.5rem;
+  font-weight: var(--fw-bold);
+  color: rgba(16, 16, 16, 0.4);
+  user-select: none;
+}
+
+/* ── 내부 레이아웃 ── */
+.academy-intro__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--section-py) var(--container-px) calc(var(--section-py) * 4);
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* ── 왼쪽 콘텐츠 ── */
+.academy-intro__left {
+  width: 500px;
+  position: sticky;
+  top: calc(var(--header-h) + 40px);
+  margin: 50px 100px 0 0;
+}
+
+.academy-intro__label {
+  font-size: var(--font-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-point);
+  letter-spacing: 0.2em;
+}
+
+.academy-intro__title {
+  font-size: var(--font-xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-surface);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.academy-intro__desc {
+  font-size: var(--font-xs);
+  color: var(--color-surface);
+  font-weight: var(--fw-skiny);
+  line-height: 2;
+  margin-top: 26px;
+}
+
+/* ── 오른쪽 카드 목록 ── */
+.academy-intro__right {
+  display: grid;
+  grid-template-columns: 390px 390px;
+  gap: 50px;
+  align-items: start;
+  margin-right: -100px;
+}
+
+/* 홀수(1,3,5) → 우측 열 */
+.academy-intro__right .academy-card:nth-child(1) { grid-area: 1 / 2; margin-top: 50px;}
+.academy-intro__right .academy-card:nth-child(2) { grid-area: 1 / 1; margin-top: 250px; }
+.academy-intro__right .academy-card:nth-child(3) { grid-area: 2 / 2;  margin-top: -180px;}
+.academy-intro__right .academy-card:nth-child(4) { grid-area: 2 / 1; margin-top: 20px;}
+.academy-intro__right .academy-card:nth-child(5) { grid-area: 3 / 2; margin-top: -180px;}

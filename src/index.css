@@ -27,12 +27,13 @@
 
   /* ── Typography ── */
   --font-sans: 'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-  --font-xs: 13px;
-  --font-sm: 14px;
-  --font-base: 16px;
-  --font-md: 18px;
-  --font-lg: 20px;
-  --font-xl: 22px;
+  --font-xs: 16px;
+  --font-sm: 18px;
+  --font-base: 20px;
+  --font-md: 26px;
+  --font-lg: 30px;
+  --font-xl: 36px;
+  --fw-skiny: 100;
   --fw-regular: 400;
   --fw-medium: 500;
   --fw-semibold: 600;

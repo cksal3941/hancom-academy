@@ -1,0 +1,47 @@
+.edu-field {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #B1D4FA 0%, #ffffff 100%);
+}
+
+.edu-field__inner {
+  width: 100%;
+  max-width: 1400px;
+  padding: var(--section-py) var(--container-px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 52px;
+}
+
+.edu-field__head {
+  text-align: center;
+}
+
+.edu-field__label {
+  font-size: 24px;
+  font-weight: var(--fw-bold);
+  color: var(--color-point);
+}
+
+.edu-field__title {
+  font-size: 54px;
+  font-weight: var(--fw-bold);
+  color: var(--color-brand);
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.edu-field__desc {
+  font-size: 24px;
+  color: var(--color-brand-mid);
+  line-height: 1.6;
+}
+
+.edu-field__cards {
+  display: flex;
+  gap: 28px;
+  width: 100%;
+}

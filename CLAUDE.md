@@ -38,15 +38,29 @@ pages/
                      then EducationFieldSection, AcademyIntroSection, SeminarSection, LocationSection (each 100vh)
   ComingSoonPage   — placeholder for unimplemented pages
 sections/          — full-viewport (100vh) content blocks used only in HomePage
+                     (MainVisual, SeminarSection, LocationSection)
 components/        — reusable UI: Header, Footer, FloatingQuickMenu, TopButton
-  home/            — home-page-specific components (NewsNoticeSection)
-  cards/           — NewsNoticeColumn, NewsNoticeItem (used inside NewsNoticeSection)
-data/              — static JS arrays: newsData.js, noticeData.js, openingNewsData.js
+  home/            — home-page-specific section components
+                     (NewsNoticeSection, EducationFieldSection, AcademyIntroSection)
+  cards/           — card sub-components: NewsNoticeColumn, NewsNoticeItem,
+                     EducationFieldCard, AcademyIntroCard
+data/              — static JS arrays: newsData.js, noticeData.js, openingNewsData.js,
+                     educationFieldsData.js, academyIntroData.js
 ```
 
 ### Implementation status
 
-Only `MainVisual` and `NewsNoticeSection` are fully implemented. All other sections (`EducationFieldSection`, `AcademyIntroSection`, `SeminarSection`, `LocationSection`) and `FloatingQuickMenu` are skeleton placeholders — they render `.ph` divs and a `skeleton-tag` label. When implementing a section, replace the skeleton markup with real content.
+Implemented: `MainVisual`, `NewsNoticeSection`, `EducationFieldSection`, `AcademyIntroSection`.
+
+Skeletons (`.ph` divs + `skeleton-tag` label): `SeminarSection`, `LocationSection`, `FloatingQuickMenu`. When implementing a section, replace the skeleton markup with real content.
+
+### AcademyIntroSection
+
+Has a CSS marquee (`academy-intro__marquee-track`) running vertically in the background. The section background is a `.academy-intro__bg` CSS gradient — there is a comment in the JSX marking the swap point if a shader-gradient package is added later.
+
+### EducationFieldSection
+
+Renders cards from `educationFieldsData` via `EducationFieldCard`. Each card has `{ id, title, description, image, path }` — `image` points to `public/images/courses*.png`, `path` is a router link (currently leads to `ComingSoonPage`).
 
 ### MainVisual (Swiper)
 
@@ -59,6 +73,7 @@ Only `MainVisual` and `NewsNoticeSection` are fully implemented. All other secti
 ### Static assets
 
 - `src/assets/` — images imported directly in JSX (e.g., `hancom_logo.png`)
+- `public/images/` — images served by path (e.g., `academyIntroData` and `educationFieldsData` reference `/images/system*.png` and `/images/courses*.png`)
 - `public/icons.svg` — SVG sprite; reference symbols with `<use href="/icons.svg#icon-name">`
 - `public/favicon.svg` — site favicon
 
