@@ -1,50 +1,115 @@
 .footer {
   background: var(--color-footer);
-  color: var(--color-surface-dim);
-  padding: 48px 0;
-  font-size: 0.875rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footer__inner {
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 0 var(--container-px);
+}
+
+/* ── FooterTop ── */
+.footer__top {
+  padding: 28px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer__nav-list {
   display: flex;
-  align-items: flex-start;
-  gap: 4rem;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 48px;
+  list-style: none;
 }
 
-.footer__logo {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--color-surface);
-  letter-spacing: 0.06em;
-  margin-bottom: 8px;
-}
-
-.footer__copy {
-  color: var(--color-surface-faint);
-  font-size: 0.78rem;
-}
-
-.footer__nav ul {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.footer__nav a {
-  color: var(--color-surface-dim);
+.footer__nav-link {
+  font-size: var(--font-xs);
+  font-weight: var(--fw-medium);
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
   transition: color var(--transition);
+  letter-spacing: 0.02em;
 }
 
-.footer__nav a:hover {
-  color: var(--color-surface);
+.footer__nav-link:hover {
+  color: #fff;
 }
 
-.footer__contact p {
-  line-height: 1.9;
+/* ── FooterBottom ── */
+.footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 36px 0 40px;
+  gap: 24px;
 }
 
-.footer__contact strong {
-  color: var(--color-surface);
-  font-size: 1rem;
+/* 로고 */
+.footer__logo {
+  margin-bottom: 20px;
+}
+
+.footer__logo img {
+  height: 36px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+}
+
+/* 회사 정보 */
+.footer__company-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+
+.footer__divider {
+  margin: 0 10px;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.footer__info-bold {
+  font-weight: var(--fw-bold);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* 저작권 */
+.footer__copy {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ── SNS ── */
+.footer__social {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.footer__social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  transition: background var(--transition), color var(--transition);
+  font-size: 14px;
+  font-weight: var(--fw-bold);
+}
+
+.footer__social-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
 }

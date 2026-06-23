@@ -2,7 +2,7 @@ import MainVisual from '../sections/MainVisual'
 import SeminarSection from '../sections/SeminarSection'
 import EducationFieldSection from '../components/home/EducationFieldSection'
 import AcademyIntroSection from '../components/home/AcademyIntroSection'
-import LocationSection from '../sections/LocationSection'
+import LocationSection from '../components/home/LocationSection'
 import NewsNoticeSection from '../components/home/NewsNoticeSection'
 import './HomePage.css'
 

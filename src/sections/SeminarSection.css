@@ -1,44 +1,105 @@
 .seminar {
-  background: var(--color-bg-subtle);
-  /* flex: 1 — above-fold에서 제어 */
-  display: flex;
-  align-items: center;
-}
-
-.seminar__inner {
   width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.seminar__head {
-  flex-shrink: 0;
-  width: 200px;
-}
-
-.seminar__cards {
-  flex: 1;
-  display: flex;
-  gap: 14px;
-  min-height: 0;
-}
-
-.seminar__card--featured {
-  flex: 1.4;
-  min-height: 120px;
-}
-
-.seminar__card-group {
-  flex: 1;
+  min-height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  justify-content: center;
+  padding: var(--section-py) 0 calc(var(--section-py) * 1.5);
+  background: var(--color-bg-subtle);
 }
 
-.seminar__card-group .seminar__card {
-  flex: 1;
-  min-height: 50px;
+/* ── 타이틀 영역 ── */
+.seminar__head {
+  max-width: 1400px;
+  margin: 0 auto 60px;
+  padding: 0 var(--container-px);
+  text-align: center;
+}
+
+.seminar__label {
+  font-size: var(--font-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-accent);
+  letter-spacing: 0.2em;
+  margin-bottom: 12px;
+}
+
+.seminar__title {
+  font-size: var(--font-xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-brand);
+  line-height: 1.2;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.seminar__desc {
+  font-size: var(--font-base);
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+/* ── 슬라이드 래퍼 ── */
+.seminar__slider-wrap {
+  width: 100vw;
+}
+
+.seminar__swiper {
+  width: 100%;
+  padding-bottom: 8px;
+}
+
+/* 카드 너비: 슬라이드당 고정 700px */
+.seminar__slide {
+  width: 700px;
+}
+
+/* ── 카드 ── */
+.seminar__card {
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.14);
+  background: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.seminar__card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+/* 썸네일 영역 */
+.seminar__card-thumb {
+  height: 360px;
+  overflow: hidden;
+}
+
+.seminar__card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 텍스트 영역 */
+.seminar__card-body {
+  padding: 24px 32px 28px;
+  background: #fff;
+}
+
+.seminar__card-title {
+  font-size: var(--font-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-brand);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.seminar__card-desc {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  line-height: 1.7;
 }
