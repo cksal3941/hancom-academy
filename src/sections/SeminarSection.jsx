@@ -29,7 +29,13 @@ export default function SeminarSection() {
         >
           {seminarData.map(item => (
             <SwiperSlide key={item.id} className="seminar__slide">
-              <div className="seminar__card">
+              <a
+                className="seminar__card"
+                href={item.youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={item.title}
+              >
                 <div className="seminar__card-thumb">
                   <img src={item.image} alt={item.title} className="seminar__card-img" />
                 </div>
@@ -37,7 +43,7 @@ export default function SeminarSection() {
                   <h3 className="seminar__card-title">{item.title}</h3>
                   <p className="seminar__card-desc">{item.description}</p>
                 </div>
-              </div>
+              </a>
             </SwiperSlide>
           ))}
         </Swiper>

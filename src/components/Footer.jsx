@@ -5,10 +5,10 @@ import './Footer.css'
 export default function Footer() {
   return (
     <footer className="footer">
-      <div className="footer__inner">
 
-        {/* ── FooterTop: 메뉴 ── */}
-        <div className="footer__top">
+      {/* ── FooterTop: 메뉴 — 전체 너비 border ── */}
+      <div className="footer__top">
+        <div className="footer__inner">
           <nav className="footer__nav">
             <ul className="footer__nav-list">
               {footerNavItems.map(item => (
@@ -19,7 +19,9 @@ export default function Footer() {
             </ul>
           </nav>
         </div>
+      </div>
 
+      <div className="footer__inner">
         {/* ── FooterBottom: 로고 + 정보 + SNS ── */}
         <div className="footer__bottom">
 
@@ -60,5 +62,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+
   )
 }

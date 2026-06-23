@@ -13,7 +13,7 @@
 .location__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(5, 10, 30, 0.62);
+  /* background: rgba(5, 10, 30, 0.62); */
 }
 
 .location__inner {

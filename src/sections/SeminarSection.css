@@ -57,11 +57,13 @@
 
 /* ── 카드 ── */
 .seminar__card {
+  display: block;
   width: 100%;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.14);
   background: #fff;
+  text-decoration: none;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 }
