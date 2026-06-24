@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { ShaderGradientCanvas, ShaderGradient } from '@shadergradient/react'
 import academyIntroData from '../../data/academyIntroData'
 import AcademyIntroCard from '../cards/AcademyIntroCard'
@@ -6,9 +7,21 @@ import './AcademyIntroSection.css'
 const MARQUEE_ITEMS = Array.from({ length: 16 }, (_, i) => i)
 
 export default function AcademyIntroSection() {
+  const sectionRef = useRef(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold: 0.1 }
+    )
+    if (sectionRef.current) obs.observe(sectionRef.current)
+    return () => obs.disconnect()
+  }, [])
+
   return (
-    <section className="academy-intro">
-      <div className="academy-intro__canvas-wrap">
+    <section className="academy-intro" ref={sectionRef}>
+      <div className={`academy-intro__canvas-wrap${visible ? ' academy-intro__canvas-wrap--visible' : ''}`}>
         <ShaderGradientCanvas style={{ width: '100%', height: '100%' }}>
           <ShaderGradient
             animate="on"

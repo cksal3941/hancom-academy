@@ -30,10 +30,10 @@ const IconCalendar = () => (
 )
 
 const items = [
-  { icon: <IconPin />,      key: 'address' },
-  { icon: <IconPhone />,    key: 'phone' },
-  { icon: <IconClock />,    key: 'hours' },
-  { icon: <IconCalendar />, key: 'closed' },
+  { icon: <IconPin />,      key: 'address', label: '주소' },
+  { icon: <IconPhone />,    key: 'phone',   label: '전화번호' },
+  { icon: <IconClock />,    key: 'hours',   label: '운영시간' },
+  { icon: <IconCalendar />, key: 'closed',  label: '휴무일' },
 ]
 
 export default function LocationInfoCard({ location }) {
@@ -42,10 +42,13 @@ export default function LocationInfoCard({ location }) {
       <h3 className="location-card__name">{location.name}</h3>
 
       <ul className="location-card__list">
-        {items.map(({ icon, key }) => (
+        {items.map(({ icon, key, label }) => (
           <li key={key} className="location-card__item">
             <span className="location-card__icon">{icon}</span>
-            <span className="location-card__item-value">{location[key]}</span>
+            <span className="location-card__item-body">
+              <span className="location-card__item-label">{label}</span>
+              <span className="location-card__item-value">{location[key]}</span>
+            </span>
           </li>
         ))}
       </ul>

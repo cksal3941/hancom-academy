@@ -1,6 +1,14 @@
 import { Link } from 'react-router-dom'
+import { FaYoutube, FaInstagram } from 'react-icons/fa'
+import { SiNaver } from 'react-icons/si'
 import { footerNavItems, companyInfoItems, socialLinks } from '../data/footerData'
 import './Footer.css'
+
+const SOCIAL_ICONS = {
+  youtube:   <FaYoutube />,
+  naver:     <SiNaver />,
+  instagram: <FaInstagram />,
+}
 
 export default function Footer() {
   return (
@@ -49,12 +57,12 @@ export default function Footer() {
               <a
                 key={item.id}
                 href={item.url}
-                className={`footer__social-btn footer__social-btn--${item.label.toLowerCase()}`}
+                className={`footer__social-btn footer__social-btn--${item.type}`}
                 aria-label={item.label}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span className="footer__social-icon">{item.text}</span>
+                <span className="footer__social-icon">{SOCIAL_ICONS[item.type]}</span>
               </a>
             ))}
           </div>

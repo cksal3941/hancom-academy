@@ -13,14 +13,21 @@ const ICONS = {
 }
 
 export default function FloatingQuickMenu() {
-  const [hidden, setHidden]         = useState(false) // Footer 진입 시 숨김
-  const [academy, setAcademy]       = useState(false) // AcademyIntroSection 진입 시 색상 변경
+  const [hidden, setHidden]         = useState(false)
+  const [academy, setAcademy]       = useState(false)
+  const [location, setLocation]     = useState(false)
+  const [inVisual, setInVisual]     = useState(false) // MainVisual 영역 진입 여부
+  const [slideTheme, setSlideTheme] = useState('light') // 슬라이드 테마
   const footerRef                   = useRef(null)
   const academyRef                  = useRef(null)
+  const locationRef                 = useRef(null)
+  const visualRef                   = useRef(null)
 
   useEffect(() => {
-    footerRef.current  = document.querySelector('.footer')
-    academyRef.current = document.querySelector('.academy-intro')
+    footerRef.current   = document.querySelector('.footer')
+    academyRef.current  = document.querySelector('.academy-intro')
+    locationRef.current = document.querySelector('.location')
+    visualRef.current   = document.querySelector('.main-visual')
 
     const observers = []
 
@@ -42,15 +49,42 @@ export default function FloatingQuickMenu() {
       observers.push(obs)
     }
 
-    return () => observers.forEach(o => o.disconnect())
+    if (locationRef.current) {
+      const obs = new IntersectionObserver(
+        ([entry]) => setLocation(entry.isIntersecting),
+        { threshold: 0.1 }
+      )
+      obs.observe(locationRef.current)
+      observers.push(obs)
+    }
+
+    if (visualRef.current) {
+      const obs = new IntersectionObserver(
+        ([entry]) => setInVisual(entry.isIntersecting),
+        { threshold: 0.1 }
+      )
+      obs.observe(visualRef.current)
+      observers.push(obs)
+    }
+
+    const onTheme = (e) => setSlideTheme(e.detail.theme)
+    window.addEventListener('header-theme', onTheme)
+
+    return () => {
+      observers.forEach(o => o.disconnect())
+      window.removeEventListener('header-theme', onTheme)
+    }
   }, [])
+
+  const slideDark = inVisual && slideTheme === 'dark'
 
   return (
     <aside
       className={[
         'fqm',
-        hidden  ? 'fqm--hidden'  : '',
-        academy ? 'fqm--academy' : '',
+        hidden                        ? 'fqm--hidden'     : '',
+        academy || location           ? 'fqm--academy'    : '',
+        slideDark && !academy && !location ? 'fqm--slide-dark' : '',
       ].filter(Boolean).join(' ')}
       aria-label="퀵메뉴"
     >

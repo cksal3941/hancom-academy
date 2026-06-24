@@ -11,7 +11,18 @@ import slide3 from '../assets/main_slide3_d.png'
 import slide4 from '../assets/main_slide4_d.png'
 import slide5 from '../assets/main_slide5_d.png'
 
-const slides = [slide1, slide2, slide3, slide4, slide5]
+const slides = [
+  { src: slide1, theme: 'light' },
+  { src: slide2, theme: 'dark' },
+  { src: slide3, theme: 'dark' },
+  { src: slide4, theme: 'dark' },
+  { src: slide5, theme: 'dark' },
+]
+
+const dispatchTheme = (swiper) => {
+  const theme = slides[swiper.realIndex]?.theme ?? 'dark'
+  window.dispatchEvent(new CustomEvent('header-theme', { detail: { theme } }))
+}
 
 export default function MainVisual() {
   const swiperRef = useRef(null)
@@ -55,17 +66,19 @@ export default function MainVisual() {
           autoplay={{ delay: 10000, disableOnInteraction: false }}
           onSwiper={(swiper) => {
             swiperRef.current = swiper
+            dispatchTheme(swiper)
           }}
           onSlideChange={(swiper) => {
             setActiveIndex(swiper.realIndex)
             setFillKey(k => k + 1)
+            dispatchTheme(swiper)
           }}
           className="main-visual__swiper"
         >
           {slides.map((slide, index) => (
             <SwiperSlide key={index}>
               <div className="main-visual__slide">
-                <img src={slide} alt={`메인 슬라이드 ${index + 1}`} />
+                <img src={slide.src} alt={`메인 슬라이드 ${index + 1}`} />
               </div>
             </SwiperSlide>
           ))}

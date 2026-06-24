@@ -36,7 +36,6 @@
   font-weight: var(--fw-bold);
   color: var(--color-point);
   letter-spacing: 0.2em;
-  margin-bottom: 12px;
 }
 
 .location__title {

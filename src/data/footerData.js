@@ -14,7 +14,7 @@ export const companyInfoItems = [
 ]
 
 export const socialLinks = [
-  { id: 1, label: 'YouTube', text: '▶', url: '#' },
-  { id: 2, label: 'Blog',    text: 'B', url: '#' },
-  { id: 3, label: 'Kakao',   text: 'K', url: '#' },
+  { id: 1, label: '유튜브',    type: 'youtube',   url: '#' },
+  { id: 2, label: '네이버블로그', type: 'naver',     url: '#' },
+  { id: 3, label: '인스타그램',  type: 'instagram', url: '#' },
 ]

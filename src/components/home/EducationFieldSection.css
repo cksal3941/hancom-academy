@@ -21,23 +21,26 @@
 }
 
 .edu-field__label {
-  font-size: 24px;
+  font-size: var(--font-sm);
   font-weight: var(--fw-bold);
   color: var(--color-point);
+  letter-spacing: 0.2em;
 }
 
 .edu-field__title {
-  font-size: 54px;
+  font-size: var(--font-xl);
   font-weight: var(--fw-bold);
   color: var(--color-brand);
-  margin-bottom: 20px;
+  line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
 .edu-field__desc {
-  font-size: 24px;
-  color: var(--color-brand-mid);
-  line-height: 1.6;
+  font-size: var(--font-xs);
+  font-weight: var(--fw-regular);
+  color: var(--color-bg-dark);
+  line-height: 2;
+  margin-top: 26px;
 }
 
 .edu-field__cards {

@@ -22,7 +22,6 @@
   font-weight: var(--fw-bold);
   color: var(--color-accent);
   letter-spacing: 0.2em;
-  margin-bottom: 12px;
 }
 
 .seminar__title {
@@ -30,14 +29,15 @@
   font-weight: var(--fw-bold);
   color: var(--color-brand);
   line-height: 1.2;
-  margin-bottom: 16px;
   letter-spacing: -0.02em;
 }
 
 .seminar__desc {
-  font-size: var(--font-base);
-  color: var(--color-text-muted);
-  line-height: 1.7;
+  font-size: var(--font-xs);
+  font-weight: var(--fw-regular);
+  color: var(--color-bg-dark);
+  line-height: 2;
+  margin-top: 26px;
 }
 
 /* ── 슬라이드 래퍼 ── */

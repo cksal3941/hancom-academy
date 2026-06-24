@@ -15,7 +15,7 @@
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(3px);
-  border-radius: 20px;
+  border-radius: 9999px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.1),
@@ -72,18 +72,33 @@
 
 /* ── 라벨 ── */
 .fqm__label {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: var(--fw-medium);
   letter-spacing: 0.01em;
   white-space: nowrap;
   transition: color var(--transition);
 }
 
-/* ── AcademyIntroSection 진입 시 색상 변경 ── */
+/* ── AcademyIntroSection / LocationSection 진입 시 색상 변경 ── */
+.fqm--academy {
+  border-radius: 9999px;
+}
+
 .fqm--academy .fqm__item {
-  color: #B3B5CE;
+  color: var(--color-surface);
+  transition: color 0.4s ease, background var(--transition);
 }
 
 .fqm--academy .fqm__item:hover {
-  color: #fff;
+  color: var(--color-sky);
+}
+
+/* ── MainVisual 어두운 슬라이드 진입 시 색상 변경 ── */
+.fqm--slide-dark .fqm__item {
+  color: var(--color-surface);
+  transition: color 0.4s ease, background var(--transition);
+}
+
+.fqm--slide-dark .fqm__item:hover {
+  color: var(--color-sky);
 }

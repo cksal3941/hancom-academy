@@ -1,3 +1,9 @@
+@keyframes topbtn-bounce {
+  0%, 100% { transform: translateY(0); }
+  40%       { transform: translateY(-6px); }
+  70%       { transform: translateY(-2px); }
+}
+
 .top-button {
   position: fixed;
   right: 40px;
@@ -34,11 +40,21 @@
   transform: translateY(0);
 }
 
+/* 바운스: 등장 트랜지션(0.3s) 후 시작 */
+.top-button--bounce {
+  animation: topbtn-bounce 2.4s ease-in-out 0.4s infinite;
+}
+
+.top-button:hover {
+  animation: topbtn-bounce 0.6s ease-in-out;
+}
+
 /* ── SVG 원형 프로그레스 ── */
 .top-button__progress {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
 .top-button__track {
@@ -67,22 +83,49 @@
 }
 
 /* ── 호버 ── */
-.top-button:hover,
+.top-button:hover {
+  background: var(--topbtn-hover-bg);
+}
+
+.top-button:hover .top-button__icon {
+  color: var(--topbtn-hover-icon);
+}
+
+.top-button:hover .top-button__track {
+  stroke: rgba(255, 255, 255, 0.25);
+}
+
+.top-button:hover .top-button__bar {
+  stroke: var(--color-surface);
+}
+
+/* ── Footer 진입 시 고대비 다크 스타일 ── */
+.top-button--dark {
+  background: var(--topbtn-hover-bg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.top-button--dark .top-button__icon {
+  color: var(--topbtn-hover-icon);
+}
+
+.top-button--dark .top-button__track {
+  stroke: rgba(255, 255, 255, 0.25);
+}
+
+.top-button--dark .top-button__bar {
+  stroke: var(--color-surface);
+}
+
+/* ── 프로그레스 완료: 원형 테두리 제거 ── */
+.top-button--complete .top-button__progress {
+  opacity: 0;
+}
+
 .top-button--complete {
   background: var(--topbtn-hover-bg);
 }
 
-.top-button:hover .top-button__icon,
 .top-button--complete .top-button__icon {
   color: var(--topbtn-hover-icon);
-}
-
-.top-button:hover .top-button__track,
-.top-button--complete .top-button__track {
-  stroke: rgba(255, 255, 255, 0.25);
-}
-
-.top-button:hover .top-button__bar,
-.top-button--complete .top-button__bar {
-  stroke: var(--color-surface);
 }

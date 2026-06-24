@@ -61,6 +61,7 @@ const zoomUrl = 'https://zoom.us'
 
 export default function Header() {
   const [isTop, setIsTop] = useState(true)
+  const [slideTheme, setSlideTheme] = useState('dark')
   const [activeMenu, setActiveMenu] = useState(null)
   const [indicatorLeft, setIndicatorLeft] = useState(0)
   const [dropdownContentStyle, setDropdownContentStyle] = useState({
@@ -102,11 +103,15 @@ export default function Header() {
 
   useEffect(() => {
     const onScroll = () => setIsTop(window.scrollY === 0)
-
     onScroll()
     window.addEventListener('scroll', onScroll)
-
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    const handler = (e) => setSlideTheme(e.detail.theme)
+    window.addEventListener('header-theme', handler)
+    return () => window.removeEventListener('header-theme', handler)
   }, [])
 
   useEffect(() => {
@@ -121,7 +126,11 @@ export default function Header() {
   return (
     <header
       ref={headerRef}
-      className={`header ${isOpen || !isTop ? 'header--scrolled' : 'header--top'}`}
+      className={[
+        'header',
+        isOpen || !isTop ? 'header--scrolled' : `header--top header--slide-${slideTheme}`,
+        isOpen ? 'header--open' : '',
+      ].filter(Boolean).join(' ')}
       onMouseLeave={handleHeaderLeave}
     >
       <div className="header__inner">

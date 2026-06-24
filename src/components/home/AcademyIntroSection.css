@@ -1,6 +1,7 @@
 .academy-intro {
   position: relative;
   min-height: 100vh;
+  background: radial-gradient(ellipse at 65% 40%, #8d7dca 0%, #606080 45%, #212121 85%);
 }
 
 .academy-intro__canvas-wrap {
@@ -8,6 +9,12 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.academy-intro__canvas-wrap--visible {
+  opacity: 1;
 }
 
 .academy-intro__overlay {

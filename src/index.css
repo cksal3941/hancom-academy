@@ -60,13 +60,19 @@
   /* ── TopButton ── */
   --topbtn-size: 60px;
   --topbtn-stroke: 3px;
-  --topbtn-bg: var(--color-surface);
-  --topbtn-track: var(--color-brand-light);
+  --topbtn-bg: rgba(255, 255, 255, 0.8);
+  --topbtn-track: rgba(1, 8, 89, 0.15);
   --topbtn-bar: var(--color-brand);
-  --topbtn-icon: var(--color-brand-light);
+  --topbtn-icon: var(--color-brand);
   --topbtn-hover-bg: var(--color-brand);
   --topbtn-hover-icon: var(--color-surface);
   --topbtn-shadow: 0 4px 20px rgba(1, 8, 89, 0.15);
+
+  /* ── Header ── */
+  --header-bg: rgba(255, 255, 255, 0.75);
+  --header-dropdown-bg: rgba(255, 255, 255, 0.75);
+  --header-blur: blur(18px);
+  --header-border: rgba(255, 255, 255, 0.35);
 
   /* ── Glassmorphism ── */
   --glass-bg: rgba(255, 255, 255, 0.03);
