@@ -25,3 +25,10 @@
   color: rgba(255, 255, 255, 0.55);
   letter-spacing: 0.02em;
 }
+
+@media (max-width: 768px) {
+  .mapbox-wrap {
+    min-height: 260px;
+    height: 260px;
+  }
+}

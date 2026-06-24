@@ -1,0 +1,122 @@
+/* LoginPage.css를 베이스로 사용하며, 회원가입 시안의 간격과 형태를 덮어씁니다. */
+
+.signup-page {
+  min-height: 1385px;
+  align-items: flex-start;
+  padding: 335px 24px 260px;
+}
+
+.signup-page .login-page__wrap {
+  max-width: 360px;
+}
+
+.signup-page .login-page__title {
+  margin-bottom: 4px;
+  font-size: 30px;
+}
+
+.signup-page .login-page__subtitle {
+  margin-bottom: 28px;
+  color: #73799d;
+}
+
+.signup-page .login-page__social {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 0;
+}
+
+.signup-page .login-page__social-btn {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #cbd0df;
+  border-radius: 2px;
+  color: #646c93;
+  font-size: 14px;
+}
+
+.signup-page .login-page__divider {
+  margin: 24px 0 22px;
+  color: #7f85a7;
+  font-size: 12px;
+}
+
+.signup-page .login-page__field {
+  margin-bottom: 18px;
+}
+
+.signup-page .login-page__label {
+  margin-bottom: 6px;
+  color: #626a95;
+  font-size: 12px;
+}
+
+.signup-page .login-page__input {
+  height: 45px;
+  border-color: #cbd0df;
+  border-radius: 2px;
+  background: #fbfcff;
+  font-size: 14px;
+}
+
+.signup-page .login-page__submit {
+  height: 49px;
+  border-radius: 2px;
+  font-size: 14px;
+}
+
+.signup-page .login-page__signup {
+  margin-top: 24px;
+  color: #858ba8;
+  font-size: 13px;
+}
+
+.signup-agreements {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.signup-agreements__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 11px;
+  color: #38416f;
+  cursor: pointer;
+  line-height: 1.5;
+  user-select: none;
+}
+
+.signup-agreements__item .login-page__checkbox {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.signup-agreements__link {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: var(--fw-medium);
+}
+
+.signup-agreements__link:hover {
+  text-decoration: underline;
+}
+
+.signup-agreements__required {
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .signup-page {
+    min-height: auto;
+    padding: 120px 20px 90px;
+  }
+
+  .signup-page .login-page__wrap {
+    max-width: 420px;
+  }
+}

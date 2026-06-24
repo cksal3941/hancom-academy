@@ -9,6 +9,8 @@ import TopButton from './components/TopButton'
 
 export default function App() {
   const location = useLocation()
+  const isAuthPage = ['/login', '/signup'].includes(location.pathname)
+  const isSubPage = location.pathname !== '/'
 
   useEffect(() => {
     AOS.init({
@@ -31,8 +33,8 @@ export default function App() {
         <Outlet />
       </main>
       <Footer />
-      <FloatingQuickMenu />
-      <TopButton />
+      {!isAuthPage && <FloatingQuickMenu mobileOnly={isSubPage} />}
+      {!isAuthPage && <TopButton />}
     </>
   )
 }

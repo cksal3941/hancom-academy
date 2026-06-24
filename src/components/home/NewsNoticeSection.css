@@ -13,3 +13,58 @@
   margin: 0 auto;
   padding: 0 var(--container-px);
 }
+
+/* 탭 바: 데스크탑 숨김 */
+.news-notice__tab-bar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .news-notice {
+    height: auto;
+    display: block;
+    padding: 14px 0 0;
+  }
+
+  .news-notice__tab-bar {
+    display: flex;
+    border-bottom: 2px solid var(--border-brand);
+    margin: 0;
+  }
+
+  .news-notice__tab {
+    flex: 1;
+    padding: 2px 0 10px;
+    font-size: 18px;
+    font-weight: var(--fw-semibold);
+    color: var(--color-text-muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    transition: color var(--transition), border-color var(--transition);
+  }
+
+  .news-notice__tab--active {
+    color: var(--color-brand);
+    border-bottom-color: var(--color-brand);
+  }
+
+  .news-notice__inner {
+    flex-direction: column;
+    padding: 0 20px 16px;
+  }
+
+  .news-notice-col--hidden-mobile {
+    display: none;
+  }
+
+  /* AOS 비활성화 */
+  .news-notice [data-aos],
+  .news-notice [data-aos].aos-animate {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

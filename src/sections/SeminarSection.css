@@ -18,9 +18,9 @@
 }
 
 .seminar__label {
-  font-size: var(--font-sm);
+  font-size: 13px;
   font-weight: var(--fw-bold);
-  color: var(--color-accent);
+  color: var(--color-point);
   letter-spacing: 0.2em;
 }
 
@@ -104,4 +104,49 @@
   font-size: var(--font-sm);
   color: var(--color-text-muted);
   line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .seminar {
+    min-height: auto;
+    padding: var(--section-py) 0;
+  }
+
+  .seminar__head {
+    margin-bottom: 36px;
+  }
+
+  .seminar__title {
+    font-size: var(--font-md);
+  }
+
+  .seminar__desc {
+    font-size: 14px;
+    margin-top: 14px;
+  }
+
+  .seminar__slide {
+    width: calc(100vw - 48px);
+  }
+
+  .seminar__card-thumb {
+    height: 200px;
+  }
+
+  .seminar__card-body {
+    padding: 18px 20px 22px;
+  }
+
+  .seminar__card-title {
+    font-size: var(--font-base);
+    margin-bottom: 6px;
+  }
+
+  .seminar__card-desc {
+    font-size: 14px;
+  }
+
+  .seminar__card:hover {
+    transform: none;
+  }
 }

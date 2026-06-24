@@ -64,7 +64,7 @@
 .location-card__icon {
   width: 22px;
   height: 22px;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--color-surface);
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -83,13 +83,32 @@
 .location-card__item-label {
   font-size: var(--font-xs);
   font-weight: var(--fw-bold);
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-surface);
   letter-spacing: 0.05em;
 }
 
 .location-card__item-value {
   font-size: var(--font-sm);
   font-weight: var(--fw-regular);
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-surface);
   line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .location-card {
+    padding: 28px 24px;
+  }
+
+  .location-card__name {
+    font-size: var(--font-base);
+    margin-bottom: 20px;
+  }
+
+  .location-card__item-label {
+    font-size: 13px;
+  }
+
+  .location-card__item-value {
+    font-size: var(--font-xs);
+  }
 }

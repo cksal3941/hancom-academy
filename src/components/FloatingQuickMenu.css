@@ -27,6 +27,12 @@
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+@media (min-width: 769px) {
+  .fqm--mobile-only {
+    display: none;
+  }
+}
+
 /* Footer 진입 시 숨김 */
 .fqm--hidden {
   opacity: 0;
@@ -79,26 +85,72 @@
   transition: color var(--transition);
 }
 
-/* ── AcademyIntroSection / LocationSection 진입 시 색상 변경 ── */
-.fqm--academy {
-  border-radius: 9999px;
+/* ── 데스크탑 전용: 어두운 섹션/슬라이드 진입 시 색상 변경 ── */
+@media (min-width: 769px) {
+  .fqm--academy .fqm__item,
+  .fqm--slide-dark .fqm__item {
+    color: var(--color-surface);
+    transition: color 0.4s ease, background var(--transition);
+  }
+
+  .fqm--academy .fqm__item:hover,
+  .fqm--slide-dark .fqm__item:hover {
+    color: var(--color-sky);
+  }
 }
 
-.fqm--academy .fqm__item {
-  color: var(--color-surface);
-  transition: color 0.4s ease, background var(--transition);
+/* 모바일 메뉴 열림 시 숨김 */
+@media (max-width: 768px) {
+  .mobile-menu-open .fqm {
+    display: none;
+  }
 }
 
-.fqm--academy .fqm__item:hover {
-  color: var(--color-sky);
-}
+/* ── 모바일: 하단 고정 가로 바 ── */
+@media (max-width: 768px) {
+  .fqm {
+    top: auto;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    transform: none;
+    width: 100%;
+    flex-direction: row;
+    border-radius: 0;
+    padding: 18px 0 calc(env(safe-area-inset-bottom, 0px) + 10px);
+    background: #fff;
+    border: none;
+    border-top: 1px solid var(--border-color);
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    z-index: 300;
+    overflow: visible;
+  }
 
-/* ── MainVisual 어두운 슬라이드 진입 시 색상 변경 ── */
-.fqm--slide-dark .fqm__item {
-  color: var(--color-surface);
-  transition: color 0.4s ease, background var(--transition);
-}
+  .fqm--hidden {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
 
-.fqm--slide-dark .fqm__item:hover {
-  color: var(--color-sky);
+  .fqm__item {
+    flex: 1;
+    padding: 8px 4px;
+    color: var(--color-brand);
+    border-radius: 0;
+    gap: 4px;
+  }
+
+  .fqm__item:hover {
+    color: var(--color-brand);
+  }
+
+  .fqm__icon {
+    font-size: 20px;
+  }
+
+  .fqm__label {
+    font-size: 11px;
+  }
 }

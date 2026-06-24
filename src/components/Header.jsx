@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { IoChevronUp, IoChevronDown } from 'react-icons/io5'
 import logoImg from '../assets/hancom_logo.png'
+import { useAuth } from '../hooks/useAuth'
+import { logout } from '../services/authService'
 import './Header.css'
 
 const MENU_WIDTH = 200
@@ -60,9 +63,16 @@ const navItems = [
 const zoomUrl = 'https://zoom.us'
 
 export default function Header() {
+  const location = useLocation()
+  const { user, loading: authLoading } = useAuth()
+  const isAuthPage = ['/login', '/signup'].includes(location.pathname)
+  const isHomePage = location.pathname === '/'
+  const isSubPage  = !isHomePage && !isAuthPage
   const [isTop, setIsTop] = useState(true)
   const [slideTheme, setSlideTheme] = useState('dark')
   const [activeMenu, setActiveMenu] = useState(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen]   = useState(false)
+  const [mobileAccordion, setMobileAccordion]     = useState(null)
   const [indicatorLeft, setIndicatorLeft] = useState(0)
   const [dropdownContentStyle, setDropdownContentStyle] = useState({
     left: 0,
@@ -101,11 +111,24 @@ export default function Header() {
     setActiveMenu(null)
   }
 
+  const handleLogout = async () => {
+    await logout()
+    setIsMobileMenuOpen(false)
+  }
+
   useEffect(() => {
     const onScroll = () => setIsTop(window.scrollY === 0)
     onScroll()
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > 768) setIsMobileMenuOpen(false)
+    }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
   }, [])
 
   useEffect(() => {
@@ -121,6 +144,15 @@ export default function Header() {
     return () => window.removeEventListener('resize', updateDropdownPosition)
   }, [])
 
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : ''
+    document.body.classList.toggle('mobile-menu-open', isMobileMenuOpen)
+    return () => {
+      document.body.style.overflow = ''
+      document.body.classList.remove('mobile-menu-open')
+    }
+  }, [isMobileMenuOpen])
+
   const isOpen = activeMenu !== null
 
   return (
@@ -128,8 +160,13 @@ export default function Header() {
       ref={headerRef}
       className={[
         'header',
-        isOpen || !isTop ? 'header--scrolled' : `header--top header--slide-${slideTheme}`,
+        isSubPage
+          ? 'header--subpage'
+          : (isAuthPage || isOpen || !isTop
+              ? 'header--scrolled'
+              : `header--top header--slide-${slideTheme}`),
         isOpen ? 'header--open' : '',
+        isMobileMenuOpen ? 'header--mobile-open' : '',
       ].filter(Boolean).join(' ')}
       onMouseLeave={handleHeaderLeave}
     >
@@ -174,10 +211,32 @@ export default function Header() {
             온라인수업
           </a>
 
-          <Link to="/login" className="header__button header__button--primary">
-            로그인
-          </Link>
+          {!authLoading && (
+            user ? (
+              <button
+                type="button"
+                className="header__button header__button--primary"
+                onClick={handleLogout}
+                title={`${user.displayName || user.email || '회원'} 계정 로그아웃`}
+              >
+                로그아웃
+              </button>
+            ) : (
+              <Link to="/login" className="header__button header__button--primary">
+                로그인
+              </Link>
+            )
+          )}
         </div>
+
+        <button
+          type="button"
+          className={`header__hamburger${isMobileMenuOpen ? ' header__hamburger--open' : ''}`}
+          onClick={() => setIsMobileMenuOpen(v => !v)}
+          aria-label="메뉴 열기"
+        >
+          <span /><span /><span />
+        </button>
       </div>
 
       {isOpen && (
@@ -226,6 +285,85 @@ export default function Header() {
             ))}
           </div>
         </div>
+      )}
+      {isMobileMenuOpen && (
+        <nav className="header__mobile-menu">
+          <div className="header__mobile-nav">
+            {navItems.map((item, index) => {
+              const open = mobileAccordion === index
+              return (
+                <div key={item.to} className="header__mobile-group">
+                  <button
+                    type="button"
+                    className={`header__mobile-parent${open ? ' header__mobile-parent--open' : ''}`}
+                    onClick={() => setMobileAccordion(prev => prev === index ? null : index)}
+                  >
+                    <span>{item.label}</span>
+                    {open ? <IoChevronUp /> : <IoChevronDown />}
+                  </button>
+                  <div className={`header__mobile-children${open ? ' header__mobile-children--open' : ''}`}>
+                    <div className="header__mobile-children-inner">
+                      {item.submenu?.map(sub => (
+                        sub.external ? (
+                          <a
+                            key={sub.label}
+                            href={sub.href}
+                            className="header__mobile-sublink"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            {sub.label}
+                          </a>
+                        ) : (
+                          <NavLink
+                            key={sub.to}
+                            to={sub.to}
+                            className="header__mobile-sublink"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            {sub.label}
+                          </NavLink>
+                        )
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="header__mobile-bottom">
+            {!authLoading && (
+              user ? (
+                <button
+                  type="button"
+                  className="header__mobile-bottom-link"
+                  onClick={handleLogout}
+                >
+                  {user.displayName ? `${user.displayName}님 로그아웃` : '로그아웃'}
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="header__mobile-bottom-link"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  로그인
+                </Link>
+              )
+            )}
+            <a
+              href={zoomUrl}
+              className="header__mobile-bottom-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              온라인수업 입장
+            </a>
+          </div>
+        </nav>
       )}
     </header>
   )

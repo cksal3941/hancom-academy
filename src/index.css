@@ -27,6 +27,7 @@
 
   /* ── Typography ── */
   --font-sans: 'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-label: 13px;
   --font-xs: 16px;
   --font-sm: 18px;
   --font-base: 20px;
@@ -146,4 +147,34 @@ html {
 .snap-section {
   scroll-snap-align: start;
   scroll-snap-stop: normal;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  :root {
+    --header-h: 64px;
+    --section-py: 48px;
+  }
+
+  html {
+    scroll-snap-type: none;
+  }
+
+  .snap-section {
+    scroll-snap-align: none;
+  }
+
+  body {
+    overflow-x: hidden;
+    padding-bottom: 68px; /* 모바일 하단 퀵메뉴 높이 확보 */
+  }
+
+  /* AOS 전체 비활성화 */
+  [data-aos],
+  [data-aos].aos-animate {
+    opacity: 1 !important;
+    transform: none !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
 }

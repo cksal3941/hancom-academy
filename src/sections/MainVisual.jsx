@@ -10,17 +10,23 @@ import slide2 from '../assets/main_slide2_d.png'
 import slide3 from '../assets/main_slide3_d.png'
 import slide4 from '../assets/main_slide4_d.png'
 import slide5 from '../assets/main_slide5_d.png'
+import slideM1 from '../assets/main_slide1_m.png'
+import slideM2 from '../assets/main_slide2_m.png'
+import slideM3 from '../assets/main_slide3_m.png'
+import slideM4 from '../assets/main_slide4_m.png'
+import slideM5 from '../assets/main_slide5_m.png'
 
 const slides = [
-  { src: slide1, theme: 'light' },
-  { src: slide2, theme: 'dark' },
-  { src: slide3, theme: 'dark' },
-  { src: slide4, theme: 'dark' },
-  { src: slide5, theme: 'dark' },
+  { src: slide1, mobileSrc: slideM1, theme: 'light' },
+  { src: slide2, mobileSrc: slideM2, theme: 'dark' },
+  { src: slide3, mobileSrc: slideM3, theme: 'dark' },
+  { src: slide4, mobileSrc: slideM4, theme: 'dark' },
+  { src: slide5, mobileSrc: slideM5, theme: 'dark' },
 ]
 
 const dispatchTheme = (swiper) => {
   const theme = slides[swiper.realIndex]?.theme ?? 'dark'
+  window.__slideTheme = theme // 늦게 마운트되는 컴포넌트가 읽을 수 있도록 보존
   window.dispatchEvent(new CustomEvent('header-theme', { detail: { theme } }))
 }
 
@@ -78,7 +84,10 @@ export default function MainVisual() {
           {slides.map((slide, index) => (
             <SwiperSlide key={index}>
               <div className="main-visual__slide">
-                <img src={slide.src} alt={`메인 슬라이드 ${index + 1}`} />
+                <picture>
+                  <source media="(max-width: 768px)" srcSet={slide.mobileSrc} />
+                  <img src={slide.src} alt={`메인 슬라이드 ${index + 1}`} />
+                </picture>
               </div>
             </SwiperSlide>
           ))}

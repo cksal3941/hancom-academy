@@ -9,3 +9,22 @@
 /* MainVisual: 3/4, NewsNoticeSection: 1/4 */
 .above-fold > .main-visual   { flex: 3; min-height: 0; }
 .above-fold > .news-notice   { flex: 1; min-height: 0; }
+
+@media (max-width: 768px) {
+  .above-fold {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* MainVisual: 남은 공간 채움 */
+  .above-fold > .main-visual {
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* NewsNoticeSection: 자연 높이 고정 */
+  .above-fold > .news-notice {
+    flex: none;
+    min-height: 0;
+  }
+}

@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom'
 import NewsNoticeItem from './NewsNoticeItem'
 import './NewsNoticeColumn.css'
 
-export default function NewsNoticeColumn({ title, items, linkPath, ...rest }) {
+export default function NewsNoticeColumn({ title, items, linkPath, className = '', ...rest }) {
   return (
-    <div className="news-notice-col" {...rest}>
+    <div className={`news-notice-col${className ? ` ${className}` : ''}`} {...rest}>
       <h3 className="news-notice-col__title">{title}</h3>
       <div className="news-notice-col__items">
         {items.map((item) => (

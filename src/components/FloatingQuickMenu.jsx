@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BsTelephoneFill } from 'react-icons/bs'
 import { IoChatbubbleEllipses } from 'react-icons/io5'
 import { FaInstagram } from 'react-icons/fa'
@@ -12,66 +12,65 @@ const ICONS = {
   blog:      <span className="fqm__blog-n">N</span>,
 }
 
-export default function FloatingQuickMenu() {
+export default function FloatingQuickMenu({ mobileOnly = false }) {
   const [hidden, setHidden]         = useState(false)
   const [academy, setAcademy]       = useState(false)
   const [location, setLocation]     = useState(false)
-  const [inVisual, setInVisual]     = useState(false) // MainVisual 영역 진입 여부
-  const [slideTheme, setSlideTheme] = useState('light') // 슬라이드 테마
-  const footerRef                   = useRef(null)
-  const academyRef                  = useRef(null)
-  const locationRef                 = useRef(null)
-  const visualRef                   = useRef(null)
+  const [inVisual, setInVisual]     = useState(false)
+  const [slideTheme, setSlideTheme] = useState(
+    () => window.__slideTheme || 'light',
+  )
 
   useEffect(() => {
-    footerRef.current   = document.querySelector('.footer')
-    academyRef.current  = document.querySelector('.academy-intro')
-    locationRef.current = document.querySelector('.location')
-    visualRef.current   = document.querySelector('.main-visual')
+    let footerEl   = null
+    let academyEl  = null
+    let locationEl = null
+    let visualEl   = null
 
-    const observers = []
-
-    if (footerRef.current) {
-      const obs = new IntersectionObserver(
-        ([entry]) => setHidden(entry.isIntersecting),
-        { threshold: 0.05 }
-      )
-      obs.observe(footerRef.current)
-      observers.push(obs)
+    const init = () => {
+      footerEl   = document.querySelector('.footer')
+      academyEl  = document.querySelector('.academy-intro')
+      locationEl = document.querySelector('.location')
+      visualEl   = document.querySelector('.main-visual')
     }
 
-    if (academyRef.current) {
-      const obs = new IntersectionObserver(
-        ([entry]) => setAcademy(entry.isIntersecting),
-        { threshold: 0.1 }
-      )
-      obs.observe(academyRef.current)
-      observers.push(obs)
+    const check = () => {
+      if (!footerEl) init()
+
+      const vh = window.innerHeight
+      const cx = vh / 2
+
+      if (footerEl) {
+        const r = footerEl.getBoundingClientRect()
+        setHidden(r.top < vh * 0.95)
+      }
+
+      // 섹션 중심이 뷰포트 중앙을 지나칠 때 활성
+      const inSec = (el) => {
+        if (!el) return false
+        const r = el.getBoundingClientRect()
+        return r.top < cx && r.bottom > cx
+      }
+      setAcademy(inSec(academyEl))
+      setLocation(inSec(locationEl))
+
+      if (visualEl) {
+        const r = visualEl.getBoundingClientRect()
+        setInVisual(r.bottom > 0 && r.top < vh)
+      }
     }
 
-    if (locationRef.current) {
-      const obs = new IntersectionObserver(
-        ([entry]) => setLocation(entry.isIntersecting),
-        { threshold: 0.1 }
-      )
-      obs.observe(locationRef.current)
-      observers.push(obs)
-    }
-
-    if (visualRef.current) {
-      const obs = new IntersectionObserver(
-        ([entry]) => setInVisual(entry.isIntersecting),
-        { threshold: 0.1 }
-      )
-      obs.observe(visualRef.current)
-      observers.push(obs)
-    }
+    init()
+    check()
+    window.addEventListener('scroll', check, { passive: true })
+    window.addEventListener('resize', check, { passive: true })
 
     const onTheme = (e) => setSlideTheme(e.detail.theme)
     window.addEventListener('header-theme', onTheme)
 
     return () => {
-      observers.forEach(o => o.disconnect())
+      window.removeEventListener('scroll', check)
+      window.removeEventListener('resize', check)
       window.removeEventListener('header-theme', onTheme)
     }
   }, [])
@@ -82,8 +81,9 @@ export default function FloatingQuickMenu() {
     <aside
       className={[
         'fqm',
-        hidden                        ? 'fqm--hidden'     : '',
-        academy || location           ? 'fqm--academy'    : '',
+        mobileOnly                         ? 'fqm--mobile-only' : '',
+        hidden                             ? 'fqm--hidden'     : '',
+        academy || location                ? 'fqm--academy'    : '',
         slideDark && !academy && !location ? 'fqm--slide-dark' : '',
       ].filter(Boolean).join(' ')}
       aria-label="퀵메뉴"

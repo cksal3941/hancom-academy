@@ -55,3 +55,23 @@
   border-radius: 50%;
   font-size: 10px;
 }
+
+@media (max-width: 768px) {
+  .news-notice-col {
+    padding: 12px 0 0;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .news-notice-col:first-child {
+    padding-left: 0;
+  }
+
+  .news-notice-col__title {
+    display: none;
+  }
+
+  .news-notice-col__more {
+    display: none;
+  }
+}

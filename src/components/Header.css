@@ -26,6 +26,12 @@
   box-shadow: var(--shadow-sm);
 }
 
+.header--subpage {
+  position: relative;
+  background: transparent;
+  box-shadow: none;
+}
+
 .header--open {
   background: var(--color-surface);
   backdrop-filter: none;
@@ -156,6 +162,10 @@
   background: var(--color-surface);
   color: var(--color-brand);
   border: 1px solid var(--color-brand);
+}
+
+button.header__button {
+  font-family: var(--font-sans);
 }
 
 /* ─────────────────────────────
@@ -297,4 +307,201 @@
   font-size: 11px;
   opacity: 0.4;
   flex-shrink: 0;
+}
+
+/* ─────────────────────────────
+   Hamburger (데스크탑 숨김)
+───────────────────────────── */
+.header__hamburger {
+  display: none;
+}
+
+/* 데스크탑에서 모바일 메뉴 강제 숨김 */
+@media (min-width: 769px) {
+  .header__mobile-menu {
+    display: none !important;
+  }
+}
+
+/* ─────────────────────────────
+   Mobile (@media 768px)
+───────────────────────────── */
+@media (max-width: 768px) {
+  .header__inner {
+    padding: 0 20px;
+  }
+
+  .header__nav,
+  .header__actions,
+  .header__dropdown {
+    display: none;
+  }
+
+  /* 햄버거 버튼 */
+  .header__hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-brand);
+  }
+
+  .header--slide-dark .header__hamburger {
+    color: #fff;
+  }
+
+  .header__hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .header__hamburger--open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .header__hamburger--open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .header__hamburger--open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* 모바일 메뉴 열림: 헤더 흰 배경 */
+  .header--mobile-open {
+    background: var(--color-surface) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .header--mobile-open .header__logo-img {
+    filter: none !important;
+  }
+
+  .header--mobile-open .header__hamburger {
+    color: var(--color-brand) !important;
+  }
+
+  /* 모바일 메뉴 드로어 */
+  .header__mobile-menu {
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    right: 0;
+    height: calc(100dvh - var(--header-h));
+    background: var(--color-surface);
+    z-index: 998;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .header__mobile-nav {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  /* 아코디언 그룹 */
+  .header__mobile-group {
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  /* 상위 메뉴 버튼 */
+  .header__mobile-parent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 28px;
+    height: 58px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: var(--fw-bold);
+    color: var(--color-brand);
+    font-family: var(--font-sans);
+    text-align: left;
+  }
+
+  .header__mobile-parent svg {
+    font-size: 17px;
+    flex-shrink: 0;
+    color: var(--color-brand);
+  }
+
+  /* 아코디언 열림/닫힘 (grid 트랜지션) */
+  .header__mobile-children {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.25s ease;
+  }
+
+  .header__mobile-children--open {
+    grid-template-rows: 1fr;
+  }
+
+  .header__mobile-children-inner {
+    overflow: hidden;
+    background: #F3F6FB;
+  }
+
+  /* 하위 메뉴 링크 */
+  .header__mobile-sublink {
+    display: block;
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: var(--fw-medium);
+    color: var(--color-text-sub);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .header__mobile-sublink:first-child { padding-top: 16px; }
+  .header__mobile-sublink:last-child  { padding-bottom: 16px; }
+
+  .header__mobile-sublink:hover {
+    color: var(--color-accent);
+  }
+
+  /* 하단 로그인 / 온라인수업 */
+  .header__mobile-bottom {
+    flex-shrink: 0;
+    border-top: 1px solid var(--border-color);
+    padding: 12px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .header__mobile-bottom-link {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    border: 0;
+    background: transparent;
+    font-size: 15px;
+    font-weight: var(--fw-regular);
+    color: var(--color-text-muted);
+    font-family: var(--font-sans);
+    text-decoration: none;
+    text-align: left;
+    transition: color var(--transition);
+  }
+
+  .header__mobile-bottom-link:hover {
+    color: var(--color-brand);
+  }
 }

@@ -21,14 +21,14 @@
 }
 
 .edu-field__label {
-  font-size: var(--font-sm);
+  font-size: 13px;
   font-weight: var(--fw-bold);
   color: var(--color-point);
   letter-spacing: 0.2em;
 }
 
 .edu-field__title {
-  font-size: var(--font-xl);
+  font-size: 31px;
   font-weight: var(--fw-bold);
   color: var(--color-brand);
   line-height: 1.2;
@@ -52,4 +52,34 @@
 .edu-card-aos-wrap {
   flex: 1;
   display: flex;
+  padding: 0 50px; /* 카드 가로·세로 100px 축소 */
+}
+
+@media (max-width: 768px) {
+  .edu-field {
+    min-height: auto;
+  }
+
+  .edu-field__inner {
+    gap: 28px;
+  }
+
+  .edu-field__title {
+    font-size: var(--font-md);
+  }
+
+  .edu-field__desc {
+    font-size: 14px;
+    margin-top: 14px;
+  }
+
+  .edu-field__cards {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .edu-card-aos-wrap {
+    flex: none;
+    width: 100%;
+  }
 }

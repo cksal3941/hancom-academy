@@ -24,3 +24,16 @@
   background: var(--color-brand);
   color: var(--color-surface);
 }
+
+@media (max-width: 768px) {
+  .location-tabs {
+    margin-bottom: 16px;
+  }
+
+  .location-tab {
+    flex: 1;
+    padding: 10px 0;
+    font-size: var(--font-xs);
+    text-align: center;
+  }
+}
