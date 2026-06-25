@@ -47,17 +47,18 @@ export default function FloatingQuickMenu({ mobileOnly = false }) {
       const visualEl   = visualRef.current
 
       const vh = window.innerHeight
-      const cx = vh / 2
 
       if (footerEl) {
         const r = footerEl.getBoundingClientRect()
         setHidden(r.top < vh * 0.95)
       }
 
+      // 섹션이 뷰포트의 95% 이상을 채웠을 때 전환
       const inSec = (el) => {
         if (!el) return false
         const r = el.getBoundingClientRect()
-        return r.top < cx && r.bottom > cx
+        const visible = Math.min(r.bottom, vh) - Math.max(r.top, 0)
+        return visible >= vh * 0.95
       }
       setAcademy(inSec(academyEl))
       setLocation(inSec(locationEl))

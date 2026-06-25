@@ -22,8 +22,29 @@
   background: var(--header-bg);
   backdrop-filter: var(--header-blur);
   -webkit-backdrop-filter: var(--header-blur);
-  border-bottom: 1px solid var(--header-border);
-  box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid rgba(200, 210, 240, 0.25);
+  box-shadow:
+    0 4px 12px rgba(10, 5, 40, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.header--scrolled.header--slide-dark {
+  background: rgba(10, 5, 40, 0.35);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 4px 12px rgba(10, 5, 40, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.header--scrolled::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+  pointer-events: none;
 }
 
 .header--open {
@@ -166,6 +187,11 @@ button.header__button {
    Slide theme: dark
 ───────────────────────────── */
 
+.header--slide-light .header__nav-link,
+.header--slide-dark .header__nav-link {
+  font-weight: var(--fw-semibold);
+}
+
 .header--slide-dark .header__nav-link {
   color: rgba(255, 255, 255, 0.9);
 }
@@ -200,6 +226,60 @@ button.header__button {
 .header--slide-dark .header__button--primary:hover {
   background: rgba(255, 255, 255, 0.85);
   border-color: transparent;
+}
+
+/* ─────────────────────────────
+   Dropdown open: light mode 강제 전환
+   (slide-dark 블록 이후에 위치해야 cascade 우선)
+───────────────────────────── */
+
+.header--open::before {
+  display: none;
+}
+
+.header--scrolled.header--open {
+  background: var(--color-surface);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+.header--open .header__nav-link {
+  color: var(--color-brand);
+  font-weight: var(--fw-medium);
+}
+
+.header--open .header__nav-link:hover,
+.header--open .header__nav-link.active {
+  color: var(--color-brand);
+}
+
+.header--open .header__logo-img {
+  filter: none;
+}
+
+.header--open .header__button--outline {
+  color: var(--color-brand);
+  border-color: var(--color-brand);
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.header--open .header__button--outline:hover {
+  background: var(--color-brand);
+  color: var(--color-surface);
+}
+
+.header--open .header__button--primary {
+  background: var(--color-brand);
+  color: var(--color-surface);
+  border-color: transparent;
+}
+
+.header--open .header__button--primary:hover {
+  background: var(--color-surface);
+  color: var(--color-brand);
+  border: 1px solid var(--color-brand);
 }
 
 /* ─────────────────────────────

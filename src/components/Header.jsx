@@ -70,7 +70,11 @@ export default function Header() {
   const isSubPage  = !isHomePage && !isAuthPage
   const [isTop, setIsTop] = useState(true)
   const [slideTheme, setSlideTheme] = useState('dark')
+  const [sectionDark, setSectionDark] = useState(false)
   const [activeMenu, setActiveMenu] = useState(null)
+
+  const academyRef  = useRef(null)
+  const locationRef = useRef(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen]   = useState(false)
   const [mobileAccordion, setMobileAccordion]     = useState(null)
   const [indicatorLeft, setIndicatorLeft] = useState(0)
@@ -137,6 +141,30 @@ export default function Header() {
     return () => window.removeEventListener('header-theme', handler)
   }, [])
 
+  // 경로 변경 시 DOM 요소 참조 갱신
+  useEffect(() => {
+    academyRef.current  = document.querySelector('.academy-intro')
+    locationRef.current = document.querySelector('.location')
+  }, [location.pathname])
+
+  // 스크롤 위치 기반 다크 섹션 감지
+  useEffect(() => {
+    const check = () => {
+      const vh = window.innerHeight
+      // 섹션이 뷰포트의 95% 이상을 채웠을 때 전환
+      const inSec = (el) => {
+        if (!el) return false
+        const r = el.getBoundingClientRect()
+        const visible = Math.min(r.bottom, vh) - Math.max(r.top, 0)
+        return visible >= vh * 0.95
+      }
+      setSectionDark(inSec(academyRef.current) || inSec(locationRef.current))
+    }
+    check()
+    window.addEventListener('scroll', check, { passive: true })
+    return () => window.removeEventListener('scroll', check)
+  }, [])
+
   useEffect(() => {
     updateDropdownPosition()
     window.addEventListener('resize', updateDropdownPosition)
@@ -165,7 +193,7 @@ export default function Header() {
               ? 'header--scrolled'
               : 'header--top header--slide-dark')
           : (isAuthPage || isOpen || !isTop
-              ? 'header--scrolled'
+              ? `header--scrolled${sectionDark ? ' header--slide-dark' : ''}`
               : `header--top header--slide-${slideTheme}`),
         isOpen ? 'header--open' : '',
         isMobileMenuOpen ? 'header--mobile-open' : '',
