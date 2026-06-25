@@ -54,8 +54,9 @@ pages/
                        EducationFieldSection, AcademyIntroSection, SeminarSection, LocationSection
   AboutPage.jsx      — academy intro page with hero/tabs/breadcrumb/values cards
   TeachersPage.jsx   — teacher grid rendered from teacherData; shares hero/tabs pattern with AboutPage
-  LoginPage.jsx      — email + Google + Apple sign-in (lazy loaded)
-  SignUpPage.jsx      — email registration
+  LoginPage.jsx      — email + Google + Apple sign-in (lazy loaded); single component
+                       manages both 'login' and 'forgot' views via a `view` state string
+  SignUpPage.jsx     — email registration
   ComingSoonPage     — placeholder for unimplemented routes
 sections/            — full-viewport (100vh) blocks for HomePage only
                        (MainVisual, SeminarSection, LocationSection)
@@ -67,6 +68,8 @@ components/
   common/
     MobileMenu.jsx   — full-screen overlay, accordion nav driven by mobileMenuData,
                        closes on ESC / link click, locks body scroll while open
+    SubPageHero.jsx  — simple hero banner (eyebrow + h1 over about-hero-3d.png);
+                       used by LoginPage and SignUpPage only — About/Teachers have their own hero
   home/              — home-page section components
                        (NewsNoticeSection, EducationFieldSection, AcademyIntroSection, LocationSection)
   cards/             — NewsNoticeColumn, NewsNoticeItem, EducationFieldCard, AcademyIntroCard
@@ -96,15 +99,17 @@ Skeleton (`.ph` divs + `skeleton-tag` label): `SeminarSection`. When implementin
 
 ### Sub-page layout pattern
 
-`AboutPage` and `TeachersPage` share a pattern: a hero section sets a `--*-hero-image` CSS custom property for the background (sourced from `src/assets/`), followed by a `<nav>` of tab links and a breadcrumb bar. New sub-pages under `/about/**` should follow this same hero→tabs→breadcrumb→content structure.
+`AboutPage` and `TeachersPage` share a pattern: a hero section with a background image, followed by a `<nav>` of tab links and a breadcrumb bar. New sub-pages under `/about/**` should follow this same hero→tabs→breadcrumb→content structure.
 
-### AOS animations
-
-`App.jsx` calls `AOS.init()` once on mount and `AOS.refresh()` on every route change. Add scroll-reveal to elements with `data-aos="fade-up"` (or other presets). Use `data-aos-delay={n}` (ms) for staggered children.
+Auth pages (`/login`, `/signup`) use the simpler `<SubPageHero eyebrow="..." title="..." />` component instead — no tabs or breadcrumb.
 
 ### MainVisual (Swiper)
 
-`MainVisual.jsx` uses **Swiper** (`swiper/react`) with `Autoplay` and `EffectFade` modules. The slider ref is stored in `swiperRef` for imperative prev/next/play/pause control. Progress is tracked via `onAutoplayTimeLeft` and rendered as a CSS-width bar.
+`MainVisual.jsx` uses **Swiper** with `Autoplay` and `EffectFade` modules. Each slide entry in the `slides` array requires both a desktop (`_d.png`) and a mobile (`_m.png`) image; they are rendered via `<picture><source media="(max-width: 768px)">`. Each slide also has a `theme` (`'light'` or `'dark'`) that is dispatched as a `header-theme` CustomEvent so `Header` and `FloatingQuickMenu` can adapt their appearance.
+
+### Cross-component theme communication
+
+`MainVisual` fires `window.dispatchEvent(new CustomEvent('header-theme', { detail: { theme } }))` on every slide change and stores the value in `window.__slideTheme` (for components that mount after the event fires). `Header` and `FloatingQuickMenu` both listen for this event to switch between light/dark styling. Do not remove `window.__slideTheme` — it is the fallback for late-mounting consumers.
 
 ### Header / MobileMenu
 
@@ -112,13 +117,21 @@ Skeleton (`.ph` divs + `skeleton-tag` label): `SeminarSection`. When implementin
 
 `MobileMenu.jsx` is a separate full-screen overlay driven by `mobileMenuData` (separate source of truth from `navItems`). The hamburger button in `Header.jsx` controls the `isOpen` state passed down to `MobileMenu`.
 
+### AOS animations
+
+`App.jsx` calls `AOS.init()` once on mount and `AOS.refresh()` on every route change. Add scroll-reveal to elements with `data-aos="fade-up"` (or other presets). Use `data-aos-delay={n}` (ms) for staggered children.
+
 ### AcademyIntroSection
 
 Has a CSS marquee (`academy-intro__marquee-track`) running vertically in the background. The section background is a `.academy-intro__bg` CSS gradient — there is a comment in the JSX marking the swap point if a shader-gradient package is added later.
 
+### teacherData shape
+
+`src/data/teacherData.js` exports `teacherData` — an array of `{ id, name, role, field, career[], email, campuses[], image, message }`. The `image` field currently holds Unsplash placeholder URLs; replace with real hosted images when available.
+
 ### Static assets
 
-- `src/assets/` — images imported directly in JSX (e.g., `hancom_logo.png`, `about-hero-3d.png`)
+- `src/assets/` — images imported directly in JSX (e.g., `hancom_logo.png`, `about-hero-3d.png`, `main_slide*_d.png`, `main_slide*_m.png`)
 - `public/images/` — images served by path (referenced in `academyIntroData` and `educationFieldsData`)
 - `public/icons.svg` — SVG sprite; reference symbols with `<use href="/icons.svg#icon-name">`
 - `public/favicon.svg` — site favicon
@@ -146,4 +159,3 @@ Skeleton utilities also live in `index.css`: `.ph` (dark placeholder), `.ph--lig
 - `@types/react` and `@types/react-dom` are devDependencies for IDE/JSDoc type hints only — no TypeScript.
 - ESLint uses **flat config** (`eslint.config.js`, ESLint 10). Plugins: `eslint-plugin-react-hooks` and `eslint-plugin-react-refresh`.
 - `src/App.css` is currently unused.
-- `react-icons/fi` (Feather) and `react-icons/io5` (Ionicons 5) are the icon sets in use.
