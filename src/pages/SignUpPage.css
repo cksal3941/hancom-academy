@@ -1,9 +1,7 @@
 /* LoginPage.css를 베이스로 사용하며, 회원가입 시안의 간격과 형태를 덮어씁니다. */
 
-.signup-page {
-  min-height: 1385px;
-  align-items: flex-start;
-  padding: 335px 24px 260px;
+.signup-page .login-page__body {
+  padding: 80px 24px 120px;
 }
 
 .signup-page .login-page__wrap {
@@ -111,9 +109,8 @@
 }
 
 @media (max-width: 768px) {
-  .signup-page {
-    min-height: auto;
-    padding: 120px 20px 90px;
+  .signup-page .login-page__body {
+    padding: 60px 20px 80px;
   }
 
   .signup-page .login-page__wrap {

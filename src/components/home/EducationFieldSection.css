@@ -28,7 +28,7 @@
 }
 
 .edu-field__title {
-  font-size: 31px;
+  font-size: var(--font-2xl);
   font-weight: var(--fw-bold);
   color: var(--color-brand);
   line-height: 1.2;
@@ -52,7 +52,7 @@
 .edu-card-aos-wrap {
   flex: 1;
   display: flex;
-  padding: 0 50px; /* 카드 가로·세로 100px 축소 */
+  padding: 0 20px;
 }
 
 @media (max-width: 768px) {
@@ -65,7 +65,7 @@
   }
 
   .edu-field__title {
-    font-size: var(--font-md);
+    font-size: var(--font-lg);
   }
 
   .edu-field__desc {

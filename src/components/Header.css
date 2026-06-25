@@ -26,12 +26,6 @@
   box-shadow: var(--shadow-sm);
 }
 
-.header--subpage {
-  position: relative;
-  background: transparent;
-  box-shadow: none;
-}
-
 .header--open {
   background: var(--color-surface);
   backdrop-filter: none;

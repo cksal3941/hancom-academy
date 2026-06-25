@@ -39,7 +39,7 @@
 }
 
 .location__title {
-  font-size: var(--font-xl);
+  font-size: var(--font-2xl);
   font-weight: var(--fw-bold);
   color: #fff;
   line-height: 1.2;
@@ -71,7 +71,7 @@
   }
 
   .location__title {
-    font-size: var(--font-md);
+    font-size: var(--font-lg);
   }
 
   .location__head {

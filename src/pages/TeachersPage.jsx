@@ -14,10 +14,10 @@ const tabs = [
 export default function TeachersPage() {
   return (
     <div className="teachers-page">
-      <section
-        className="teachers-hero"
-        style={{ '--teachers-hero-image': `url("${aboutHeroImage}")` }}
-      >
+      <section className="teachers-hero">
+        <picture className="teachers-hero__image" aria-hidden="true">
+          <img src={aboutHeroImage} alt="" />
+        </picture>
         <div className="teachers-hero__shade" />
         <div className="teachers-hero__content">
           <p>학원 소개</p>

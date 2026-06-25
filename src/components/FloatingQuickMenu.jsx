@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { BsTelephoneFill } from 'react-icons/bs'
 import { IoChatbubbleEllipses } from 'react-icons/io5'
 import { FaInstagram } from 'react-icons/fa'
@@ -21,21 +22,29 @@ export default function FloatingQuickMenu({ mobileOnly = false }) {
     () => window.__slideTheme || 'light',
   )
 
+  const footerRef   = useRef(null)
+  const academyRef  = useRef(null)
+  const locationRef = useRef(null)
+  const visualRef   = useRef(null)
+
+  const { pathname } = useLocation()
+
+  // 경로가 바뀔 때마다 DOM 요소 참조를 갱신 (SPA 내비게이션 대응)
   useEffect(() => {
-    let footerEl   = null
-    let academyEl  = null
-    let locationEl = null
-    let visualEl   = null
+    footerRef.current   = document.querySelector('.footer')
+    academyRef.current  = document.querySelector('.academy-intro')
+    locationRef.current = document.querySelector('.location')
+    visualRef.current   = document.querySelector('.main-visual')
+    // 갱신된 ref로 즉시 위치 체크를 실행
+    window.dispatchEvent(new Event('scroll'))
+  }, [pathname])
 
-    const init = () => {
-      footerEl   = document.querySelector('.footer')
-      academyEl  = document.querySelector('.academy-intro')
-      locationEl = document.querySelector('.location')
-      visualEl   = document.querySelector('.main-visual')
-    }
-
+  useEffect(() => {
     const check = () => {
-      if (!footerEl) init()
+      const footerEl   = footerRef.current
+      const academyEl  = academyRef.current
+      const locationEl = locationRef.current
+      const visualEl   = visualRef.current
 
       const vh = window.innerHeight
       const cx = vh / 2
@@ -45,7 +54,6 @@ export default function FloatingQuickMenu({ mobileOnly = false }) {
         setHidden(r.top < vh * 0.95)
       }
 
-      // 섹션 중심이 뷰포트 중앙을 지나칠 때 활성
       const inSec = (el) => {
         if (!el) return false
         const r = el.getBoundingClientRect()
@@ -57,10 +65,11 @@ export default function FloatingQuickMenu({ mobileOnly = false }) {
       if (visualEl) {
         const r = visualEl.getBoundingClientRect()
         setInVisual(r.bottom > 0 && r.top < vh)
+      } else {
+        setInVisual(false)
       }
     }
 
-    init()
     check()
     window.addEventListener('scroll', check, { passive: true })
     window.addEventListener('resize', check, { passive: true })
@@ -84,6 +93,7 @@ export default function FloatingQuickMenu({ mobileOnly = false }) {
         mobileOnly                         ? 'fqm--mobile-only' : '',
         hidden                             ? 'fqm--hidden'     : '',
         academy || location                ? 'fqm--academy'    : '',
+        inVisual && !academy && !location  ? 'fqm--visual'     : '',
         slideDark && !academy && !location ? 'fqm--slide-dark' : '',
       ].filter(Boolean).join(' ')}
       aria-label="퀵메뉴"

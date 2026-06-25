@@ -23,10 +23,8 @@ export default function MapBox({ lat, lng, name }) {
     if (!lat || !lng || !containerRef.current) return
 
     if (!mapInstance.current) {
-      mapInstance.current = L.map(containerRef.current, { center: [lat, lng], zoom: 16 })
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }).addTo(mapInstance.current)
+      mapInstance.current = L.map(containerRef.current, { center: [lat, lng], zoom: 16, attributionControl: false })
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapInstance.current)
       markerInstance.current = L.marker([lat, lng])
         .addTo(mapInstance.current)
         .bindPopup(name ?? '')

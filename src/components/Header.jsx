@@ -161,7 +161,9 @@ export default function Header() {
       className={[
         'header',
         isSubPage
-          ? 'header--subpage'
+          ? (isOpen || !isTop
+              ? 'header--scrolled'
+              : 'header--top header--slide-dark')
           : (isAuthPage || isOpen || !isTop
               ? 'header--scrolled'
               : `header--top header--slide-${slideTheme}`),

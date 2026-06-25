@@ -23,17 +23,35 @@ body:has(.teachers-page) main {
   display: grid;
   place-items: center;
   padding: calc(var(--header-h) + 62px) 24px 68px;
-  background-image: var(--teachers-hero-image);
-  background-position: center;
-  background-size: cover;
+  overflow: hidden;
   isolation: isolate;
+}
+
+.teachers-hero__image {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.teachers-hero__image,
+.teachers-hero__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.teachers-hero__image img {
+  object-fit: cover;
+  object-position: center 48%;
 }
 
 .teachers-hero__shade {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: rgba(7, 10, 22, .67);
+  background:
+    linear-gradient(180deg, rgba(3, 7, 26, .4), rgba(4, 6, 20, .3)),
+    radial-gradient(circle at 50% 43%, rgba(7, 14, 45, .18), transparent 48%);
 }
 
 .teachers-hero__content {

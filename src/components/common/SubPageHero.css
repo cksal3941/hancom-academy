@@ -1,0 +1,66 @@
+.subpage-hero {
+  position: relative;
+  min-height: 370px;
+  display: grid;
+  place-items: center;
+  padding: calc(var(--header-h) + 62px) 24px 68px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.subpage-hero__image {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.subpage-hero__image,
+.subpage-hero__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.subpage-hero__image img {
+  object-fit: cover;
+  object-position: center 48%;
+}
+
+.subpage-hero__shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(3, 7, 26, .4), rgba(4, 6, 20, .3)),
+    radial-gradient(circle at 50% 43%, rgba(7, 14, 45, .18), transparent 48%);
+}
+
+.subpage-hero__content {
+  width: min(100%, 920px);
+  color: #fff;
+  text-align: center;
+}
+
+.subpage-hero__eyebrow {
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.subpage-hero h1 {
+  font-size: clamp(38px, 4.4vw, 58px);
+  line-height: 1.2;
+  letter-spacing: -.055em;
+  text-shadow: 0 3px 24px rgba(0, 0, 0, .28);
+}
+
+@media (max-width: 768px) {
+  .subpage-hero {
+    min-height: 300px;
+    padding: calc(var(--header-h) + 48px) 20px 52px;
+  }
+
+  .subpage-hero h1 {
+    font-size: 36px;
+  }
+}

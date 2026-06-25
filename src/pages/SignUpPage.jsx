@@ -6,6 +6,7 @@ import { signUpWithEmail, loginWithGoogle, loginWithApple } from '../services/au
 import { useAuth } from '../hooks/useAuth'
 import { isAppleAuthEnabled } from '../firebase/firebase'
 import { getFirebaseErrorMessage } from '../utils/firebaseErrorMessage'
+import SubPageHero from '../components/common/SubPageHero'
 import './LoginPage.css'
 import './SignUpPage.css'
 
@@ -69,14 +70,19 @@ export default function SignUpPage() {
 
   if (loading) {
     return (
-      <div className="login-page">
-        <span className="login-page__spinner" aria-label="불러오는 중" />
+      <div className="login-page signup-page">
+        <SubPageHero eyebrow="회원 서비스" title="회원가입" />
+        <div className="login-page__body">
+          <span className="login-page__spinner" aria-label="불러오는 중" />
+        </div>
       </div>
     )
   }
 
   return (
     <div className="login-page signup-page">
+      <SubPageHero eyebrow="회원 서비스" title="회원가입" />
+      <div className="login-page__body">
       <div className="login-page__wrap">
         <h1 className="login-page__title">회원가입</h1>
         <p className="login-page__subtitle">한글과컴퓨터학원의 학습 서비스를 이용해 보세요.</p>
@@ -233,6 +239,7 @@ export default function SignUpPage() {
           이미 계정이 있으신가요?{' '}
           <Link to="/login" className="login-page__signup-link">로그인하기</Link>
         </p>
+      </div>
       </div>
     </div>
   )

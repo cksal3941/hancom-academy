@@ -51,7 +51,7 @@
 }
 
 .edu-card__title {
-  font-size: 36px;
+  font-size: var(--font-lg);
   font-weight: var(--fw-bold);
   color: var(--color-brand);
   line-height: 1.3;

@@ -41,10 +41,10 @@ const values = [
 export default function AboutPage() {
   return (
     <div className="about-page">
-      <section
-        className="about-hero"
-        style={{ '--about-hero-image': `url("${aboutHeroImage}")` }}
-      >
+      <section className="about-hero">
+        <picture className="about-hero__image" aria-hidden="true">
+          <img src={aboutHeroImage} alt="" />
+        </picture>
         <div className="about-hero__shade" />
         <div className="about-hero__content">
           <p className="about-hero__eyebrow">학원 소개</p>

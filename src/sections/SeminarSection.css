@@ -25,7 +25,7 @@
 }
 
 .seminar__title {
-  font-size: var(--font-xl);
+  font-size: var(--font-2xl);
   font-weight: var(--fw-bold);
   color: var(--color-brand);
   line-height: 1.2;
@@ -117,7 +117,7 @@
   }
 
   .seminar__title {
-    font-size: var(--font-md);
+    font-size: var(--font-lg);
   }
 
   .seminar__desc {
