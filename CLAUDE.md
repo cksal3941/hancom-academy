@@ -21,7 +21,7 @@ Copy `.env.example` to `.env` and fill in Firebase credentials. All vars are pre
 
 ## Architecture
 
-Single-page React 19 app built with Vite 8, written in plain JavaScript (no TypeScript). Korean-language academy (한컴아카데미) website. Uses react-router-dom v7, Swiper v12, Firebase v11, AOS, and react-icons.
+Single-page React 19 app built with Vite 8, written in plain JavaScript (no TypeScript). Korean-language academy (한컴아카데미) website. Uses react-router-dom v7, Swiper v12, Firebase v12, AOS, react-icons, @shadergradient/react (+ three / @react-three/fiber), and Leaflet.
 
 ### Routing
 
@@ -123,7 +123,11 @@ Auth pages (`/login`, `/signup`) use the simpler `<SubPageHero eyebrow="..." tit
 
 ### AcademyIntroSection
 
-Has a CSS marquee (`academy-intro__marquee-track`) running vertically in the background. The section background is a `.academy-intro__bg` CSS gradient — there is a comment in the JSX marking the swap point if a shader-gradient package is added later.
+Has a CSS marquee (`academy-intro__marquee-track`) running vertically in the background. The section background uses `<ShaderGradientCanvas>` / `<ShaderGradient>` from `@shadergradient/react` (backed by Three.js) for an animated gradient effect.
+
+### MapBox
+
+`src/components/location/MapBox.jsx` uses **Leaflet** (`import L from 'leaflet'`). It patches the default marker icon paths at module load to fix Vite's asset URL resolution — do not remove that setup block or markers will be broken.
 
 ### teacherData shape
 
