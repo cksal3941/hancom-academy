@@ -111,7 +111,6 @@ ul { list-style: none; }
 .glassmorphism {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--glass-radius);
   border: var(--glass-border);
   box-shadow: var(--glass-shadow);

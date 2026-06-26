@@ -90,7 +90,6 @@ body:has(.about-page) main {
   border-radius: 4px;
   background: rgba(255, 255, 255, .22);
   backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
 }
 
 .about-tabs__item {
