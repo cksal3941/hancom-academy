@@ -354,7 +354,7 @@ body:has(.about-page) main {
   border: 1px solid rgba(255, 255, 255, .58);
   border-radius: 999px;
   color: #fff;
-  font-size: 13px;
+  font-size: var(--font-xs);
   justify-content: center;
   transition: background .2s ease, color .2s ease;
 }
