@@ -131,7 +131,7 @@ body:has(.about-page) main {
   display: flex;
   align-items: center;
   gap: 9px;
-  width: min(100%, 1240px);
+  width: min(100%, 1400px);
   min-height: 66px;
   margin: 0 auto;
   padding: 0 24px;
