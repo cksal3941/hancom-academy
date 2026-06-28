@@ -61,7 +61,8 @@ body:has(.notice-page) main {
 
 .notice-board__tools select {
   min-width: 142px;
-  padding: 0 23px 0 18px;
+  padding: 0 18px;
+  padding-right: 5px;
   font-size: 15px;
 }
 
