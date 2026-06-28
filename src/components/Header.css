@@ -8,7 +8,9 @@
   display: flex;
   align-items: center;
   font-family: var(--font-sans);
-  transition: background 0.24s ease, box-shadow 0.24s ease;
+  border-bottom: 1px solid transparent;
+  backdrop-filter: blur(0);
+  transition: background 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease, backdrop-filter 0.24s ease;
   padding: 0;
   background: transparent;
   width: 100%;
@@ -21,10 +23,14 @@
 .header--scrolled {
   background: var(--header-bg);
   backdrop-filter: var(--header-blur);
-  border-bottom: 1px solid rgba(200, 210, 240, 0.25);
+  border-bottom: 1px solid rgba(200, 210, 240, 0.2);
   box-shadow:
     0 4px 12px rgba(10, 5, 40, 0.07),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.header--scrolled .header__nav-link {
+  font-weight: var(--fw-semibold);
 }
 
 .header--scrolled.header--slide-dark {
@@ -42,13 +48,13 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+  background: linear-gradient(90deg, transparent, var, transparent);
   pointer-events: none;
 }
 
 .header--open {
   background: var(--color-surface);
-  backdrop-filter: none;
+  backdrop-filter: blur(0);
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -196,7 +202,7 @@ button.header__button {
 
 .header--slide-dark .header__nav-link:hover,
 .header--slide-dark .header__nav-link.active {
-  color: #fff;
+  color: var(--surface);
 }
 
 .header--slide-dark .header__logo-img {
@@ -237,14 +243,14 @@ button.header__button {
 
 .header--scrolled.header--open {
   background: var(--color-surface);
-  backdrop-filter: none;
+  backdrop-filter: blur(0);
   border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  box-shadow: none;
 }
 
 .header--open .header__nav-link {
   color: var(--color-brand);
-  font-weight: var(--fw-medium);
+  font-weight: var(--fw-semibold);
 }
 
 .header--open .header__nav-link:hover,
@@ -291,12 +297,20 @@ button.header__button {
   width: 100%;
   min-height: 280px;
   background: var(--color-surface);
-  border-top: 1px solid var(--border-color);
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
   padding: 0;
   margin: 0;
   z-index: 999;
   overflow: hidden;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 0.24s ease, transform 0.24s ease;
+}
+
+.header__dropdown--visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .header__dropdown-content {

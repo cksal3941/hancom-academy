@@ -269,8 +269,7 @@ export default function Header() {
         </button>
       </div>
 
-      {isOpen && (
-        <div className="header__dropdown">
+      <div className={`header__dropdown${isOpen ? ' header__dropdown--visible' : ''}`}>
           <div className="header__dropdown-content" style={dropdownContentStyle}>
             <span
               className="header__dropdown-indicator"
@@ -315,7 +314,6 @@ export default function Header() {
             ))}
           </div>
         </div>
-      )}
       {isMobileMenuOpen && (
         <nav className="header__mobile-menu">
           <div className="header__mobile-nav">

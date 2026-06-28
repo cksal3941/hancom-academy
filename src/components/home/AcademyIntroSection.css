@@ -70,7 +70,7 @@
   padding: var(--section-py) var(--container-px) calc(var(--section-py) * 4);
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: 4rem;
+  gap: 3rem;
   align-items: start;
 }
 
@@ -111,7 +111,7 @@
   grid-template-columns: 390px 390px;
   gap: 50px;
   align-items: start;
-  margin-right: -100px;
+  margin-right: -0px;
 }
 
 /* wrapper div가 grid item이므로 > *:nth-child()로 선택 */

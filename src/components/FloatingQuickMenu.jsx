@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { BsTelephoneFill } from 'react-icons/bs'
 import { IoChatbubbleEllipses } from 'react-icons/io5'
 import { FaInstagram } from 'react-icons/fa'
+import { SiNaver } from 'react-icons/si'
 import quickMenuData from '../data/quickMenuData'
 import './FloatingQuickMenu.css'
 
@@ -10,7 +11,7 @@ const ICONS = {
   phone:     <BsTelephoneFill />,
   chatbot:   <IoChatbubbleEllipses />,
   instagram: <FaInstagram />,
-  blog:      <span className="fqm__blog-n">N</span>,
+  blog:      <SiNaver size={18} />,
 }
 
 export default function FloatingQuickMenu({ mobileOnly = false }) {
