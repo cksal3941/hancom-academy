@@ -340,7 +340,7 @@ body:has(.about-page) main {
 
 .about-cta__inner > p:not(.about-cta__eyebrow) {
   color: rgba(255, 255, 255, .78);
-  font-size: 14px;
+  font-size: var(--font-sm);
 }
 
 .about-cta__link {
