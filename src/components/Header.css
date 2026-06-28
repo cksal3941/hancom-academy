@@ -19,8 +19,8 @@
   background: transparent;
 }
 
-.header--static {
-  position: static;
+.header--absolute {
+  position: absolute;
 }
 
 .header--scrolled {
