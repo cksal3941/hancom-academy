@@ -197,6 +197,7 @@ export default function Header() {
       ref={headerRef}
       className={[
         'header',
+        isSubPage ? 'header--static' : '',
         isSubPage
           ? (isOpen || !isTop
               ? 'header--scrolled'

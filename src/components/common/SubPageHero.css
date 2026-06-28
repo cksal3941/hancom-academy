@@ -131,6 +131,17 @@
   font-weight: 700;
 }
 
+/* 서브페이지: 헤더가 static이므로 header-h 오프셋 불필요 */
+.header--static + main .subpage-hero {
+  padding-top: 62px;
+}
+
+@media (max-width: 768px) {
+  .header--static + main .subpage-hero {
+    padding-top: 48px;
+  }
+}
+
 @media (max-width: 768px) {
   .subpage-hero {
     min-height: 300px;

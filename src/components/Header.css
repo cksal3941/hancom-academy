@@ -19,6 +19,10 @@
   background: transparent;
 }
 
+.header--static {
+  position: static;
+}
+
 .header--scrolled {
   background: var(--header-bg);
   backdrop-filter: var(--header-blur);

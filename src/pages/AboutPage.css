@@ -467,3 +467,14 @@ body:has(.about-page) main {
     background-position: 62% center;
   }
 }
+
+/* 서브페이지: 헤더 static → header-h 오프셋 불필요 */
+.header--static + main .about-hero {
+  padding-top: 62px;
+}
+
+@media (max-width: 768px) {
+  .header--static + main .about-hero {
+    padding-top: 58px;
+  }
+}
