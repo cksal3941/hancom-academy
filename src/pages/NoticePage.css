@@ -15,8 +15,8 @@ body:has(.notice-page) main {
 }
 
 .notice-board {
-  background: #050505;
-  color: #f6f7fb;
+  background: #fff;
+  color: #1a1a2e;
   padding: 86px 24px 120px;
 }
 
@@ -86,7 +86,7 @@ body:has(.notice-page) main {
 
 .notice-board__search svg {
   flex-shrink: 0;
-  color: #050505;
+  color: #6f7481;
   font-size: 21px;
 }
 
@@ -106,14 +106,14 @@ body:has(.notice-page) main {
   min-height: 42px;
   padding: 0 18px;
   border-radius: 4px;
-  background: #fff;
-  color: #050505;
+  background: var(--primary);
+  color: #fff;
   font-size: 14px;
   font-weight: 700;
 }
 
 .notice-board__table {
-  border-top: 1px solid rgba(255, 255, 255, .46);
+  border-top: 1px solid #e6e8ee;
 }
 
 .notice-board__row {
@@ -121,7 +121,7 @@ body:has(.notice-page) main {
   grid-template-columns: 90px minmax(0, 1fr) 120px 80px 140px;
   align-items: center;
   min-height: 86px;
-  border-bottom: 1px solid rgba(255, 255, 255, .46);
+  border-bottom: 1px solid #e6e8ee;
   color: #585d66;
   font-size: 17px;
   font-weight: 700;
@@ -129,8 +129,8 @@ body:has(.notice-page) main {
 }
 
 .notice-board__row:hover {
-  background: rgba(255, 255, 255, .04);
-  color: #fff;
+  background: #f5f7fc;
+  color: var(--primary);
 }
 
 .notice-board__no,
@@ -158,7 +158,7 @@ body:has(.notice-page) main {
 
 .notice-board__empty {
   padding: 80px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, .46);
+  border-bottom: 1px solid #e6e8ee;
   color: #8c929d;
   text-align: center;
 }
