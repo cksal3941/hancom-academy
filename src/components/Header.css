@@ -9,8 +9,7 @@
   align-items: center;
   font-family: var(--font-sans);
   border-bottom: 1px solid transparent;
-  backdrop-filter: blur(0);
-  transition: background 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease, backdrop-filter 0.24s ease;
+  transition: background 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
   padding: 0;
   background: transparent;
   width: 100%;
@@ -54,7 +53,7 @@
 
 .header--open {
   background: var(--color-surface);
-  backdrop-filter: blur(0);
+  backdrop-filter: none;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -243,7 +242,7 @@ button.header__button {
 
 .header--scrolled.header--open {
   background: var(--color-surface);
-  backdrop-filter: blur(0);
+  backdrop-filter: none;
   border-bottom: 1px solid var(--border-color);
   box-shadow: none;
 }

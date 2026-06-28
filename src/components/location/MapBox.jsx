@@ -1,44 +1,61 @@
 import { useEffect, useRef } from 'react'
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
-import markerIcon from 'leaflet/dist/images/marker-icon.png'
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
-import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import './MapBox.css'
 
-// Vite 환경에서 Leaflet 기본 마커 아이콘 경로 오류 수정
-delete L.Icon.Default.prototype._getIconUrl
-L.Icon.Default.mergeOptions({
-  iconUrl: markerIcon,
-  iconRetinaUrl: markerIcon2x,
-  shadowUrl: markerShadow,
-})
+const CLIENT_ID = import.meta.env.VITE_NAVER_MAP_CLIENT_ID
+
+function loadNaverScript() {
+  return new Promise((resolve, reject) => {
+    if (window.naver?.maps) { resolve(); return }
+    const existing = document.getElementById('naver-maps-script')
+    if (existing) {
+      existing.addEventListener('load', resolve)
+      existing.addEventListener('error', reject)
+      return
+    }
+    const script = document.createElement('script')
+    script.id = 'naver-maps-script'
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${CLIENT_ID}`
+    script.async = true
+    script.onload = resolve
+    script.onerror = reject
+    document.head.appendChild(script)
+  })
+}
 
 export default function MapBox({ lat, lng, name }) {
   const containerRef = useRef(null)
-  const mapInstance = useRef(null)
-  const markerInstance = useRef(null)
+  const mapRef    = useRef(null)
+  const markerRef = useRef(null)
 
   useEffect(() => {
     if (!lat || !lng || !containerRef.current) return
 
-    if (!mapInstance.current) {
-      mapInstance.current = L.map(containerRef.current, { center: [lat, lng], zoom: 16, attributionControl: false })
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapInstance.current)
-      markerInstance.current = L.marker([lat, lng])
-        .addTo(mapInstance.current)
-        .bindPopup(name ?? '')
-    } else {
-      mapInstance.current.setView([lat, lng], 16)
-      markerInstance.current.setLatLng([lat, lng]).bindPopup(name ?? '')
-    }
+    loadNaverScript().then(() => {
+      const { naver } = window
+      const position = new naver.maps.LatLng(lat, lng)
+
+      if (!mapRef.current) {
+        mapRef.current = new naver.maps.Map(containerRef.current, {
+          center: position,
+          zoom: 16,
+        })
+        markerRef.current = new naver.maps.Marker({
+          position,
+          map: mapRef.current,
+          title: name ?? '',
+        })
+      } else {
+        mapRef.current.setCenter(position)
+        markerRef.current.setPosition(position)
+      }
+    })
   }, [lat, lng, name])
 
   useEffect(() => {
     return () => {
-      mapInstance.current?.remove()
-      mapInstance.current = null
-      markerInstance.current = null
+      mapRef.current?.destroy()
+      mapRef.current = null
+      markerRef.current = null
     }
   }, [])
 

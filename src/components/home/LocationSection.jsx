@@ -31,11 +31,11 @@ export default function LocationSection() {
 
         {/* 지점 정보 + 지도 */}
         <div className="location__content">
-          <div className="location__info" data-aos="fade-right" data-aos-delay="200">
+          <div className="location__info" data-aos="fade" data-aos-delay="200">
             <LocationInfoCard location={selected} />
           </div>
           {/* MapBox wrapper에만 AOS — 지도 내부 DOM에는 미적용 */}
-          <div className="location__map" data-aos="fade-left" data-aos-delay="250">
+          <div className="location__map" data-aos="fade" data-aos-delay="250">
             <MapBox lat={selected.lat} lng={selected.lng} name={selected.name} />
           </div>
         </div>

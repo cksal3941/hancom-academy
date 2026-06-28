@@ -75,6 +75,7 @@ export default function Header() {
 
   const academyRef  = useRef(null)
   const locationRef = useRef(null)
+  const footerRef   = useRef(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen]   = useState(false)
   const [mobileAccordion, setMobileAccordion]     = useState(null)
   const [indicatorLeft, setIndicatorLeft] = useState(0)
@@ -109,10 +110,12 @@ export default function Header() {
     updateDropdownPosition()
     setActiveMenu(index)
     updateIndicator(index)
+    window.dispatchEvent(new CustomEvent('header-dropdown', { detail: { open: true } }))
   }
 
   const handleHeaderLeave = () => {
     setActiveMenu(null)
+    window.dispatchEvent(new CustomEvent('header-dropdown', { detail: { open: false } }))
   }
 
   const handleLogout = async () => {
@@ -145,6 +148,7 @@ export default function Header() {
   useEffect(() => {
     academyRef.current  = document.querySelector('.academy-intro')
     locationRef.current = document.querySelector('.location')
+    footerRef.current   = document.querySelector('.footer')
   }, [location.pathname])
 
   // 스크롤 위치 기반 다크 섹션 감지
@@ -158,7 +162,11 @@ export default function Header() {
         const visible = Math.min(r.bottom, vh) - Math.max(r.top, 0)
         return visible >= vh * 0.95
       }
-      setSectionDark(inSec(academyRef.current) || inSec(locationRef.current))
+      const footerEl = footerRef.current
+      const footerVisible = footerEl
+        ? footerEl.getBoundingClientRect().top < window.innerHeight
+        : false
+      setSectionDark(inSec(academyRef.current) || inSec(locationRef.current) || footerVisible)
     }
     check()
     window.addEventListener('scroll', check, { passive: true })

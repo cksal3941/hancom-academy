@@ -17,7 +17,7 @@
   --color-bg-subtle: #f4f6fb;
   --color-bg-dark: #0d1b3e;
   --color-surface: #ffffff;
-  --color-footer: #111827;
+  --color-footer: var(--color-bg-dark);
   --color-text-muted: #888888;
   --color-text-sub: #555555;
   --color-surface-dim: rgba(255, 255, 255, 0.65);

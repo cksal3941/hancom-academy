@@ -22,6 +22,7 @@ export default function FloatingQuickMenu({ mobileOnly = false }) {
   const [slideTheme, setSlideTheme] = useState(
     () => window.__slideTheme || 'light',
   )
+  const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const footerRef   = useRef(null)
   const academyRef  = useRef(null)
@@ -76,13 +77,16 @@ export default function FloatingQuickMenu({ mobileOnly = false }) {
     window.addEventListener('scroll', check, { passive: true })
     window.addEventListener('resize', check, { passive: true })
 
-    const onTheme = (e) => setSlideTheme(e.detail.theme)
+    const onTheme    = (e) => setSlideTheme(e.detail.theme)
+    const onDropdown = (e) => setDropdownOpen(e.detail.open)
     window.addEventListener('header-theme', onTheme)
+    window.addEventListener('header-dropdown', onDropdown)
 
     return () => {
       window.removeEventListener('scroll', check)
       window.removeEventListener('resize', check)
       window.removeEventListener('header-theme', onTheme)
+      window.removeEventListener('header-dropdown', onDropdown)
     }
   }, [])
 
@@ -93,7 +97,7 @@ export default function FloatingQuickMenu({ mobileOnly = false }) {
       className={[
         'fqm',
         mobileOnly                         ? 'fqm--mobile-only' : '',
-        hidden                             ? 'fqm--hidden'     : '',
+        hidden || dropdownOpen             ? 'fqm--hidden'     : '',
         academy || location                ? 'fqm--academy'    : '',
         inVisual && !academy && !location  ? 'fqm--visual'     : '',
         slideDark && !academy && !location ? 'fqm--slide-dark' : '',
