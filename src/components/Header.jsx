@@ -199,9 +199,7 @@ export default function Header() {
         'header',
         isSubPage ? 'header--static' : '',
         isSubPage
-          ? (isOpen || !isTop
-              ? 'header--scrolled'
-              : 'header--top header--slide-dark')
+          ? 'header--scrolled'
           : (isAuthPage || isOpen || !isTop
               ? `header--scrolled${sectionDark ? ' header--slide-dark' : ''}`
               : `header--top header--slide-${slideTheme}`),
