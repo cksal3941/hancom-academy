@@ -63,9 +63,7 @@ export default function NoticePage() {
 
       <section className="notice-board">
         <div className="notice-board__inner">
-          {true ? (
-            <>
-              <div className="notice-board__top">
+          <div className="notice-board__top">
                 <p className="notice-board__total">
                   총 <strong>{filteredNotices.length}</strong>건
                 </p>
@@ -141,8 +139,6 @@ export default function NoticePage() {
                   1
                 </button>
               </div>
-            </>
-          )}
         </div>
       </section>
     </div>
