@@ -318,7 +318,7 @@ body:has(.about-page) main {
 }
 
 .about-cta__inner {
-  width: min(100%, 1240px);
+  width: min(100%, 1560px);
   margin: 0 auto;
   color: #fff;
 }
