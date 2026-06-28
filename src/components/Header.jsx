@@ -197,12 +197,14 @@ export default function Header() {
       ref={headerRef}
       className={[
         'header',
-        isSubPage ? 'header--absolute' : '',
+        isSubPage || isAuthPage ? 'header--absolute' : '',
         isSubPage
           ? 'header--top header--slide-dark'
-          : (isAuthPage || isOpen || !isTop
-              ? `header--scrolled${sectionDark ? ' header--slide-dark' : ''}`
-              : `header--top header--slide-${slideTheme}`),
+          : (isAuthPage
+              ? 'header--scrolled'
+              : (isOpen || !isTop
+                  ? `header--scrolled${sectionDark ? ' header--slide-dark' : ''}`
+                  : `header--top header--slide-${slideTheme}`)),
         isOpen ? 'header--open' : '',
         isMobileMenuOpen ? 'header--mobile-open' : '',
       ].filter(Boolean).join(' ')}
