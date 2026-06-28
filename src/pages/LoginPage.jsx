@@ -6,7 +6,6 @@ import { loginWithEmail, loginWithGoogle, loginWithApple, sendPasswordReset } fr
 import { useAuth } from '../hooks/useAuth'
 import { isAppleAuthEnabled } from '../firebase/firebase'
 import { getFirebaseErrorMessage } from '../utils/firebaseErrorMessage'
-import SubPageHero from '../components/common/SubPageHero'
 import './LoginPage.css'
 
 export default function LoginPage() {
@@ -67,7 +66,6 @@ export default function LoginPage() {
   if (loading) {
     return (
       <div className="login-page">
-        <SubPageHero eyebrow="회원 서비스" title="로그인" />
         <div className="login-page__body">
           <span className="login-page__spinner" aria-label="불러오는 중" />
         </div>
@@ -77,7 +75,6 @@ export default function LoginPage() {
 
   return (
     <div className="login-page">
-      <SubPageHero eyebrow="회원 서비스" title="로그인" />
       <div className="login-page__body">
         <div className="login-page__wrap">
 
