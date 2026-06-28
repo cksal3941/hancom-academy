@@ -53,6 +53,7 @@
 /* 카드 너비: 슬라이드당 고정 700px */
 .seminar__slide {
   width: 700px;
+  padding: 8px 0 56px;
 }
 
 /* ── 카드 ── */
