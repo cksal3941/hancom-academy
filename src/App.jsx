@@ -23,8 +23,9 @@ export default function App() {
   }, [])
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     AOS.refresh()
-  }, [location])
+  }, [location.pathname])
 
   return (
     <>
