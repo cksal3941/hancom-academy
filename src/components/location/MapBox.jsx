@@ -105,6 +105,7 @@ export default function MapBox({ lat, lng, name }) {
     }).catch(error => {
       if (cancelled) return
 
+      console.error('[MapBox] 카카오 지도 오류:', error.message, '| APP_KEY:', APP_KEY ? APP_KEY.slice(0, 6) + '…' : '없음')
       setStatus('error')
       setErrorMessage(error.message)
     })
