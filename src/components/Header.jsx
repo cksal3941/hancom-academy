@@ -197,11 +197,11 @@ export default function Header() {
       ref={headerRef}
       className={[
         'header',
-        isSubPage || isAuthPage ? 'header--absolute' : '',
+        isSubPage ? 'header--absolute' : isAuthPage ? 'header--auth' : '',
         isSubPage
           ? 'header--top header--slide-dark'
           : (isAuthPage
-              ? 'header--scrolled'
+              ? ''
               : (isOpen || !isTop
                   ? `header--scrolled${sectionDark ? ' header--slide-dark' : ''}`
                   : `header--top header--slide-${slideTheme}`)),

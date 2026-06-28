@@ -23,6 +23,13 @@
   position: absolute;
 }
 
+/* 로그인/회원가입: 영역 차지, 스크롤 시 사라짐, 흰 배경 */
+.header--auth {
+  position: relative;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--border-color);
+}
+
 .header--scrolled {
   background: var(--header-bg);
   backdrop-filter: var(--header-blur);
