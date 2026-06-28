@@ -17,7 +17,7 @@ body:has(.notice-page) main {
 .notice-board {
   background: #fff;
   color: #1a1a2e;
-  padding: 86px 24px 120px;
+  padding: 110px 24px 120px;
 }
 
 .notice-board__inner {
