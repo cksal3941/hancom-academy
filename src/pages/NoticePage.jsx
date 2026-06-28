@@ -63,20 +63,7 @@ export default function NoticePage() {
 
       <section className="notice-board">
         <div className="notice-board__inner">
-          {loading ? (
-            <div className="notice-board__auth">
-              <span className="notice-board__spinner" aria-label="불러오는 중" />
-            </div>
-          ) : !user ? (
-            <div className="notice-board__auth">
-              <FiLock aria-hidden="true" />
-              <h2>로그인이 필요한 게시판입니다.</h2>
-              <p>공지사항 게시글은 로그인한 회원만 확인할 수 있습니다.</p>
-              <Link to="/login" state={{ from: location.pathname }} className="notice-board__login">
-                로그인하기
-              </Link>
-            </div>
-          ) : (
+          {true ? (
             <>
               <div className="notice-board__top">
                 <p className="notice-board__total">
