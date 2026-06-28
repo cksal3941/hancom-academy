@@ -1,0 +1,28 @@
+.awards-page {
+  background: var(--color-bg);
+  min-height: 100vh;
+}
+
+/* Disable global scroll-snap on this page so timeline scrolls freely */
+.awards-page ~ html,
+html:has(.awards-page) {
+  scroll-snap-type: none;
+}
+
+.awards-page__timeline-section {
+  width: min(100%, 1400px);
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 100px;
+}
+
+.awards-page__timeline-section > .container {
+  max-width: none;
+  padding: 0 24px;
+}
+
+@media (max-width: 768px) {
+  .awards-page__timeline-section {
+    padding: 0 0 60px;
+  }
+}

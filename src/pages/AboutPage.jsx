@@ -8,10 +8,10 @@ import {
 } from 'react-icons/fi'
 import aboutHeroImage from '../assets/about-hero-3d.png'
 import aboutCtaImage from '../assets/about-cta-3d.png'
+import teacher1Image from '../assets/teacher1.jpg'
 import './AboutPage.css'
 
-const PORTRAIT_IMAGE =
-  'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1000&q=90'
+const PORTRAIT_IMAGE = teacher1Image
 
 const tabs = [
   { label: '학원 소개', to: '/about/intro', active: true },

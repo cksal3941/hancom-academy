@@ -42,7 +42,7 @@ export default function TeachersPage() {
         <div className="teachers-breadcrumb__inner">
           <FiHome aria-hidden="true" />
           <span>학원 소개</span>
-          <span>›</span>
+          <span className="teachers-breadcrumb__chevron">›</span>
           <strong>강사진 소개</strong>
         </div>
       </div>

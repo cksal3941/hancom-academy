@@ -40,6 +40,7 @@ const navItems = [
   {
     label: '교육설명회',
     to: '/orientation',
+    noLink: true,
     submenu: [
       {
         label: '영재고·과학고 내신 대비',
@@ -226,14 +227,18 @@ export default function Header() {
                 }`}
                 onMouseEnter={() => handleNavEnter(index)}
               >
-                <NavLink
-                  to={item.to}
-                  className={({ isActive }) =>
-                    `header__nav-link${isActive ? ' active' : ''}`
-                  }
-                >
-                  {item.label}
-                </NavLink>
+                {item.noLink ? (
+                  <span className="header__nav-link">{item.label}</span>
+                ) : (
+                  <NavLink
+                    to={item.to}
+                    className={({ isActive }) =>
+                      `header__nav-link${isActive ? ' active' : ''}`
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                )}
               </li>
             ))}
           </ul>

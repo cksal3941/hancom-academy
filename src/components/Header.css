@@ -23,9 +23,7 @@
   background: var(--header-bg);
   backdrop-filter: var(--header-blur);
   border-bottom: 1px solid rgba(200, 210, 240, 0.2);
-  box-shadow:
-    0 4px 12px rgba(10, 5, 40, 0.07),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 12px rgba(10, 5, 40, 0.07);
 }
 
 .header--scrolled .header__nav-link {
@@ -34,26 +32,13 @@
 
 .header--scrolled.header--slide-dark {
   background: rgba(10, 5, 40, 0.35);
+  backdrop-filter: var(--header-blur);
   border-bottom-color: rgba(255, 255, 255, 0.08);
-  box-shadow:
-    0 4px 12px rgba(10, 5, 40, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-.header--scrolled::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var, transparent);
-  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(10, 5, 40, 0.18);
 }
 
 .header--open {
   background: var(--color-surface);
-  backdrop-filter: none;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -199,9 +184,12 @@ button.header__button {
   color: rgba(255, 255, 255, 0.9);
 }
 
-.header--slide-dark .header__nav-link:hover,
+.header--slide-dark .header__nav-link:hover {
+  color: var(--color-surface);
+}
+
 .header--slide-dark .header__nav-link.active {
-  color: var(--surface);
+  color: var(--color-sky);
 }
 
 .header--slide-dark .header__logo-img {
@@ -242,7 +230,6 @@ button.header__button {
 
 .header--scrolled.header--open {
   background: var(--color-surface);
-  backdrop-filter: none;
   border-bottom: 1px solid var(--border-color);
   box-shadow: none;
 }

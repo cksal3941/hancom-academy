@@ -1,0 +1,308 @@
+/* ─── Timeline container ─────────────────────────────────────────────── */
+.awards-timeline {
+  --line-x: 220px;
+  position: relative;
+  padding: 110px 0 100px;
+}
+
+/* ─── Vertical track & progress line ────────────────────────────────── */
+.awards-timeline__track {
+  position: absolute;
+  left: var(--line-x);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border-color);
+  border-radius: 1px;
+}
+
+.awards-timeline__progress-line {
+  position: absolute;
+  left: var(--line-x);
+  top: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--color-accent), var(--color-sky));
+  border-radius: 1px;
+  transform-origin: top;
+  will-change: height;
+  transition: height 0.08s linear;
+}
+
+/* ─── Year block (grid row) ──────────────────────────────────────────── */
+.timeline-year-block {
+  display: grid;
+  grid-template-columns: var(--line-x) 1fr;
+  position: relative;
+  padding-bottom: 72px;
+}
+
+.timeline-year-block:last-child {
+  padding-bottom: 0;
+}
+
+/* ─── Left column: year number ───────────────────────────────────────── */
+.timeline-year-block__year {
+  text-align: right;
+  padding-right: 44px;
+  font-size: clamp(36px, 4.5vw, 60px);
+  font-weight: 800;
+  color: var(--border-color);
+  line-height: 1;
+  padding-top: 8px;
+  transition: color 0.3s ease;
+  letter-spacing: -0.03em;
+  user-select: none;
+}
+
+.timeline-year-block--active .timeline-year-block__year {
+  color: var(--color-brand);
+}
+
+/* Mobile year (hidden on desktop) */
+.timeline-year-block__year-mobile {
+  display: none;
+}
+
+/* ─── Marker dot ─────────────────────────────────────────────────────── */
+.timeline-marker {
+  position: absolute;
+  left: calc(var(--line-x) - 8px);
+  top: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--border-color);
+  border: 2px solid #ccc;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  z-index: 1;
+}
+
+.timeline-year-block--active .timeline-marker {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* Pulse ring on active marker */
+.timeline-marker__pulse {
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 2px solid var(--color-accent);
+  animation: awards-pulse 2s ease-out infinite;
+}
+
+@keyframes awards-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* ─── Right column: content ──────────────────────────────────────────── */
+.timeline-year-block__content {
+  padding-left: 44px;
+  padding-top: 4px;
+}
+
+/* ─── Competition block ──────────────────────────────────────────────── */
+.competition {
+  margin-bottom: 36px;
+  background: var(--color-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+  box-shadow: var(--shadow-sm);
+}
+
+.competition:last-of-type {
+  margin-bottom: 0;
+}
+
+.competition__title {
+  font-size: var(--font-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-brand);
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-color);
+  line-height: 1.3;
+}
+
+/* ─── Category block ─────────────────────────────────────────────────── */
+.category {
+  margin-bottom: 20px;
+}
+
+.category:last-child {
+  margin-bottom: 0;
+}
+
+.category__title {
+  display: inline-block;
+  font-size: var(--font-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-accent);
+  margin-bottom: 12px;
+  padding: 4px 14px;
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.category__awards {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ─── Award row ──────────────────────────────────────────────────────── */
+.award-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.award-row:last-child {
+  border-bottom: none;
+}
+
+.award-row__rank {
+  flex-shrink: 0;
+  width: 58px;
+  font-size: var(--font-xs);
+  font-weight: var(--fw-bold);
+  color: var(--color-brand);
+  line-height: 1.8;
+}
+
+.award-row__winners {
+  flex: 1;
+  font-size: var(--font-xs);
+  color: var(--color-text-sub);
+  line-height: 1.8;
+}
+
+.award-row__winner {
+  display: inline;
+}
+
+.award-row__winner--empty {
+  color: var(--color-text-muted);
+}
+
+.award-row__school {
+  color: var(--color-text-muted);
+  font-size: 14px;
+  margin-left: 1px;
+}
+
+.award-row__sep {
+  margin-right: 2px;
+}
+
+/* ─── Notes ──────────────────────────────────────────────────────────── */
+.competition__note {
+  font-size: var(--font-label);
+  color: var(--color-text-muted);
+  margin-top: 12px;
+  padding: 8px 14px;
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--border-color);
+  line-height: 1.6;
+}
+
+.year-block__note {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  margin-top: 8px;
+  padding: 14px 20px;
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .timeline-marker__pulse {
+    animation: none;
+  }
+}
+
+/* ─── Mobile ─────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .awards-timeline {
+    --line-x: 160px;
+  }
+
+  .competition {
+    padding: 20px 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .awards-timeline {
+    --line-x: 48px;
+    padding: 40px 0 80px;
+  }
+
+  /* Hide desktop year */
+  .timeline-year-block__year {
+    display: none;
+  }
+
+  /* Show mobile year */
+  .timeline-year-block__year-mobile {
+    display: block;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--color-brand);
+    line-height: 1;
+    margin-bottom: 16px;
+    letter-spacing: -0.03em;
+    user-select: none;
+  }
+
+  .timeline-year-block__content {
+    padding-left: 24px;
+    padding-top: 2px;
+  }
+
+  .timeline-marker {
+    left: calc(var(--line-x) - 7px);
+    top: 6px;
+    width: 14px;
+    height: 14px;
+  }
+
+  .competition {
+    padding: 16px 18px;
+  }
+
+  .competition__title {
+    font-size: var(--font-sm);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+  }
+
+  .award-row__rank {
+    width: 50px;
+    font-size: 14px;
+  }
+
+  .award-row__winners {
+    font-size: 14px;
+  }
+
+  .timeline-year-block {
+    padding-bottom: 52px;
+  }
+}
