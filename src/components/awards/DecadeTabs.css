@@ -48,7 +48,7 @@
 
 @media (max-width: 768px) {
   .decade-tabs {
-    padding: 0 12px;
+    padding: 10px 14px;
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
@@ -61,12 +61,39 @@
   .decade-tabs__list {
     min-width: max-content;
     justify-content: flex-start;
-    gap: 10px;
+    gap: 8px;
     padding: 0;
   }
 
   .decade-tabs__btn {
-    padding: 14px 30px;
-    font-size: var(--font-xs);
+    min-width: 74px;
+    min-height: 42px;
+    padding: 0 18px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    font-size: 14px;
+  }
+
+  .decade-tabs__btn--active {
+    border-color: var(--color-accent);
+    background: var(--color-bg);
+  }
+
+  .decade-tabs__btn--active::after {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .decade-tabs {
+    padding: 8px 12px;
+  }
+
+  .decade-tabs__btn {
+    min-width: 68px;
+    min-height: 38px;
+    padding: 0 15px;
+    font-size: 13px;
   }
 }

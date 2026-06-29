@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
+import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
   apiKey:            import.meta.env.VITE_FIREBASE_API_KEY,
@@ -14,14 +15,16 @@ const firebaseConfig = {
 export const isFirebaseConfigured = Object.values(firebaseConfig).every(Boolean)
 export const isAppleAuthEnabled = import.meta.env.VITE_FIREBASE_ENABLE_APPLE === 'true'
 
-let auth = null
-let db   = null
+let auth    = null
+let db      = null
+let storage = null
 
 if (isFirebaseConfigured) {
   const app = initializeApp(firebaseConfig)
   auth = getAuth(app)
   auth.languageCode = typeof navigator === 'undefined' ? 'ko' : navigator.language
-  db   = getFirestore(app)
+  db      = getFirestore(app)
+  storage = getStorage(app)
 }
 
-export { auth, db }
+export { auth, db, storage }

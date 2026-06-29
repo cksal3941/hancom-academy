@@ -1,10 +1,9 @@
-import { useMemo, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { FiEdit3, FiHome, FiLock, FiSearch } from 'react-icons/fi'
+import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { FiEdit3, FiHome, FiSearch } from 'react-icons/fi'
 import SubPageHero from '../components/common/SubPageHero'
-import { useAuth } from '../hooks/useAuth'
 import noticeData from '../data/noticeData'
-import { isAdminUser } from '../utils/admin'
+import { fetchNotices } from '../services/noticeService'
 import './NoticePage.css'
 
 const heroTabs = [
@@ -21,17 +20,19 @@ const searchOptions = [
 ]
 
 export default function NoticePage() {
-  const { user, loading } = useAuth()
-  const location = useLocation()
+  const [notices, setNotices] = useState(noticeData)
   const [category, setCategory] = useState('전체')
   const [searchField, setSearchField] = useState('title')
   const [keyword, setKeyword] = useState('')
-  const isAdmin = isAdminUser(user)
+
+  useEffect(() => {
+    fetchNotices().then(setNotices).catch(() => {})
+  }, [])
 
   const filteredNotices = useMemo(() => {
     const normalizedKeyword = keyword.trim().toLowerCase()
 
-    return noticeData.filter((notice) => {
+    return notices.filter((notice) => {
       const categoryMatched = category === '전체' || notice.category === category
       if (!categoryMatched) return false
       if (!normalizedKeyword) return true
@@ -46,7 +47,7 @@ export default function NoticePage() {
 
       return String(notice[searchField] ?? '').toLowerCase().includes(normalizedKeyword)
     })
-  }, [category, keyword, searchField])
+  }, [notices, category, keyword, searchField])
 
   return (
     <div className="notice-page">
@@ -96,17 +97,12 @@ export default function NoticePage() {
                     />
                     <FiSearch aria-hidden="true" />
                   </label>
-                </div>
-              </div>
-
-              {isAdmin && (
-                <div className="notice-board__admin">
-                  <button type="button" className="notice-board__write">
+                  <Link to="/notice/write" className="notice-board__write">
                     <FiEdit3 aria-hidden="true" />
                     글쓰기
-                  </button>
+                  </Link>
                 </div>
-              )}
+              </div>
 
               <div className="notice-board__table" role="table" aria-label="공지사항 목록">
                 {filteredNotices.map((notice) => (

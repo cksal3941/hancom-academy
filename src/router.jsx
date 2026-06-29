@@ -11,6 +11,7 @@ import LocationPage from './pages/LocationPage'
 import NoticePage from './pages/NoticePage'
 import NoticeDetailPage from './pages/NoticeDetailPage'
 import OpeningNoticePage from './pages/OpeningNoticePage'
+import NoticeWritePage from './pages/NoticeWritePage'
 
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 
@@ -42,6 +43,7 @@ const router = createBrowserRouter([
       { path: 'notice', element: <NoticePage /> },
       { path: 'notice/announcement', element: <NoticePage /> },
       { path: 'notice/start', element: <OpeningNoticePage /> },
+      { path: 'notice/write', element: <NoticeWritePage /> },
       { path: 'notice/news', element: <ComingSoonPage /> },
       { path: 'notice/:noticeId', element: <NoticeDetailPage /> },
       { path: 'news', element: <ComingSoonPage /> },

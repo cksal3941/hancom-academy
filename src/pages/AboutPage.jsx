@@ -140,7 +140,7 @@ export default function AboutPage() {
         style={{ '--about-cta-image': `url("${aboutCtaImage}")` }}
       >
         <div className="about-cta__inner" data-aos="fade-up">
-          <p className="about-cta__eyebrow">HANCOM ACADEMY</p>
+          <p className="about-cta__eyebrow">한글과 컴퓨터 학원</p>
           <h2>한글과컴퓨터 학원이 만들어가는<br />교육의 미래</h2>
           <p>학원의 교육 철학과 특별한 교육과정을 확인해 보세요.</p>
           <Link to="/courses" className="about-cta__link">

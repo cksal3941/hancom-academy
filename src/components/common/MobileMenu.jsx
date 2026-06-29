@@ -38,7 +38,7 @@ export default function MobileMenu({ isOpen, onClose }) {
       {/* 상단 헤더 */}
       <div className="mobile-menu__header">
         <Link to="/" className="mobile-menu__logo" onClick={onClose}>
-          <img src={logoImg} alt="HANCOM Academy" />
+          <img src={logoImg} alt="한글과 컴퓨터 학원" />
         </Link>
         <button
           type="button"

@@ -19,6 +19,8 @@ Copy `.env.example` to `.env` and fill in Firebase credentials. All vars are pre
 
 `VITE_FIREBASE_ENABLE_APPLE=true` must be set explicitly to expose Apple sign-in; it defaults to `false`.
 
+`VITE_ADMIN_EMAILS` — comma-separated list of admin email addresses (e.g. `admin@example.com,dev@example.com`). Used by `isAdminUser()` in `src/utils/admin.js` to show admin-only UI (write/edit buttons in notice pages).
+
 ## Architecture
 
 Single-page React 19 app built with Vite 8, written in plain JavaScript (no TypeScript). Korean-language academy (한컴아카데미) website. Uses react-router-dom v7, Swiper v12, Firebase v12, AOS, react-icons, @shadergradient/react (+ three / @react-three/fiber), and Leaflet.
@@ -28,18 +30,22 @@ Single-page React 19 app built with Vite 8, written in plain JavaScript (no Type
 `src/router.jsx` uses `createBrowserRouter`. The layout shell (`App.jsx`) wraps all routes via `<Outlet>`. `LoginPage` is lazy-loaded with `Suspense`.
 
 ```
-/                    → HomePage
-/login               → LoginPage (lazy)
-/signup              → SignUpPage
-/about               → AboutPage
-/about/intro         → AboutPage
-/about/teachers      → TeachersPage
-/about/awards        → ComingSoonPage
-/about/location      → ComingSoonPage
-/opening-news/**     → ComingSoonPage
-/notice/**           → ComingSoonPage
-/news/**             → ComingSoonPage
-*                    → ComingSoonPage
+/                        → HomePage
+/login                   → LoginPage (lazy)
+/signup                  → SignUpPage
+/about                   → AboutPage
+/about/intro             → AboutPage
+/about/teachers          → TeachersPage
+/about/awards            → AwardsPage
+/about/location          → LocationPage
+/notice                  → NoticePage
+/notice/announcement     → NoticePage
+/notice/start            → OpeningNoticePage
+/notice/:noticeId        → NoticeDetailPage
+/notice/news             → ComingSoonPage
+/opening-news/**         → ComingSoonPage
+/news/**                 → ComingSoonPage
+*                        → ComingSoonPage
 ```
 
 `App.jsx` derives `isAuthPage` (`/login`, `/signup`) to hide `FloatingQuickMenu` and `TopButton` on those routes. On sub-pages (non-`/`) `FloatingQuickMenu` receives `mobileOnly={true}`.
@@ -57,7 +63,13 @@ pages/
   LoginPage.jsx      — email + Google + Apple sign-in (lazy loaded); single component
                        manages both 'login' and 'forgot' views via a `view` state string
   SignUpPage.jsx     — email registration
-  ComingSoonPage     — placeholder for unimplemented routes
+  AwardsPage.jsx     — scroll-driven awards timeline; DecadeTabs + AwardsTimeline
+  LocationPage.jsx   — branch selector (LocationTabs) + Leaflet map (MapBox)
+  NoticePage.jsx     — filterable notice board; category + search; admin write button
+  OpeningNoticePage.jsx — opening news board (reuses NoticePage.css)
+  NoticeDetailPage.jsx  — notice detail; requires login (lock screen if unauthenticated);
+                          admin edit button; redirects to /notice if noticeId not found
+  ComingSoonPage.jsx — placeholder for unimplemented routes
 sections/            — full-viewport (100vh) blocks for HomePage only
                        (MainVisual, SeminarSection, LocationSection)
 components/
@@ -68,8 +80,11 @@ components/
   common/
     MobileMenu.jsx   — full-screen overlay, accordion nav driven by mobileMenuData,
                        closes on ESC / link click, locks body scroll while open
-    SubPageHero.jsx  — simple hero banner (eyebrow + h1 over about-hero-3d.png);
-                       used by LoginPage and SignUpPage only — About/Teachers have their own hero
+    SubPageHero.jsx  — unified sub-page hero: eyebrow + h1 + optional tabs nav;
+                       accepts tabs={[{ label, to, active? }]}; used by all sub-pages
+  awards/
+    AwardsTimeline.jsx — scroll-animated vertical timeline grouped by year
+    DecadeTabs.jsx     — sticky decade filter tabs (e.g. "2020s", "2010s")
   home/              — home-page section components
                        (NewsNoticeSection, EducationFieldSection, AcademyIntroSection, LocationSection)
   cards/             — NewsNoticeColumn, NewsNoticeItem, EducationFieldCard, AcademyIntroCard
@@ -83,25 +98,29 @@ services/
   authService.js     — loginWithGoogle, loginWithApple, loginWithEmail, signUpWithEmail,
                        sendPasswordReset, logout; each calls ensureFirebaseConfigured() before use
 hooks/
-  useAuth.js         — useAuth() → { user, loading }; subscribes to onAuthStateChanged
+  useAuth.js              — useAuth() → { user, loading }; subscribes to onAuthStateChanged
+  useTimelineProgress.js  — scroll progress (0–1) within a container ref (rAF + passive scroll)
+  useActiveTimelineYear.js — IntersectionObserver-based active year for AwardsTimeline
 data/                — static JS arrays: newsData, noticeData, openingNewsData,
                        educationFieldsData, academyIntroData, locationData,
-                       quickMenuData, seminarData, footerData, mobileMenuData, teacherData
+                       quickMenuData, seminarData, footerData, mobileMenuData,
+                       teacherData, awardsData
 utils/
   firebaseErrorMessage.js  — maps Firebase auth error codes to Korean user-facing strings
+  admin.js                 — isAdminUser(user): checks user.email against VITE_ADMIN_EMAILS
 ```
 
 ### Implementation status
 
-Fully implemented: `MainVisual`, `NewsNoticeSection`, `EducationFieldSection`, `AcademyIntroSection`, `LocationSection`, `FloatingQuickMenu`, `TopButton`, `Footer`, `AboutPage`, `TeachersPage`, `LoginPage`, `SignUpPage`, `MobileMenu`.
+Fully implemented: all HomePage sections, `AboutPage`, `TeachersPage`, `AwardsPage`, `LocationPage`, `NoticePage`, `OpeningNoticePage`, `NoticeDetailPage`, `LoginPage`, `SignUpPage`, `MobileMenu`, `FloatingQuickMenu`, `TopButton`, `Footer`.
 
-Skeleton (`.ph` divs + `skeleton-tag` label): `SeminarSection`. When implementing a section, replace skeleton markup with real content.
+Still `ComingSoonPage`: `/notice/news`, `/opening-news/**`, `/news/**`, and all `/courses/**` + `/orientation/**` routes.
 
 ### Sub-page layout pattern
 
-`AboutPage` and `TeachersPage` share a pattern: a hero section with a background image, followed by a `<nav>` of tab links and a breadcrumb bar. New sub-pages under `/about/**` should follow this same hero→tabs→breadcrumb→content structure.
+All sub-pages use `<SubPageHero eyebrow="..." title="..." tabs={[...]} />` followed by a `.subpage-breadcrumb` bar. The `tabs` prop is optional — auth pages (`/login`, `/signup`) omit it. New sub-pages should follow this hero → breadcrumb → content structure.
 
-Auth pages (`/login`, `/signup`) use the simpler `<SubPageHero eyebrow="..." title="..." />` component instead — no tabs or breadcrumb.
+`AboutPage` renders its own hero section directly (not via `SubPageHero`) to support the full-bleed image layout with inline tabs. `TeachersPage` follows the same pattern. For new pages under `/about/**`, use `SubPageHero` with the standard 4-tab set (`학원 소개 / 강사진 소개 / 수상 실적 / 오시는 길`).
 
 ### MainVisual (Swiper)
 
@@ -113,7 +132,7 @@ Auth pages (`/login`, `/signup`) use the simpler `<SubPageHero eyebrow="..." tit
 
 ### Header / MobileMenu
 
-`Header.jsx` implements a megamenu dropdown for desktop: hover on a nav item reveals all submenu columns simultaneously with a sliding indicator (`header__dropdown-indicator`) that translates to the active column. Position is recalculated on resize via `getBoundingClientRect`. The `navItems` array in `Header.jsx` is the single source of truth for desktop nav structure.
+`Header.jsx` implements a megamenu dropdown for desktop: hover on a nav item reveals all submenu columns simultaneously with a sliding indicator (`header__dropdown-indicator`) that translates to the active column. Position is recalculated on resize via `getBoundingClientRect`. The `navItems` array in `Header.jsx` is the single source of truth for desktop nav structure. Submenu entries support `{ label, to }` for internal links or `{ label, href, external: true }` for external links (renders an `<a>` instead of `<Link>`).
 
 `MobileMenu.jsx` is a separate full-screen overlay driven by `mobileMenuData` (separate source of truth from `navItems`). The hamburger button in `Header.jsx` controls the `isOpen` state passed down to `MobileMenu`.
 
@@ -129,9 +148,15 @@ Has a CSS marquee (`academy-intro__marquee-track`) running vertically in the bac
 
 `src/components/location/MapBox.jsx` uses **Leaflet** (`import L from 'leaflet'`). It patches the default marker icon paths at module load to fix Vite's asset URL resolution — do not remove that setup block or markers will be broken.
 
-### teacherData shape
+### Data shapes
 
-`src/data/teacherData.js` exports `teacherData` — an array of `{ id, name, role, field, career[], email, campuses[], image, message }`. The `image` field currently holds Unsplash placeholder URLs; replace with real hosted images when available.
+`src/data/teacherData.js` — `{ id, name, role, field, career[], email, campuses[], image, message }`. `image` now uses local assets (`src/assets/teacher1-5.jpg`).
+
+`src/data/seminarData.js` — `{ id, image, title, description, youtubeUrl }`. Images from `src/assets/slide1-3.jpg`. `SeminarSection` renders a looping Swiper carousel linking to YouTube.
+
+`src/data/noticeData.js` / `openingNewsData.js` — `{ id, category, title, author, views, date, summary, content[], path }`. `path` is `/notice/:id`. `content[]` is paragraph strings rendered in `NoticeDetailPage`.
+
+`src/data/awardsData.js` — exports `awardsData` (array of `{ year, decade, competitions[] }`) and `decades` (string array e.g. `['2020s', '2010s']`). Each competition has `{ title, notes[], categories[] }` → categories have `{ title, awards[] }` → awards have `{ rank, winners[] }` → winners are `{ name, school }`.
 
 ### Static assets
 
@@ -144,18 +169,44 @@ Has a CSS marquee (`academy-intro__marquee-track`) running vertically in the bac
 
 Classes follow **BEM** naming: `block__element--modifier`. Each component/section owns a co-located `.css` file; no CSS Modules or Tailwind.
 
-`src/index.css` defines global resets, the `.container` max-width utility, and these design tokens:
+`src/index.css` defines global resets, utilities, and design tokens:
 
+**Colors**
 | Token | Value |
 |---|---|
-| `--primary` | `#1e4fcc` |
-| `--primary-dark` | `#0a1f7a` |
-| `--dark-bg` | `#0d1b3e` |
-| `--text` | `#1a1a2e` |
-| `--max-w` | `1560px` |
-| `--header-h` | `100px` |
+| `--color-brand` | `#010859` |
+| `--color-brand-mid` | `#4E538B` |
+| `--color-brand-light` | `#B3B5CE` |
+| `--color-point` | `#5689F1` |
+| `--color-accent` | `#1e4fcc` |
+| `--color-accent-dark` | `#0a1f7a` |
+| `--color-bg` | `#F6F9FF` |
+| `--color-bg-dark` | `#0d1b3e` |
+| `--color-surface` | `#ffffff` |
+| `--color-footer` | `#111827` |
 
-Skeleton utilities also live in `index.css`: `.ph` (dark placeholder), `.ph--light` (light-on-dark variant), `.skeleton-tag` (uppercase label badge).
+**Layout**
+| Token | Value |
+|---|---|
+| `--max-w` | `1560px` |
+| `--header-h` | `100px` (64px on mobile) |
+| `--section-py` | `80px` (48px on mobile) |
+| `--container-px` | `24px` |
+
+**Shape / Motion**
+| Token | Value |
+|---|---|
+| `--radius-sm` | `4px` |
+| `--radius-md` | `12px` |
+| `--radius-pill` | `999px` |
+| `--transition` | `0.2s ease` |
+
+**Global utility classes in `index.css`**
+- `.container` — centered, max-width, padded wrapper
+- `.glassmorphism` — applies all `--glass-*` vars (bg, blur, border, radius, shadow)
+- `.snap-section` — `scroll-snap-align: start` (parent `html` has `scroll-snap-type: y proximity`)
+- `.ph` / `.ph--light` — skeleton placeholder rectangles (dark/light variants)
+- `.skeleton-tag` — uppercase label badge for skeleton UIs
 
 ## Key details
 
