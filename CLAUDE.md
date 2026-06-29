@@ -19,6 +19,8 @@ Copy `.env.example` to `.env` and fill in Firebase credentials. All vars are pre
 
 `VITE_FIREBASE_ENABLE_APPLE=true` must be set explicitly to expose Apple sign-in; it defaults to `false`.
 
+`VITE_ADMIN_EMAILS` is a comma-separated list of email addresses that get admin privileges (write access button in NoticePage/NoticeDetailPage). Checked by `isAdminUser()` in `src/utils/admin.js`.
+
 ## Architecture
 
 Single-page React 19 app built with Vite 8, written in plain JavaScript (no TypeScript). Korean-language academy (한컴아카데미) website. Uses react-router-dom v7, Swiper v12, Firebase v12, AOS, react-icons, @shadergradient/react (+ three / @react-three/fiber), and Leaflet.
@@ -28,18 +30,22 @@ Single-page React 19 app built with Vite 8, written in plain JavaScript (no Type
 `src/router.jsx` uses `createBrowserRouter`. The layout shell (`App.jsx`) wraps all routes via `<Outlet>`. `LoginPage` is lazy-loaded with `Suspense`.
 
 ```
-/                    → HomePage
-/login               → LoginPage (lazy)
-/signup              → SignUpPage
-/about               → AboutPage
-/about/intro         → AboutPage
-/about/teachers      → TeachersPage
-/about/awards        → ComingSoonPage
-/about/location      → ComingSoonPage
-/opening-news/**     → ComingSoonPage
-/notice/**           → ComingSoonPage
-/news/**             → ComingSoonPage
-*                    → ComingSoonPage
+/                        → HomePage
+/login                   → LoginPage (lazy)
+/signup                  → SignUpPage
+/about                   → AboutPage
+/about/intro             → AboutPage
+/about/teachers          → TeachersPage
+/about/awards            → AwardsPage
+/about/location          → LocationPage
+/notice                  → NoticePage
+/notice/announcement     → NoticePage
+/notice/start            → OpeningNoticePage
+/notice/news             → ComingSoonPage
+/notice/:noticeId        → NoticeDetailPage
+/opening-news/**         → ComingSoonPage
+/news/**                 → ComingSoonPage
+*                        → ComingSoonPage
 ```
 
 `App.jsx` derives `isAuthPage` (`/login`, `/signup`) to hide `FloatingQuickMenu` and `TopButton` on those routes. On sub-pages (non-`/`) `FloatingQuickMenu` receives `mobileOnly={true}`.
@@ -53,7 +59,15 @@ pages/
   HomePage.jsx       — composes sections: MainVisual, NewsNoticeSection (above-fold 100vh),
                        EducationFieldSection, AcademyIntroSection, SeminarSection, LocationSection
   AboutPage.jsx      — academy intro page with hero/tabs/breadcrumb/values cards
-  TeachersPage.jsx   — teacher grid rendered from teacherData; shares hero/tabs pattern with AboutPage
+  TeachersPage.jsx   — teacher grid rendered from teacherData; shares hero/tabs pattern
+  AwardsPage.jsx     — scroll-driven timeline of competition awards; uses useTimelineProgress
+                       and useActiveTimelineYear to sync a decade tab bar with scroll position
+  LocationPage.jsx   — branch selector (LocationTabs) + info card + Leaflet map
+  NoticePage.jsx     — filterable notice board; category filter + keyword search across
+                       title/content/author; admin write button shown to isAdminUser()
+  NoticeDetailPage.jsx — single notice view; requires login (redirects to /login with
+                         state.from); admin edit button shown to isAdminUser()
+  OpeningNoticePage.jsx — opening-news board; same layout/CSS as NoticePage, no auth gate
   LoginPage.jsx      — email + Google + Apple sign-in (lazy loaded); single component
                        manages both 'login' and 'forgot' views via a `view` state string
   SignUpPage.jsx     — email registration
@@ -68,12 +82,13 @@ components/
   common/
     MobileMenu.jsx   — full-screen overlay, accordion nav driven by mobileMenuData,
                        closes on ESC / link click, locks body scroll while open
-    SubPageHero.jsx  — simple hero banner (eyebrow + h1 over about-hero-3d.png);
-                       used by LoginPage and SignUpPage only — About/Teachers have their own hero
+    SubPageHero.jsx  — hero banner used by ALL sub-pages; accepts optional `tabs` array
+                       to render in-hero tab nav (every implemented sub-page passes tabs)
   home/              — home-page section components
                        (NewsNoticeSection, EducationFieldSection, AcademyIntroSection, LocationSection)
   cards/             — NewsNoticeColumn, NewsNoticeItem, EducationFieldCard, AcademyIntroCard
   location/          — LocationInfoCard, LocationTabs, MapBox
+  awards/            — DecadeTabs, AwardsTimeline
   auth/
     GoogleLoginButton.jsx
 firebase/
@@ -84,28 +99,41 @@ services/
                        sendPasswordReset, logout; each calls ensureFirebaseConfigured() before use
 hooks/
   useAuth.js         — useAuth() → { user, loading }; subscribes to onAuthStateChanged
+  useTimelineProgress.js  — rAF scroll hook; returns 0–1 progress of containerRef through viewport
+  useActiveTimelineYear.js — IntersectionObserver hook; watches year section elements and
+                             returns the year whose data-year element is closest to viewport center
 data/                — static JS arrays: newsData, noticeData, openingNewsData,
                        educationFieldsData, academyIntroData, locationData,
-                       quickMenuData, seminarData, footerData, mobileMenuData, teacherData
+                       quickMenuData, seminarData, footerData, mobileMenuData,
+                       teacherData, awardsData
 utils/
+  admin.js           — isAdminUser(user) checks user.email against VITE_ADMIN_EMAILS
   firebaseErrorMessage.js  — maps Firebase auth error codes to Korean user-facing strings
 ```
 
 ### Implementation status
 
-Fully implemented: `MainVisual`, `NewsNoticeSection`, `EducationFieldSection`, `AcademyIntroSection`, `LocationSection`, `FloatingQuickMenu`, `TopButton`, `Footer`, `AboutPage`, `TeachersPage`, `LoginPage`, `SignUpPage`, `MobileMenu`.
+Fully implemented: `MainVisual`, `NewsNoticeSection`, `EducationFieldSection`, `AcademyIntroSection`, `LocationSection`, `FloatingQuickMenu`, `TopButton`, `Footer`, `AboutPage`, `TeachersPage`, `AwardsPage`, `LocationPage`, `NoticePage`, `NoticeDetailPage`, `OpeningNoticePage`, `LoginPage`, `SignUpPage`, `MobileMenu`.
 
 Skeleton (`.ph` divs + `skeleton-tag` label): `SeminarSection`. When implementing a section, replace skeleton markup with real content.
 
 ### Sub-page layout pattern
 
-`AboutPage` and `TeachersPage` share a pattern: a hero section with a background image, followed by a `<nav>` of tab links and a breadcrumb bar. New sub-pages under `/about/**` should follow this same hero→tabs→breadcrumb→content structure.
+All implemented sub-pages use `<SubPageHero eyebrow="..." title="..." tabs={heroTabs} />` at the top — the `tabs` prop now renders an in-hero tab nav (previously only auth pages used this component without tabs). After the hero, every page has a `.subpage-breadcrumb` bar. New sub-pages should follow: `SubPageHero` → breadcrumb → content.
 
-Auth pages (`/login`, `/signup`) use the simpler `<SubPageHero eyebrow="..." title="..." />` component instead — no tabs or breadcrumb.
+Desktop nav and breadcrumb are separate sources of truth: `navItems` in `Header.jsx` (desktop) and `mobileMenuData` in `src/data/mobileMenuData.js` (mobile) must both be updated when adding new routes.
+
+### Awards page
+
+`AwardsPage` drives a scroll-synced timeline. `awardsData` in `src/data/awardsData.js` is an array of `{ year, decade, competitions[] }` where each competition has `{ title, notes[], categories[] }` and each category has `{ title, awards[] }` with `{ rank, winners[] }`. `decades` (also exported) is a derived list of unique decade strings (e.g. `'2020s'`). The `DecadeTabs` component scrolls to the first year of that decade via `yearRefs`.
+
+### Notice board
+
+`noticeData` items: `{ id, category, title, author, views, date, summary, content[], path }`. The `path` field must be `/notice/:id`. `NoticeDetailPage` requires the user to be logged in — unauthenticated visitors see a lock screen with a link to `/login` (passes `state.from` so login can redirect back). Admin users (checked via `isAdminUser`) see a write/edit button.
 
 ### MainVisual (Swiper)
 
-`MainVisual.jsx` uses **Swiper** with `Autoplay` and `EffectFade` modules. Each slide entry in the `slides` array requires both a desktop (`_d.png`) and a mobile (`_m.png`) image; they are rendered via `<picture><source media="(max-width: 768px)">`. Each slide also has a `theme` (`'light'` or `'dark'`) that is dispatched as a `header-theme` CustomEvent so `Header` and `FloatingQuickMenu` can adapt their appearance.
+`MainVisual.jsx` uses **Swiper** with `Autoplay` and `EffectFade` modules. Each slide entry requires both a desktop (`_d.png`) and a mobile (`_m.png`) image rendered via `<picture><source media="(max-width: 768px)">`. Each slide has a `theme` (`'light'` or `'dark'`) dispatched as a `header-theme` CustomEvent so `Header` and `FloatingQuickMenu` can adapt their appearance.
 
 ### Cross-component theme communication
 
