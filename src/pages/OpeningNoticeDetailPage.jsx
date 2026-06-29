@@ -1,0 +1,96 @@
+import { useEffect, useState } from 'react'
+import { Link, Navigate, useParams } from 'react-router-dom'
+import { FiArrowLeft, FiHome } from 'react-icons/fi'
+import SubPageHero from '../components/common/SubPageHero'
+import { fetchOpeningNoticeById } from '../services/noticeService'
+import './NoticePage.css'
+
+const heroTabs = [
+  { label: '공지사항', to: '/notice' },
+  { label: '개강소식', to: '/notice/start', active: true },
+  { label: '뉴스', to: '/notice/news' },
+]
+
+export default function OpeningNoticeDetailPage() {
+  const { openingNoticeId } = useParams()
+  const [notice, setNotice] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchOpeningNoticeById(openingNoticeId).then((data) => {
+      setNotice(data)
+      setLoading(false)
+    })
+  }, [openingNoticeId])
+
+  if (loading) {
+    return (
+      <div className="notice-page">
+        <div className="notice-board">
+          <div className="notice-board__inner">
+            <div className="notice-board__auth">
+              <span className="notice-board__spinner" aria-label="불러오는 중" />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!notice) {
+    return <Navigate to="/notice/start" replace />
+  }
+
+  const paragraphs = notice.content ?? [notice.summary].filter(Boolean)
+
+  return (
+    <div className="notice-page">
+      <SubPageHero eyebrow="공지 및 소식" title="개강소식" tabs={heroTabs} />
+
+      <div className="subpage-breadcrumb">
+        <div className="subpage-breadcrumb__inner">
+          <FiHome aria-hidden="true" />
+          <span>공지 및 소식</span>
+          <span className="subpage-breadcrumb__chevron">&gt;</span>
+          <strong>개강소식</strong>
+        </div>
+      </div>
+
+      <section className="notice-board">
+        <div className="notice-board__inner">
+          <article className="notice-detail">
+            <div className="notice-detail__head">
+              <p>{notice.category}</p>
+              <h2>{notice.title}</h2>
+              <div className="notice-detail__meta">
+                <span>{notice.author}</span>
+                <span>조회 {notice.views}</span>
+                <time dateTime={notice.date}>{notice.date}</time>
+              </div>
+            </div>
+
+            <div className="notice-detail__body">
+              {paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+              {notice.images?.length > 0 && (
+                <div className="notice-detail__images">
+                  {notice.images.map((url) => (
+                    <img key={url} src={url} alt="" className="notice-detail__img" />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="notice-detail__actions">
+              <Link to="/notice/start" className="notice-detail__back">
+                <FiArrowLeft aria-hidden="true" />
+                목록으로
+              </Link>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  )
+}

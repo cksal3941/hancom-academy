@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { FiHome, FiSearch } from 'react-icons/fi'
+import { FiEdit3, FiHome, FiSearch } from 'react-icons/fi'
 import SubPageHero from '../components/common/SubPageHero'
 import openingNewsData from '../data/openingNewsData'
 import './NoticePage.css'
@@ -67,6 +67,10 @@ export default function OpeningNoticePage() {
                 />
                 <FiSearch aria-hidden="true" />
               </label>
+              <Link to="/notice/start/write" className="notice-board__write">
+                <FiEdit3 aria-hidden="true" />
+                글쓰기
+              </Link>
             </div>
           </div>
 
