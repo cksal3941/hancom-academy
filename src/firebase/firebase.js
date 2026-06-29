@@ -13,6 +13,7 @@ const firebaseConfig = {
 }
 
 export const isFirebaseConfigured = Object.values(firebaseConfig).every(Boolean)
+console.log('[Firebase] isConfigured:', isFirebaseConfigured)
 export const isAppleAuthEnabled = import.meta.env.VITE_FIREBASE_ENABLE_APPLE === 'true'
 
 let auth    = null

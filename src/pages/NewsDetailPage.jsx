@@ -1,43 +1,43 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
-import { FiArrowLeft, FiHome, FiTrash2 } from 'react-icons/fi'
+import { FiArrowLeft, FiEdit3, FiHome, FiTrash2 } from 'react-icons/fi'
 import SubPageHero from '../components/common/SubPageHero'
-import { deleteOpeningNotice, fetchOpeningNoticeById, incrementOpeningNoticeViews } from '../services/noticeService'
+import { deleteNews, fetchNewsById, incrementNewsViews } from '../services/newsService'
 import './NoticePage.css'
 
 const heroTabs = [
   { label: '공지사항', to: '/notice' },
-  { label: '개강소식', to: '/notice/start', active: true },
-  { label: '뉴스', to: '/notice/news' },
+  { label: '개강소식', to: '/notice/start' },
+  { label: '뉴스', to: '/news', active: true },
 ]
 
-export default function OpeningNoticeDetailPage() {
-  const { openingNoticeId } = useParams()
+export default function NewsDetailPage() {
+  const { newsId } = useParams()
   const navigate = useNavigate()
-  const [notice, setNotice] = useState(null)
+  const [news, setNews] = useState(null)
   const [loading, setLoading] = useState(true)
   const viewedRef = useRef(false)
 
   const handleDelete = async () => {
     if (!window.confirm('이 게시글을 삭제하시겠습니까?')) return
     try {
-      await deleteOpeningNotice(openingNoticeId)
-      navigate('/notice/start')
+      await deleteNews(newsId)
+      navigate('/notice/news')
     } catch {
       alert('삭제에 실패했습니다. 다시 시도해 주세요.')
     }
   }
 
   useEffect(() => {
-    fetchOpeningNoticeById(openingNoticeId).then((data) => {
-      setNotice(data)
+    fetchNewsById(newsId).then((data) => {
+      setNews(data)
       setLoading(false)
       if (!viewedRef.current) {
         viewedRef.current = true
-        incrementOpeningNoticeViews(openingNoticeId)
+        incrementNewsViews(newsId)
       }
     })
-  }, [openingNoticeId])
+  }, [newsId])
 
   if (loading) {
     return (
@@ -53,22 +53,20 @@ export default function OpeningNoticeDetailPage() {
     )
   }
 
-  if (!notice) {
-    return <Navigate to="/notice/start" replace />
-  }
+  if (!news) return <Navigate to="/news" replace />
 
-  const paragraphs = notice.content ?? [notice.summary].filter(Boolean)
+  const paragraphs = news.content ?? [news.summary].filter(Boolean)
 
   return (
     <div className="notice-page">
-      <SubPageHero eyebrow="공지 및 소식" title="개강소식" tabs={heroTabs} />
+      <SubPageHero eyebrow="공지 및 소식" title="뉴스" tabs={heroTabs} />
 
       <div className="subpage-breadcrumb">
         <div className="subpage-breadcrumb__inner">
           <FiHome aria-hidden="true" />
           <span>공지 및 소식</span>
           <span className="subpage-breadcrumb__chevron">&gt;</span>
-          <strong>개강소식</strong>
+          <strong>뉴스</strong>
         </div>
       </div>
 
@@ -76,12 +74,12 @@ export default function OpeningNoticeDetailPage() {
         <div className="notice-board__inner">
           <article className="notice-detail">
             <div className="notice-detail__head">
-              <p>{notice.category}</p>
-              <h2>{notice.title}</h2>
+              <p>{news.category}</p>
+              <h2>{news.title}</h2>
               <div className="notice-detail__meta">
-                <span>{notice.author}</span>
-                <span>조회 {notice.views}</span>
-                <time dateTime={notice.date}>{notice.date}</time>
+                <span>{news.author}</span>
+                <span>조회 {news.views}</span>
+                <time dateTime={news.date}>{news.date}</time>
               </div>
             </div>
 
@@ -89,9 +87,9 @@ export default function OpeningNoticeDetailPage() {
               {paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
-              {notice.images?.length > 0 && (
+              {news.images?.length > 0 && (
                 <div className="notice-detail__images">
-                  {notice.images.map((url) => (
+                  {news.images.map((url) => (
                     <img key={url} src={url} alt="" className="notice-detail__img" />
                   ))}
                 </div>
@@ -99,14 +97,20 @@ export default function OpeningNoticeDetailPage() {
             </div>
 
             <div className="notice-detail__actions">
-              <Link to="/notice/start" className="notice-detail__back">
+              <Link to="/notice/news" className="notice-detail__back">
                 <FiArrowLeft aria-hidden="true" />
                 목록으로
               </Link>
-              <button type="button" className="notice-board__delete" onClick={handleDelete}>
-                <FiTrash2 aria-hidden="true" />
-                삭제하기
-              </button>
+              <div className="notice-detail__actions-right">
+                <button type="button" className="notice-board__delete" onClick={handleDelete}>
+                  <FiTrash2 aria-hidden="true" />
+                  삭제하기
+                </button>
+                <Link to={`/notice/news/${newsId}/edit`} className="notice-board__write">
+                  <FiEdit3 aria-hidden="true" />
+                  수정하기
+                </Link>
+              </div>
             </div>
           </article>
         </div>

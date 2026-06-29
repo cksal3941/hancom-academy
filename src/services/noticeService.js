@@ -1,12 +1,15 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
+  increment,
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
 } from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { db, isFirebaseConfigured, storage } from '../firebase/firebase'
@@ -32,9 +35,12 @@ export async function addNotice({ category, title, content, imageFiles = [] }) {
   if (!isFirebaseConfigured || !db) throw new Error('Firebase가 설정되지 않았습니다.')
 
   const paragraphs = content.split('\n').map((p) => p.trim()).filter(Boolean)
-  const images = imageFiles.length > 0 ? await uploadImages(imageFiles) : []
+  let images = []
+  if (imageFiles.length > 0) {
+    try { images = await uploadImages(imageFiles) } catch (e) { console.warn('[Storage] 이미지 업로드 실패 (이미지 없이 저장):', e) }
+  }
 
-  await addDoc(collection(db, COL), {
+  const ref = await addDoc(collection(db, COL), {
     category,
     title,
     content: paragraphs,
@@ -45,6 +51,7 @@ export async function addNotice({ category, title, content, imageFiles = [] }) {
     date: new Date().toISOString().slice(0, 10),
     createdAt: serverTimestamp(),
   })
+  return ref.id
 }
 
 export async function fetchNotices() {
@@ -70,9 +77,12 @@ export async function addOpeningNotice({ title, content, imageFiles = [] }) {
   if (!isFirebaseConfigured || !db) throw new Error('Firebase가 설정되지 않았습니다.')
 
   const paragraphs = content.split('\n').map((p) => p.trim()).filter(Boolean)
-  const images = imageFiles.length > 0 ? await uploadImages(imageFiles) : []
+  let images = []
+  if (imageFiles.length > 0) {
+    try { images = await uploadImages(imageFiles) } catch (e) { console.warn('[Storage] 이미지 업로드 실패 (이미지 없이 저장):', e) }
+  }
 
-  await addDoc(collection(db, OPENING_COL), {
+  const ref = await addDoc(collection(db, OPENING_COL), {
     category: '개강소식',
     title,
     content: paragraphs,
@@ -83,6 +93,7 @@ export async function addOpeningNotice({ title, content, imageFiles = [] }) {
     date: new Date().toISOString().slice(0, 10),
     createdAt: serverTimestamp(),
   })
+  return ref.id
 }
 
 export async function fetchOpeningNotices() {
@@ -119,6 +130,25 @@ export async function fetchOpeningNoticeById(id) {
   }
 }
 
+export async function updateNotice(id, { category, title, content, imageFiles = [], existingImages = [] }) {
+  if (!isFirebaseConfigured || !db) throw new Error('Firebase가 설정되지 않았습니다.')
+
+  const paragraphs = content.split('\n').map((p) => p.trim()).filter(Boolean)
+  let newImages = []
+  if (imageFiles.length > 0) {
+    try { newImages = await uploadImages(imageFiles) } catch (e) { console.warn('[Storage] 이미지 업로드 실패:', e) }
+  }
+
+  await updateDoc(doc(db, COL, id), {
+    category,
+    title,
+    content: paragraphs,
+    images: [...existingImages, ...newImages],
+    summary: paragraphs[0]?.slice(0, 80) ?? '',
+    updatedAt: serverTimestamp(),
+  })
+}
+
 export async function fetchNoticeById(id) {
   const staticNotice = noticeData.find((n) => String(n.id) === String(id))
   if (staticNotice) return staticNotice
@@ -132,4 +162,26 @@ export async function fetchNoticeById(id) {
   } catch {
     return null
   }
+}
+
+export async function incrementNoticeViews(id) {
+  if (!isFirebaseConfigured || !db) return
+  if (noticeData.find((n) => String(n.id) === String(id))) return
+  try { await updateDoc(doc(db, COL, id), { views: increment(1) }) } catch {}
+}
+
+export async function incrementOpeningNoticeViews(id) {
+  if (!isFirebaseConfigured || !db) return
+  if (openingNewsData.find((n) => String(n.id) === String(id))) return
+  try { await updateDoc(doc(db, OPENING_COL, id), { views: increment(1) }) } catch {}
+}
+
+export async function deleteNotice(id) {
+  if (!isFirebaseConfigured || !db) throw new Error('Firebase가 설정되지 않았습니다.')
+  await deleteDoc(doc(db, COL, id))
+}
+
+export async function deleteOpeningNotice(id) {
+  if (!isFirebaseConfigured || !db) throw new Error('Firebase가 설정되지 않았습니다.')
+  await deleteDoc(doc(db, OPENING_COL, id))
 }

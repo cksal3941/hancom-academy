@@ -19,15 +19,20 @@ const searchOptions = [
   { label: '작성자', value: 'author' },
 ]
 
+const PAGE_SIZE = 10
+
 export default function NoticePage() {
   const [notices, setNotices] = useState(noticeData)
   const [category, setCategory] = useState('전체')
   const [searchField, setSearchField] = useState('title')
   const [keyword, setKeyword] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
     fetchNotices().then(setNotices).catch(() => {})
   }, [])
+
+  useEffect(() => { setCurrentPage(1) }, [category, keyword, searchField])
 
   const filteredNotices = useMemo(() => {
     const normalizedKeyword = keyword.trim().toLowerCase()
@@ -48,6 +53,11 @@ export default function NoticePage() {
       return String(notice[searchField] ?? '').toLowerCase().includes(normalizedKeyword)
     })
   }, [notices, category, keyword, searchField])
+
+  const totalPages = Math.max(1, Math.ceil(filteredNotices.length / PAGE_SIZE))
+  const pagedNotices = filteredNotices.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1)
+    .filter((p) => Math.abs(p - currentPage) <= 2)
 
   return (
     <div className="notice-page">
@@ -105,14 +115,16 @@ export default function NoticePage() {
               </div>
 
               <div className="notice-board__table" role="table" aria-label="공지사항 목록">
-                {filteredNotices.map((notice) => (
+                {pagedNotices.map((notice, index) => (
                   <Link
                     key={notice.id}
                     to={notice.path}
                     className="notice-board__row"
                     role="row"
                   >
-                    <span className="notice-board__no">{notice.id}</span>
+                    <span className="notice-board__no">
+                      {filteredNotices.length - (currentPage - 1) * PAGE_SIZE - index}
+                    </span>
                     <span className="notice-board__title">
                       <em>{notice.category}</em>
                       {notice.title}
@@ -131,8 +143,31 @@ export default function NoticePage() {
               </div>
 
               <div className="notice-board__pagination" aria-label="페이지">
-                <button type="button" className="notice-board__page notice-board__page--active">
-                  1
+                <button
+                  type="button"
+                  className="notice-board__page notice-board__page--nav"
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                >
+                  &lt;
+                </button>
+                {pageNumbers.map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    className={`notice-board__page${p === currentPage ? ' notice-board__page--active' : ''}`}
+                    onClick={() => setCurrentPage(p)}
+                  >
+                    {p}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  className="notice-board__page notice-board__page--nav"
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                >
+                  &gt;
                 </button>
               </div>
         </div>

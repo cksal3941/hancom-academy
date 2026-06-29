@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
-import { FiArrowLeft, FiHome } from 'react-icons/fi'
+import { useEffect, useRef, useState } from 'react'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import { FiArrowLeft, FiEdit3, FiHome, FiTrash2 } from 'react-icons/fi'
 import SubPageHero from '../components/common/SubPageHero'
-import { fetchNoticeById } from '../services/noticeService'
+import { deleteNotice, fetchNoticeById, incrementNoticeViews } from '../services/noticeService'
 import './NoticePage.css'
 
 const heroTabs = [
@@ -13,13 +13,29 @@ const heroTabs = [
 
 export default function NoticeDetailPage() {
   const { noticeId } = useParams()
+  const navigate = useNavigate()
   const [notice, setNotice] = useState(null)
   const [loading, setLoading] = useState(true)
+  const viewedRef = useRef(false)
+
+  const handleDelete = async () => {
+    if (!window.confirm('이 게시글을 삭제하시겠습니까?')) return
+    try {
+      await deleteNotice(noticeId)
+      navigate('/notice')
+    } catch {
+      alert('삭제에 실패했습니다. 다시 시도해 주세요.')
+    }
+  }
 
   useEffect(() => {
     fetchNoticeById(noticeId).then((data) => {
       setNotice(data)
       setLoading(false)
+      if (!viewedRef.current) {
+        viewedRef.current = true
+        incrementNoticeViews(noticeId)
+      }
     })
   }, [noticeId])
 
@@ -85,6 +101,16 @@ export default function NoticeDetailPage() {
                 <FiArrowLeft aria-hidden="true" />
                 목록으로
               </Link>
+              <div className="notice-detail__actions-right">
+                <button type="button" className="notice-board__delete" onClick={handleDelete}>
+                  <FiTrash2 aria-hidden="true" />
+                  삭제하기
+                </button>
+                <Link to={`/notice/${noticeId}/edit`} className="notice-board__write">
+                  <FiEdit3 aria-hidden="true" />
+                  수정하기
+                </Link>
+              </div>
             </div>
           </article>
         </div>

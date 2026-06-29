@@ -24,7 +24,7 @@ export default function NoticeWritePage() {
   const [imageFiles, setImageFiles] = useState([])
   const [previews, setPreviews] = useState([])
   const [submitting, setSubmitting] = useState(false)
-  const [done, setDone] = useState(false)
+  const [toast, setToast] = useState(false)
   const [errors, setErrors] = useState({})
   const [submitError, setSubmitError] = useState('')
 
@@ -59,19 +59,26 @@ export default function NoticeWritePage() {
     setSubmitting(true)
     setSubmitError('')
     try {
-      await addNotice({ category, title, content, imageFiles })
-      setDone(true)
+      const newId = await addNotice({ category, title, content, imageFiles })
+      setToast(true)
+      setTimeout(() => navigate('/notice'), 1500)
     } catch (err) {
+      console.error('[NoticeWrite] 등록 실패:', err)
       setSubmitError(err.message || '등록에 실패했습니다. 다시 시도해 주세요.')
     } finally {
       setSubmitting(false)
     }
   }
 
-  const handleBack = () => navigate('/notice')
-
   return (
     <div className="notice-page">
+      {toast && (
+        <div className="nw-toast">
+          <span className="nw-toast__icon">✓</span>
+          게시글이 등록되었습니다. 이동 중…
+        </div>
+      )}
+
       <SubPageHero eyebrow="공지 및 소식" title="공지사항" tabs={heroTabs} />
 
       <div className="subpage-breadcrumb">
@@ -87,17 +94,7 @@ export default function NoticeWritePage() {
 
       <section className="notice-board">
         <div className="notice-board__inner">
-          {done ? (
-            <div className="nw-done">
-              <p className="nw-done__icon">✓</p>
-              <h2>게시글이 등록되었습니다.</h2>
-              <p>공지사항 목록으로 이동합니다.</p>
-              <button type="button" className="notice-board__write" onClick={handleBack}>
-                목록으로
-              </button>
-            </div>
-          ) : (
-            <form className="nw-form" onSubmit={handleSubmit} noValidate>
+          <form className="nw-form" onSubmit={handleSubmit} noValidate>
               <div className="nw-form__row">
                 <label className="nw-form__label" htmlFor="nw-category">분류</label>
                 <select
@@ -194,7 +191,7 @@ export default function NoticeWritePage() {
                 <button
                   type="button"
                   className="nw-form__btn nw-form__btn--cancel"
-                  onClick={handleBack}
+                  onClick={() => navigate('/notice')}
                 >
                   <FiArrowLeft aria-hidden="true" />
                   취소
@@ -208,7 +205,6 @@ export default function NoticeWritePage() {
                 </button>
               </div>
             </form>
-          )}
         </div>
       </section>
     </div>

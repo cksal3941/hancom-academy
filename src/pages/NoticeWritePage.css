@@ -217,6 +217,45 @@
   font-size: 13px;
 }
 
+/* 등록 완료 토스트 */
+.nw-toast {
+  position: fixed;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 8px;
+  background: #1a1a2e;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  z-index: 9999;
+  animation: nw-toast-in .25s ease;
+}
+
+.nw-toast__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #4ade80;
+  color: #1a1a2e;
+  font-size: 13px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+@keyframes nw-toast-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
 /* 완료 화면 */
 .nw-done {
   display: flex;
