@@ -212,7 +212,7 @@ export default function Header() {
     >
       <div className="header__inner">
         <Link to="/" className="header__logo">
-          <img src={logoImg} alt="HANCOM Academy" className="header__logo-img" />
+          <img src={logoImg} alt="한글과 컴퓨터 학원" className="header__logo-img" />
         </Link>
 
         <nav className="header__nav">

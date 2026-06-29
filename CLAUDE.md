@@ -19,7 +19,7 @@ Copy `.env.example` to `.env` and fill in Firebase credentials. All vars are pre
 
 `VITE_FIREBASE_ENABLE_APPLE=true` must be set explicitly to expose Apple sign-in; it defaults to `false`.
 
-`VITE_ADMIN_EMAILS` is a comma-separated list of email addresses that get admin privileges (write access button in NoticePage/NoticeDetailPage). Checked by `isAdminUser()` in `src/utils/admin.js`.
+`VITE_ADMIN_EMAILS` — comma-separated list of admin email addresses (e.g. `admin@example.com,dev@example.com`). Used by `isAdminUser()` in `src/utils/admin.js` to show admin-only UI (write/edit buttons in notice pages).
 
 ## Architecture
 
@@ -71,7 +71,7 @@ pages/
   LoginPage.jsx      — email + Google + Apple sign-in (lazy loaded); single component
                        manages both 'login' and 'forgot' views via a `view` state string
   SignUpPage.jsx     — email registration
-  ComingSoonPage     — placeholder for unimplemented routes
+  ComingSoonPage.jsx — placeholder for unimplemented routes
 sections/            — full-viewport (100vh) blocks for HomePage only
                        (MainVisual, SeminarSection, LocationSection)
 components/
@@ -82,13 +82,15 @@ components/
   common/
     MobileMenu.jsx   — full-screen overlay, accordion nav driven by mobileMenuData,
                        closes on ESC / link click, locks body scroll while open
-    SubPageHero.jsx  — hero banner used by ALL sub-pages; accepts optional `tabs` array
-                       to render in-hero tab nav (every implemented sub-page passes tabs)
+    SubPageHero.jsx  — unified sub-page hero: eyebrow + h1 + optional tabs nav;
+                       accepts tabs={[{ label, to, active? }]}; used by all sub-pages
   home/              — home-page section components
                        (NewsNoticeSection, EducationFieldSection, AcademyIntroSection, LocationSection)
   cards/             — NewsNoticeColumn, NewsNoticeItem, EducationFieldCard, AcademyIntroCard
   location/          — LocationInfoCard, LocationTabs, MapBox
-  awards/            — DecadeTabs, AwardsTimeline
+  awards/
+    AwardsTimeline.jsx — scroll-animated vertical timeline grouped by year
+    DecadeTabs.jsx     — sticky decade filter tabs (e.g. "2020s", "2010s")
   auth/
     GoogleLoginButton.jsx
 firebase/
@@ -98,7 +100,7 @@ services/
   authService.js     — loginWithGoogle, loginWithApple, loginWithEmail, signUpWithEmail,
                        sendPasswordReset, logout; each calls ensureFirebaseConfigured() before use
 hooks/
-  useAuth.js         — useAuth() → { user, loading }; subscribes to onAuthStateChanged
+  useAuth.js              — useAuth() → { user, loading }; subscribes to onAuthStateChanged
   useTimelineProgress.js  — rAF scroll hook; returns 0–1 progress of containerRef through viewport
   useActiveTimelineYear.js — IntersectionObserver hook; watches year section elements and
                              returns the year whose data-year element is closest to viewport center
@@ -119,7 +121,7 @@ Skeleton (`.ph` divs + `skeleton-tag` label): `SeminarSection`. When implementin
 
 ### Sub-page layout pattern
 
-All implemented sub-pages use `<SubPageHero eyebrow="..." title="..." tabs={heroTabs} />` at the top — the `tabs` prop now renders an in-hero tab nav (previously only auth pages used this component without tabs). After the hero, every page has a `.subpage-breadcrumb` bar. New sub-pages should follow: `SubPageHero` → breadcrumb → content.
+All implemented sub-pages use `<SubPageHero eyebrow="..." title="..." tabs={heroTabs} />` at the top — the `tabs` prop renders an in-hero tab nav. After the hero, every page has a `.subpage-breadcrumb` bar. New sub-pages should follow: `SubPageHero` → breadcrumb → content.
 
 Desktop nav and breadcrumb are separate sources of truth: `navItems` in `Header.jsx` (desktop) and `mobileMenuData` in `src/data/mobileMenuData.js` (mobile) must both be updated when adding new routes.
 
