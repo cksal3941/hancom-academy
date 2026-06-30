@@ -61,7 +61,7 @@ const navItems = [
   },
 ]
 
-const zoomUrl = 'https://zoom.us'
+const zoomUrl = 'https://us02web.zoom.us/j/8440631454?pwd=bW5mTmpqRkh6MUJ6RXdxNWVYSGNOdz09#success'
 
 export default function Header() {
   const location = useLocation()

@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { FiArrowLeft, FiEdit3, FiHome, FiTrash2 } from 'react-icons/fi'
 import SubPageHero from '../components/common/SubPageHero'
 import { deleteNotice, fetchNoticeById, incrementNoticeViews } from '../services/noticeService'
+import { useAuth } from '../hooks/useAuth'
 import './NoticePage.css'
 
 const heroTabs = [
@@ -14,6 +15,8 @@ const heroTabs = [
 export default function NoticeDetailPage() {
   const { noticeId } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
+  const { user, loading: authLoading } = useAuth()
   const [notice, setNotice] = useState(null)
   const [loading, setLoading] = useState(true)
   const viewedRef = useRef(false)
@@ -38,6 +41,24 @@ export default function NoticeDetailPage() {
       }
     })
   }, [noticeId])
+
+  if (authLoading || (loading && !user)) {
+    return (
+      <div className="notice-page">
+        <div className="notice-board">
+          <div className="notice-board__inner">
+            <div className="notice-board__auth">
+              <span className="notice-board__spinner" aria-label="불러오는 중" />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />
+  }
 
   if (loading) {
     return (
