@@ -2,58 +2,66 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiEdit3, FiHome, FiSearch } from 'react-icons/fi'
 import SubPageHero from '../components/common/SubPageHero'
-import openingNewsData from '../data/openingNewsData'
-import { fetchOpeningNotices } from '../services/noticeService'
+import newsData from '../data/newsData'
+import { fetchNews } from '../services/newsService'
 import './NoticePage.css'
 
 const heroTabs = [
-  { label: '공지사항', to: '/notice/announcement' },
-  { label: '개강소식', to: '/notice/start', active: true },
-  { label: '뉴스', to: '/notice/news' },
+  { label: '공지사항', to: '/notice' },
+  { label: '개강소식', to: '/notice/start' },
+  { label: '뉴스', to: '/news', active: true },
 ]
 
+const categoryOptions = ['전체', '수상소식', '인터뷰', '학원소식', '미디어']
 const searchOptions = [
   { label: '제목', value: 'title' },
   { label: '내용', value: 'content' },
+  { label: '작성자', value: 'author' },
 ]
 
 const PAGE_SIZE = 10
 
-export default function OpeningNoticePage() {
-  const [items, setItems] = useState(openingNewsData)
+export default function NewsPage() {
+  const [news, setNews] = useState(newsData)
+  const [category, setCategory] = useState('전체')
   const [searchField, setSearchField] = useState('title')
   const [keyword, setKeyword] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
-    fetchOpeningNotices().then(setItems).catch(() => {})
+    fetchNews().then(setNews).catch(() => {})
   }, [])
 
-  useEffect(() => { setCurrentPage(1) }, [keyword, searchField])
+  useEffect(() => { setCurrentPage(1) }, [category, keyword, searchField])
 
-  const filteredData = useMemo(() => {
+  const filtered = useMemo(() => {
     const q = keyword.trim().toLowerCase()
-    if (!q) return items
-    return items.filter((item) =>
-      String(item[searchField] ?? item.summary ?? '').toLowerCase().includes(q),
-    )
-  }, [items, keyword, searchField])
+    return news.filter((item) => {
+      const categoryMatched = category === '전체' || item.category === category
+      if (!categoryMatched) return false
+      if (!q) return true
+      if (searchField === 'content') {
+        return [item.title, item.summary, ...(item.content ?? [])].join(' ').toLowerCase().includes(q)
+      }
+      return String(item[searchField] ?? '').toLowerCase().includes(q)
+    })
+  }, [news, category, keyword, searchField])
 
-  const totalPages = Math.max(1, Math.ceil(filteredData.length / PAGE_SIZE))
-  const pagedData = filteredData.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const pagedNews = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1)
     .filter((p) => Math.abs(p - currentPage) <= 2)
 
   return (
     <div className="notice-page">
-      <SubPageHero eyebrow="공지 및 소식" title="개강소식" tabs={heroTabs} />
+      <SubPageHero eyebrow="공지 및 소식" title="뉴스" tabs={heroTabs} />
 
       <div className="subpage-breadcrumb">
         <div className="subpage-breadcrumb__inner">
           <FiHome aria-hidden="true" />
           <span>공지 및 소식</span>
           <span className="subpage-breadcrumb__chevron">&gt;</span>
-          <strong>개강소식</strong>
+          <strong>뉴스</strong>
         </div>
       </div>
 
@@ -61,15 +69,15 @@ export default function OpeningNoticePage() {
         <div className="notice-board__inner">
           <div className="notice-board__top">
             <p className="notice-board__total">
-              총 <strong>{filteredData.length}</strong>건
+              총 <strong>{filtered.length}</strong>건
             </p>
-
             <div className="notice-board__tools">
-              <select
-                value={searchField}
-                onChange={(e) => setSearchField(e.target.value)}
-                aria-label="검색 기준"
-              >
+              <select value={category} onChange={(e) => setCategory(e.target.value)} aria-label="뉴스 분류">
+                {categoryOptions.map((opt) => (
+                  <option key={opt} value={opt}>{opt}</option>
+                ))}
+              </select>
+              <select value={searchField} onChange={(e) => setSearchField(e.target.value)} aria-label="검색 기준">
                 {searchOptions.map((opt) => (
                   <option key={opt.value} value={opt.value}>{opt.label}</option>
                 ))}
@@ -83,23 +91,18 @@ export default function OpeningNoticePage() {
                 />
                 <FiSearch aria-hidden="true" />
               </label>
-              <Link to="/notice/start/write" className="notice-board__write">
+              <Link to="/news/write" className="notice-board__write">
                 <FiEdit3 aria-hidden="true" />
                 글쓰기
               </Link>
             </div>
           </div>
 
-          <div className="notice-board__table" role="table" aria-label="개강소식 목록">
-            {pagedData.map((item, index) => (
-              <Link
-                key={item.id}
-                to={item.path}
-                className="notice-board__row"
-                role="row"
-              >
+          <div className="notice-board__table" role="table" aria-label="뉴스 목록">
+            {pagedNews.map((item, index) => (
+              <Link key={item.id} to={item.path} className="notice-board__row" role="row">
                 <span className="notice-board__no">
-                  {filteredData.length - (currentPage - 1) * PAGE_SIZE - index}
+                  {filtered.length - (currentPage - 1) * PAGE_SIZE - index}
                 </span>
                 <span className="notice-board__title">
                   <em>{item.category}</em>
@@ -107,13 +110,10 @@ export default function OpeningNoticePage() {
                 </span>
                 <span className="notice-board__author">{item.author}</span>
                 <span className="notice-board__views">{item.views}</span>
-                <time className="notice-board__date" dateTime={item.date}>
-                  {item.date}
-                </time>
+                <time className="notice-board__date" dateTime={item.date}>{item.date}</time>
               </Link>
             ))}
-
-            {filteredData.length === 0 && (
+            {filtered.length === 0 && (
               <p className="notice-board__empty">검색 결과가 없습니다.</p>
             )}
           </div>

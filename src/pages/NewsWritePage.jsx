@@ -2,19 +2,19 @@ import { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FiArrowLeft, FiHome, FiImage, FiX } from 'react-icons/fi'
 import SubPageHero from '../components/common/SubPageHero'
-import { addNotice } from '../services/noticeService'
+import { addNews } from '../services/newsService'
 import './NoticePage.css'
 import './NoticeWritePage.css'
 
 const heroTabs = [
-  { label: '공지사항', to: '/notice', active: true },
+  { label: '공지사항', to: '/notice' },
   { label: '개강소식', to: '/notice/start' },
-  { label: '뉴스', to: '/notice/news' },
+  { label: '뉴스', to: '/news', active: true },
 ]
 
-const categories = ['수업안내', '운영안내', '대회일정', '이벤트']
+const categories = ['수상소식', '인터뷰', '학원소식', '미디어']
 
-export default function NoticeWritePage() {
+export default function NewsWritePage() {
   const navigate = useNavigate()
   const fileInputRef = useRef(null)
 
@@ -39,7 +39,6 @@ export default function NoticeWritePage() {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files)
     if (!files.length) return
-
     const next = [...imageFiles, ...files].slice(0, 5)
     setImageFiles(next)
     setPreviews(next.map((f) => URL.createObjectURL(f)))
@@ -55,15 +54,13 @@ export default function NoticeWritePage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!validate()) return
-
     setSubmitting(true)
     setSubmitError('')
     try {
-      const newId = await addNotice({ category, title, content, imageFiles })
+      const newId = await addNews({ category, title, content, imageFiles })
       setToast(true)
-      setTimeout(() => navigate('/notice'), 1500)
+      setTimeout(() => navigate('/notice/news'), 1500)
     } catch (err) {
-      console.error('[NoticeWrite] 등록 실패:', err)
       setSubmitError(err.message || '등록에 실패했습니다. 다시 시도해 주세요.')
     } finally {
       setSubmitting(false)
@@ -78,15 +75,14 @@ export default function NoticeWritePage() {
           게시글이 등록되었습니다. 이동 중…
         </div>
       )}
-
-      <SubPageHero eyebrow="공지 및 소식" title="공지사항" tabs={heroTabs} />
+      <SubPageHero eyebrow="공지 및 소식" title="뉴스" tabs={heroTabs} />
 
       <div className="subpage-breadcrumb">
         <div className="subpage-breadcrumb__inner">
           <FiHome aria-hidden="true" />
           <span>공지 및 소식</span>
           <span className="subpage-breadcrumb__chevron">&gt;</span>
-          <Link to="/notice">공지사항</Link>
+          <Link to="/news">뉴스</Link>
           <span className="subpage-breadcrumb__chevron">&gt;</span>
           <strong>글쓰기</strong>
         </div>
@@ -96,9 +92,9 @@ export default function NoticeWritePage() {
         <div className="notice-board__inner">
           <form className="nw-form" onSubmit={handleSubmit} noValidate>
               <div className="nw-form__row">
-                <label className="nw-form__label" htmlFor="nw-category">분류</label>
+                <label className="nw-form__label" htmlFor="nw-news-category">분류</label>
                 <select
-                  id="nw-category"
+                  id="nw-news-category"
                   className="nw-form__select"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
@@ -110,10 +106,10 @@ export default function NoticeWritePage() {
               </div>
 
               <div className="nw-form__row nw-form__row--full">
-                <label className="nw-form__label" htmlFor="nw-title">제목</label>
+                <label className="nw-form__label" htmlFor="nw-news-title">제목</label>
                 <div className="nw-form__field">
                   <input
-                    id="nw-title"
+                    id="nw-news-title"
                     className={`nw-form__input${errors.title ? ' nw-form__input--error' : ''}`}
                     type="text"
                     placeholder="제목을 입력해 주세요."
@@ -169,10 +165,10 @@ export default function NoticeWritePage() {
               </div>
 
               <div className="nw-form__row nw-form__row--content nw-form__row--full">
-                <label className="nw-form__label" htmlFor="nw-content">내용</label>
+                <label className="nw-form__label" htmlFor="nw-news-content">내용</label>
                 <div className="nw-form__field">
                   <textarea
-                    id="nw-content"
+                    id="nw-news-content"
                     className={`nw-form__textarea${errors.content ? ' nw-form__input--error' : ''}`}
                     placeholder="내용을 입력해 주세요."
                     value={content}
@@ -191,7 +187,7 @@ export default function NoticeWritePage() {
                 <button
                   type="button"
                   className="nw-form__btn nw-form__btn--cancel"
-                  onClick={() => navigate('/notice')}
+                  onClick={() => navigate('/notice/news')}
                 >
                   <FiArrowLeft aria-hidden="true" />
                   취소

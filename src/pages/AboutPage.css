@@ -280,26 +280,26 @@ body:has(.about-page) main {
 
 .about-values__icon {
   display: grid;
-  width: 36px;
-  height: 36px;
+  width: var(--about-values-icon-size);
+  height: var(--about-values-icon-size);
   margin-bottom: 20px;
   place-items: center;
   border-radius: 50%;
   background: #edf0fa;
   color: var(--color-brand);
-  font-size: 19px;
+  font-size: var(--about-values-icon-font-size);
 }
 
 .about-values__card h3 {
   margin-bottom: 12px;
   color: #151823;
-  font-size: 13px;
+  font-size: var(--about-values-title-font-size);
   letter-spacing: .04em;
 }
 
 .about-values__card p {
   color: #676d78;
-  font-size: 13px;
+  font-size: var(--about-values-body-font-size);
   line-height: 1.75;
   word-break: keep-all;
 }

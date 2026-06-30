@@ -2,22 +2,24 @@ import { useEffect, useState } from 'react'
 import openingNewsData from '../../data/openingNewsData'
 import noticeData from '../../data/noticeData'
 import newsData from '../../data/newsData'
-import { fetchNotices } from '../../services/noticeService'
+import { fetchNotices, fetchOpeningNotices } from '../../services/noticeService'
 import NewsNoticeColumn from '../cards/NewsNoticeColumn'
 import './NewsNoticeSection.css'
 
 export default function NewsNoticeSection() {
   const [activeTab, setActiveTab] = useState(0)
   const [latestNotices, setLatestNotices] = useState(noticeData)
+  const [latestOpeningNotices, setLatestOpeningNotices] = useState(openingNewsData)
 
   useEffect(() => {
     fetchNotices().then(setLatestNotices).catch(() => {})
+    fetchOpeningNotices().then(setLatestOpeningNotices).catch(() => {})
   }, [])
 
   const columns = [
-    { title: '개강소식', data: openingNewsData,   linkPath: '/opening-news' },
-    { title: '공지사항', data: latestNotices,      linkPath: '/notice'       },
-    { title: '뉴스',    data: newsData,            linkPath: '/news'         },
+    { title: '개강소식', data: latestOpeningNotices, linkPath: '/notice/start' },
+    { title: '공지사항', data: latestNotices,         linkPath: '/notice'       },
+    { title: '뉴스',    data: newsData,               linkPath: '/news'         },
   ]
 
   return (

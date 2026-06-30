@@ -42,8 +42,8 @@ Single-page React 19 app built with Vite 8, written in plain JavaScript (no Type
 /notice/announcement     → NoticePage
 /notice/start            → OpeningNoticePage
 /notice/write            → NoticeWritePage (admin only)
-/notice/:noticeId        → NoticeDetailPage
 /notice/news             → ComingSoonPage
+/notice/:noticeId        → NoticeDetailPage
 /opening-news/**         → ComingSoonPage
 /news/**                 → ComingSoonPage
 *                        → ComingSoonPage
@@ -60,16 +60,18 @@ pages/
   HomePage.jsx       — composes sections: MainVisual, NewsNoticeSection (above-fold 100vh),
                        EducationFieldSection, AcademyIntroSection, SeminarSection, LocationSection
   AboutPage.jsx      — academy intro page with hero/tabs/breadcrumb/values cards
-  TeachersPage.jsx   — teacher grid rendered from teacherData; shares hero/tabs pattern with AboutPage
+  TeachersPage.jsx   — teacher grid rendered from teacherData; shares hero/tabs pattern
+  AwardsPage.jsx     — scroll-driven timeline of competition awards; uses useTimelineProgress
+                       and useActiveTimelineYear to sync a decade tab bar with scroll position
+  LocationPage.jsx   — branch selector (LocationTabs) + info card + Leaflet map
+  NoticePage.jsx     — filterable notice board; category filter + keyword search across
+                       title/content/author; admin write button shown to isAdminUser()
+  NoticeDetailPage.jsx — single notice view; requires login (redirects to /login with
+                         state.from); admin edit button shown to isAdminUser()
+  OpeningNoticePage.jsx — opening-news board; same layout/CSS as NoticePage, no auth gate
   LoginPage.jsx      — email + Google + Apple sign-in (lazy loaded); single component
                        manages both 'login' and 'forgot' views via a `view` state string
   SignUpPage.jsx     — email registration
-  AwardsPage.jsx     — scroll-driven awards timeline; DecadeTabs + AwardsTimeline
-  LocationPage.jsx   — branch selector (LocationTabs) + Leaflet map (MapBox)
-  NoticePage.jsx     — filterable notice board; category + search; admin write button
-  OpeningNoticePage.jsx — opening news board (reuses NoticePage.css)
-  NoticeDetailPage.jsx  — notice detail; requires login (lock screen if unauthenticated);
-                          admin edit button; redirects to /notice if noticeId not found
   NoticeWritePage.jsx   — admin-only notice creation form; category select, title, content
                           textarea, image upload (up to 5, stored in Firebase Storage);
                           uses addNotice() from noticeService; reuses NoticePage.css
@@ -86,13 +88,13 @@ components/
                        closes on ESC / link click, locks body scroll while open
     SubPageHero.jsx  — unified sub-page hero: eyebrow + h1 + optional tabs nav;
                        accepts tabs={[{ label, to, active? }]}; used by all sub-pages
-  awards/
-    AwardsTimeline.jsx — scroll-animated vertical timeline grouped by year
-    DecadeTabs.jsx     — sticky decade filter tabs (e.g. "2020s", "2010s")
   home/              — home-page section components
                        (NewsNoticeSection, EducationFieldSection, AcademyIntroSection, LocationSection)
   cards/             — NewsNoticeColumn, NewsNoticeItem, EducationFieldCard, AcademyIntroCard
   location/          — LocationInfoCard, LocationTabs, MapBox
+  awards/
+    AwardsTimeline.jsx — scroll-animated vertical timeline grouped by year
+    DecadeTabs.jsx     — sticky decade filter tabs (e.g. "2020s", "2010s")
   auth/
     GoogleLoginButton.jsx
 firebase/
@@ -107,32 +109,41 @@ services/
                        is unconfigured
 hooks/
   useAuth.js              — useAuth() → { user, loading }; subscribes to onAuthStateChanged
-  useTimelineProgress.js  — scroll progress (0–1) within a container ref (rAF + passive scroll)
-  useActiveTimelineYear.js — IntersectionObserver-based active year for AwardsTimeline
+  useTimelineProgress.js  — rAF scroll hook; returns 0–1 progress of containerRef through viewport
+  useActiveTimelineYear.js — IntersectionObserver hook; watches year section elements and
+                             returns the year whose data-year element is closest to viewport center
 data/                — static JS arrays: newsData, noticeData, openingNewsData,
                        educationFieldsData, academyIntroData, locationData,
                        quickMenuData, seminarData, footerData, mobileMenuData,
                        teacherData, awardsData
 utils/
+  admin.js           — isAdminUser(user) checks user.email against VITE_ADMIN_EMAILS
   firebaseErrorMessage.js  — maps Firebase auth error codes to Korean user-facing strings
-  admin.js                 — isAdminUser(user): checks user.email against VITE_ADMIN_EMAILS
 ```
 
 ### Implementation status
 
-Fully implemented: all HomePage sections, `AboutPage`, `TeachersPage`, `AwardsPage`, `LocationPage`, `NoticePage`, `OpeningNoticePage`, `NoticeDetailPage`, `NoticeWritePage`, `LoginPage`, `SignUpPage`, `MobileMenu`, `FloatingQuickMenu`, `TopButton`, `Footer`.
+Fully implemented: `MainVisual`, `NewsNoticeSection`, `EducationFieldSection`, `AcademyIntroSection`, `LocationSection`, `FloatingQuickMenu`, `TopButton`, `Footer`, `AboutPage`, `TeachersPage`, `AwardsPage`, `LocationPage`, `NoticePage`, `NoticeDetailPage`, `NoticeWritePage`, `OpeningNoticePage`, `LoginPage`, `SignUpPage`, `MobileMenu`.
 
-Still `ComingSoonPage`: `/notice/news`, `/opening-news/**`, `/news/**`, and all `/courses/**` + `/orientation/**` routes.
+Skeleton (`.ph` divs + `skeleton-tag` label): `SeminarSection`. When implementing a section, replace skeleton markup with real content.
 
 ### Sub-page layout pattern
 
-All sub-pages use `<SubPageHero eyebrow="..." title="..." tabs={[...]} />` followed by a `.subpage-breadcrumb` bar. The `tabs` prop is optional — auth pages (`/login`, `/signup`) omit it. New sub-pages should follow this hero → breadcrumb → content structure.
+All implemented sub-pages use `<SubPageHero eyebrow="..." title="..." tabs={heroTabs} />` at the top — the `tabs` prop renders an in-hero tab nav. After the hero, every page has a `.subpage-breadcrumb` bar. New sub-pages should follow: `SubPageHero` → breadcrumb → content.
 
-`AboutPage` renders its own hero section directly (not via `SubPageHero`) to support the full-bleed image layout with inline tabs. `TeachersPage` follows the same pattern. For new pages under `/about/**`, use `SubPageHero` with the standard 4-tab set (`학원 소개 / 강사진 소개 / 수상 실적 / 오시는 길`).
+Desktop nav and breadcrumb are separate sources of truth: `navItems` in `Header.jsx` (desktop) and `mobileMenuData` in `src/data/mobileMenuData.js` (mobile) must both be updated when adding new routes.
+
+### Awards page
+
+`AwardsPage` drives a scroll-synced timeline. `awardsData` in `src/data/awardsData.js` is an array of `{ year, decade, competitions[] }` where each competition has `{ title, notes[], categories[] }` and each category has `{ title, awards[] }` with `{ rank, winners[] }`. `decades` (also exported) is a derived list of unique decade strings (e.g. `'2020s'`). The `DecadeTabs` component scrolls to the first year of that decade via `yearRefs`.
+
+### Notice board
+
+`noticeData` items: `{ id, category, title, author, views, date, summary, content[], path }`. The `path` field must be `/notice/:id`. `NoticeDetailPage` requires the user to be logged in — unauthenticated visitors see a lock screen with a link to `/login` (passes `state.from` so login can redirect back). Admin users (checked via `isAdminUser`) see a write/edit button.
 
 ### MainVisual (Swiper)
 
-`MainVisual.jsx` uses **Swiper** with `Autoplay` and `EffectFade` modules. Each slide entry in the `slides` array requires both a desktop (`_d.png`) and a mobile (`_m.png`) image; they are rendered via `<picture><source media="(max-width: 768px)">`. Each slide also has a `theme` (`'light'` or `'dark'`) that is dispatched as a `header-theme` CustomEvent so `Header` and `FloatingQuickMenu` can adapt their appearance.
+`MainVisual.jsx` uses **Swiper** with `Autoplay` and `EffectFade` modules. Each slide entry requires both a desktop (`_d.png`) and a mobile (`_m.png`) image rendered via `<picture><source media="(max-width: 768px)">`. Each slide has a `theme` (`'light'` or `'dark'`) dispatched as a `header-theme` CustomEvent so `Header` and `FloatingQuickMenu` can adapt their appearance.
 
 ### Cross-component theme communication
 
@@ -140,7 +151,7 @@ All sub-pages use `<SubPageHero eyebrow="..." title="..." tabs={[...]} />` follo
 
 ### Header / MobileMenu
 
-`Header.jsx` implements a megamenu dropdown for desktop: hover on a nav item reveals all submenu columns simultaneously with a sliding indicator (`header__dropdown-indicator`) that translates to the active column. Position is recalculated on resize via `getBoundingClientRect`. The `navItems` array in `Header.jsx` is the single source of truth for desktop nav structure. Submenu entries support `{ label, to }` for internal links or `{ label, href, external: true }` for external links (renders an `<a>` instead of `<Link>`).
+`Header.jsx` implements a megamenu dropdown for desktop: hover on a nav item reveals all submenu columns simultaneously with a sliding indicator (`header__dropdown-indicator`) that translates to the active column. Position is recalculated on resize via `getBoundingClientRect`. The `navItems` array in `Header.jsx` is the single source of truth for desktop nav structure.
 
 `MobileMenu.jsx` is a separate full-screen overlay driven by `mobileMenuData` (separate source of truth from `navItems`). The hamburger button in `Header.jsx` controls the `isOpen` state passed down to `MobileMenu`.
 
@@ -156,15 +167,9 @@ Has a CSS marquee (`academy-intro__marquee-track`) running vertically in the bac
 
 `src/components/location/MapBox.jsx` uses **Leaflet** (`import L from 'leaflet'`). It patches the default marker icon paths at module load to fix Vite's asset URL resolution — do not remove that setup block or markers will be broken.
 
-### Data shapes
+### teacherData shape
 
-`src/data/teacherData.js` — `{ id, name, role, field, career[], email, campuses[], image, message }`. `image` now uses local assets (`src/assets/teacher1-5.jpg`).
-
-`src/data/seminarData.js` — `{ id, image, title, description, youtubeUrl }`. Images from `src/assets/slide1-3.jpg`. `SeminarSection` renders a looping Swiper carousel linking to YouTube.
-
-`src/data/noticeData.js` / `openingNewsData.js` — `{ id, category, title, author, views, date, summary, content[], path }`. `path` is `/notice/:id`. `content[]` is paragraph strings rendered in `NoticeDetailPage`.
-
-`src/data/awardsData.js` — exports `awardsData` (array of `{ year, decade, competitions[] }`) and `decades` (string array e.g. `['2020s', '2010s']`). Each competition has `{ title, notes[], categories[] }` → categories have `{ title, awards[] }` → awards have `{ rank, winners[] }` → winners are `{ name, school }`.
+`src/data/teacherData.js` exports `teacherData` — an array of `{ id, name, role, field, career[], email, campuses[], image, message }`. The `image` field currently holds Unsplash placeholder URLs; replace with real hosted images when available.
 
 ### Static assets
 
@@ -177,44 +182,18 @@ Has a CSS marquee (`academy-intro__marquee-track`) running vertically in the bac
 
 Classes follow **BEM** naming: `block__element--modifier`. Each component/section owns a co-located `.css` file; no CSS Modules or Tailwind.
 
-`src/index.css` defines global resets, utilities, and design tokens:
+`src/index.css` defines global resets, the `.container` max-width utility, and these design tokens:
 
-**Colors**
 | Token | Value |
 |---|---|
-| `--color-brand` | `#010859` |
-| `--color-brand-mid` | `#4E538B` |
-| `--color-brand-light` | `#B3B5CE` |
-| `--color-point` | `#5689F1` |
-| `--color-accent` | `#1e4fcc` |
-| `--color-accent-dark` | `#0a1f7a` |
-| `--color-bg` | `#F6F9FF` |
-| `--color-bg-dark` | `#0d1b3e` |
-| `--color-surface` | `#ffffff` |
-| `--color-footer` | `#111827` |
-
-**Layout**
-| Token | Value |
-|---|---|
+| `--primary` | `#1e4fcc` |
+| `--primary-dark` | `#0a1f7a` |
+| `--dark-bg` | `#0d1b3e` |
+| `--text` | `#1a1a2e` |
 | `--max-w` | `1560px` |
-| `--header-h` | `100px` (64px on mobile) |
-| `--section-py` | `80px` (48px on mobile) |
-| `--container-px` | `24px` |
+| `--header-h` | `100px` |
 
-**Shape / Motion**
-| Token | Value |
-|---|---|
-| `--radius-sm` | `4px` |
-| `--radius-md` | `12px` |
-| `--radius-pill` | `999px` |
-| `--transition` | `0.2s ease` |
-
-**Global utility classes in `index.css`**
-- `.container` — centered, max-width, padded wrapper
-- `.glassmorphism` — applies all `--glass-*` vars (bg, blur, border, radius, shadow)
-- `.snap-section` — `scroll-snap-align: start` (parent `html` has `scroll-snap-type: y proximity`)
-- `.ph` / `.ph--light` — skeleton placeholder rectangles (dark/light variants)
-- `.skeleton-tag` — uppercase label badge for skeleton UIs
+Skeleton utilities also live in `index.css`: `.ph` (dark placeholder), `.ph--light` (light-on-dark variant), `.skeleton-tag` (uppercase label badge).
 
 ## Key details
 

@@ -35,6 +35,10 @@
   --font-lg: 30px;
   --font-xl: 36px;
   --font-2xl: 42px;
+  --about-values-icon-size: 52px;
+  --about-values-icon-font-size: 27px;
+  --about-values-title-font-size: 18px;
+  --about-values-body-font-size: 16px;
   --fw-skiny: 100;
   --fw-regular: 400;
   --fw-medium: 500;
@@ -154,6 +158,10 @@ html {
   :root {
     --header-h: 64px;
     --section-py: 48px;
+    --about-values-icon-size: 46px;
+    --about-values-icon-font-size: 24px;
+    --about-values-title-font-size: 16px;
+    --about-values-body-font-size: 15px;
   }
 
   html {
