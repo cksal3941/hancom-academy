@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, Navigate, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FiEdit3, FiHome, FiSearch } from 'react-icons/fi'
 import SubPageHero from '../components/common/SubPageHero'
 import noticeData from '../data/noticeData'
 import { fetchNotices } from '../services/noticeService'
-import { useAuth } from '../hooks/useAuth'
 import './NoticePage.css'
 
 const heroTabs = [
@@ -23,8 +22,6 @@ const searchOptions = [
 const PAGE_SIZE = 10
 
 export default function NoticePage() {
-  const { user, loading: authLoading } = useAuth()
-  const location = useLocation()
   const [notices, setNotices] = useState(noticeData)
   const [category, setCategory] = useState('전체')
   const [searchField, setSearchField] = useState('title')
@@ -56,24 +53,6 @@ export default function NoticePage() {
       return String(notice[searchField] ?? '').toLowerCase().includes(normalizedKeyword)
     })
   }, [notices, category, keyword, searchField])
-
-  if (authLoading) {
-    return (
-      <div className="notice-page">
-        <div className="notice-board">
-          <div className="notice-board__inner">
-            <div className="notice-board__auth">
-              <span className="notice-board__spinner" aria-label="불러오는 중" />
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location.pathname }} replace />
-  }
 
   const totalPages = Math.max(1, Math.ceil(filteredNotices.length / PAGE_SIZE))
   const pagedNotices = filteredNotices.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
