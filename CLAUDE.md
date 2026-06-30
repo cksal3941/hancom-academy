@@ -41,6 +41,7 @@ Single-page React 19 app built with Vite 8, written in plain JavaScript (no Type
 /notice                  → NoticePage
 /notice/announcement     → NoticePage
 /notice/start            → OpeningNoticePage
+/notice/write            → NoticeWritePage (admin only)
 /notice/:noticeId        → NoticeDetailPage
 /notice/news             → ComingSoonPage
 /opening-news/**         → ComingSoonPage
@@ -69,6 +70,9 @@ pages/
   OpeningNoticePage.jsx — opening news board (reuses NoticePage.css)
   NoticeDetailPage.jsx  — notice detail; requires login (lock screen if unauthenticated);
                           admin edit button; redirects to /notice if noticeId not found
+  NoticeWritePage.jsx   — admin-only notice creation form; category select, title, content
+                          textarea, image upload (up to 5, stored in Firebase Storage);
+                          uses addNotice() from noticeService; reuses NoticePage.css
   ComingSoonPage.jsx — placeholder for unimplemented routes
 sections/            — full-viewport (100vh) blocks for HomePage only
                        (MainVisual, SeminarSection, LocationSection)
@@ -93,10 +97,14 @@ components/
     GoogleLoginButton.jsx
 firebase/
   firebase.js        — initialises Firebase only when all env vars are present;
-                       exports auth, db, isFirebaseConfigured, isAppleAuthEnabled
+                       exports auth, db, storage, isFirebaseConfigured, isAppleAuthEnabled
 services/
   authService.js     — loginWithGoogle, loginWithApple, loginWithEmail, signUpWithEmail,
                        sendPasswordReset, logout; each calls ensureFirebaseConfigured() before use
+  noticeService.js   — addNotice(), fetchNotices(), fetchNoticeById(); Firestore collection
+                       'notices' ordered by createdAt desc; image files uploaded to Firebase
+                       Storage under notices/; falls back to static noticeData when Firebase
+                       is unconfigured
 hooks/
   useAuth.js              — useAuth() → { user, loading }; subscribes to onAuthStateChanged
   useTimelineProgress.js  — scroll progress (0–1) within a container ref (rAF + passive scroll)
@@ -112,7 +120,7 @@ utils/
 
 ### Implementation status
 
-Fully implemented: all HomePage sections, `AboutPage`, `TeachersPage`, `AwardsPage`, `LocationPage`, `NoticePage`, `OpeningNoticePage`, `NoticeDetailPage`, `LoginPage`, `SignUpPage`, `MobileMenu`, `FloatingQuickMenu`, `TopButton`, `Footer`.
+Fully implemented: all HomePage sections, `AboutPage`, `TeachersPage`, `AwardsPage`, `LocationPage`, `NoticePage`, `OpeningNoticePage`, `NoticeDetailPage`, `NoticeWritePage`, `LoginPage`, `SignUpPage`, `MobileMenu`, `FloatingQuickMenu`, `TopButton`, `Footer`.
 
 Still `ComingSoonPage`: `/notice/news`, `/opening-news/**`, `/news/**`, and all `/courses/**` + `/orientation/**` routes.
 
