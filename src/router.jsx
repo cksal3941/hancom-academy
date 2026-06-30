@@ -19,6 +19,7 @@ import NewsPage from './pages/NewsPage'
 import NewsWritePage from './pages/NewsWritePage'
 import NewsDetailPage from './pages/NewsDetailPage'
 import NewsEditPage from './pages/NewsEditPage'
+import CoursesGiftedPage from './pages/CoursesGiftedPage'
 
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
       { path: 'about/teachers', element: <TeachersPage /> },
       { path: 'about/awards', element: <AwardsPage /> },
       { path: 'about/location', element: <LocationPage /> },
+      { path: 'courses/gifted', element: <CoursesGiftedPage /> },
       { path: 'opening-news', element: <ComingSoonPage /> },
       { path: 'opening-news/*', element: <ComingSoonPage /> },
       { path: 'notice', element: <NoticePage /> },
