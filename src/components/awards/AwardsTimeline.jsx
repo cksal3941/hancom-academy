@@ -69,7 +69,7 @@ export default function AwardsTimeline({ data, yearRefs, activeYear, progress })
       <div
         className="awards-timeline__progress-line"
         aria-hidden="true"
-        style={{ height: `${progress * 100}%` }}
+        style={{ height: `calc(${progress * 100}% - 120px)` }}
       />
 
       {data.map((entry) => {

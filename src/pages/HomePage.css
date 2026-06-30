@@ -10,6 +10,16 @@
 .above-fold > .main-visual   { flex: 3; min-height: 0; }
 .above-fold > .news-notice   { flex: 1; min-height: 0; }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+  .above-fold > .main-visual {
+    flex: 2;
+  }
+
+  .above-fold > .news-notice {
+    flex: 1;
+  }
+}
+
 @media (max-width: 768px) {
   .above-fold {
     height: 100vh;

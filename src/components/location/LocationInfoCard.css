@@ -41,7 +41,7 @@
 .location-card__name {
   font-size: var(--font-lg);
   font-weight: var(--fw-bold);
-  color: #fff;
+  color: var(--color-surface);
   line-height: 1.3;
   padding-bottom: 20px;
   margin-bottom: 32px;
@@ -95,7 +95,106 @@
   line-height: 1.6;
 }
 
+.location-card__nav {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-surface-faint);
+}
+
+.location-card__nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.location-card__nav-btn {
+  flex: 1;
+  width: 88px;
+  height: 88px;
+  max-width: 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.location-card__nav-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-bottom: 5px;
+}
+
+.location-card__nav-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+.location-card__nav-btn--kakao {
+  background: #391B1B;
+  color: #FEE500;
+}
+
+.location-card__nav-btn--naver {
+  background: #03C75A;
+  color: #fff;
+}
+
+.location-card__nav-btn--google {
+  background: #fff;
+  color: #4285F4;
+  border: 1px solid var(--border-color);
+}
+
+.location-card__nav-btn--tmap {
+  background: #11AAE1;
+  color: #fff;
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .location-card__nav-buttons {
+    gap: 24px;
+  }
+
+  .location-card__nav-btn {
+    width: 72px;
+    height: 72px;
+    max-width: 72px;
+  }
+
+  .location-card__nav-btn-icon {
+    font-size: 15px;
+    margin-bottom: 3px;
+  }
+}
+
 @media (max-width: 768px) {
+  .location-card__nav-buttons {
+    gap: 16px;
+  }
+
+  .location-card__nav-btn {
+    width: 62px;
+    height: 62px;
+    max-width: 62px;
+    font-size: 11px;
+    border-radius: 10px;
+  }
+
+  .location-card__nav-btn-icon {
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+
   .location-card {
     padding: 28px 24px;
   }

@@ -364,6 +364,25 @@ body:has(.about-page) main {
   color: var(--color-brand);
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+  .about-intro {
+    padding: 80px 24px 100px;
+  }
+
+  .about-intro__heading {
+    margin-bottom: 64px;
+  }
+
+  .about-values {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 80px;
+  }
+
+  .about-cta {
+    padding: 60px 24px;
+  }
+}
+
 @media (max-width: 900px) {
   .about-intro__story {
     grid-template-columns: 1fr;

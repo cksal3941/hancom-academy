@@ -121,6 +121,39 @@
 .academy-intro__right > *:nth-child(4) { grid-area: 2 / 1; margin-top: 20px; }
 .academy-intro__right > *:nth-child(5) { grid-area: 3 / 2; margin-top: -180px; }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+  .academy-intro__inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding-bottom: var(--section-py);
+  }
+
+  .academy-intro__left {
+    width: 100%;
+    position: static;
+    margin: 0;
+  }
+
+  .academy-intro__title {
+    font-size: var(--font-xl);
+  }
+
+  .academy-intro__right {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-right: 0;
+  }
+
+  .academy-intro__right > *:nth-child(1),
+  .academy-intro__right > *:nth-child(2),
+  .academy-intro__right > *:nth-child(3),
+  .academy-intro__right > *:nth-child(4),
+  .academy-intro__right > *:nth-child(5) {
+    grid-area: auto;
+    margin-top: 0;
+  }
+}
+
 @media (max-width: 768px) {
   .academy-intro__marquee {
     display: none;

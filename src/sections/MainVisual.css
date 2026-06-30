@@ -98,6 +98,22 @@
   animation-play-state: paused;
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+  .main-visual__controls {
+    bottom: 28px;
+    gap: 10px;
+  }
+
+  .main-visual__progress-bar {
+    min-width: 140px;
+  }
+
+  .main-visual__pagination {
+    font-size: 14px;
+    min-width: 60px;
+  }
+}
+
 @media (max-width: 768px) {
   /* 높이는 above-fold flex: 1 로 채움 — 고정값 없음 */
   .main-visual {

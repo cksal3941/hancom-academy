@@ -65,6 +65,25 @@
   flex-direction: column;
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+  .location__content {
+    gap: 24px;
+  }
+
+  .location__head {
+    margin-bottom: 36px;
+  }
+
+  .location .location-tabs {
+    width: calc(50% - 12px);
+  }
+
+  .location .location-tab {
+    padding: 10px 40px;
+    white-space: nowrap;
+  }
+}
+
 @media (max-width: 768px) {
   .location {
     min-height: auto;

@@ -1,3 +1,5 @@
+import { SiKakaotalk, SiNaver, SiGoogle } from 'react-icons/si'
+import { IoNavigate } from 'react-icons/io5'
 import './LocationInfoCard.css'
 
 const IconPin = () => (
@@ -37,9 +39,38 @@ const items = [
 ]
 
 export default function LocationInfoCard({ location }) {
+  const { lat, lng, name, address } = location
+
+  const mapLinks = [
+    {
+      label: '카카오맵',
+      href: `https://map.kakao.com/link/to/${encodeURIComponent(name)},${lat},${lng}`,
+      mod: 'kakao',
+      icon: <SiKakaotalk />,
+    },
+    {
+      label: '네이버지도',
+      href: `https://map.naver.com/v5/search/${encodeURIComponent(address)}`,
+      mod: 'naver',
+      icon: <SiNaver />,
+    },
+    {
+      label: '구글지도',
+      href: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
+      mod: 'google',
+      icon: <SiGoogle />,
+    },
+    {
+      label: '티맵',
+      href: `tmap://route?goalname=${encodeURIComponent(name)}&goalx=${lng}&goaly=${lat}`,
+      mod: 'tmap',
+      icon: <IoNavigate />,
+    },
+  ]
+
   return (
     <div className="location-card">
-      <h3 className="location-card__name">{location.name}</h3>
+      <h3 className="location-card__name">{name}</h3>
 
       <ul className="location-card__list">
         {items.map(({ icon, key, label }) => (
@@ -52,6 +83,23 @@ export default function LocationInfoCard({ location }) {
           </li>
         ))}
       </ul>
+
+      <div className="location-card__nav">
+        <div className="location-card__nav-buttons">
+          {mapLinks.map(({ label, href, mod, icon }) => (
+            <a
+              key={mod}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`location-card__nav-btn location-card__nav-btn--${mod}`}
+            >
+              <span className="location-card__nav-btn-icon">{icon}</span>
+              {label}
+            </a>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

@@ -9,7 +9,7 @@
 .awards-timeline__track {
   position: absolute;
   left: var(--line-x);
-  top: 0;
+  top: 120px;
   bottom: 0;
   width: 2px;
   background: var(--border-color);
@@ -19,7 +19,7 @@
 .awards-timeline__progress-line {
   position: absolute;
   left: var(--line-x);
-  top: 0;
+  top: 120px;
   width: 2px;
   background: linear-gradient(180deg, var(--color-accent), var(--color-sky));
   border-radius: 1px;
@@ -179,6 +179,7 @@
   font-weight: var(--fw-bold);
   color: var(--color-brand);
   line-height: 1.8;
+  padding: 4px 0 4px 8px;
 }
 
 .award-row__winners {

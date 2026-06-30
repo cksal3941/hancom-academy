@@ -4,10 +4,12 @@ import 'swiper/css'
 import seminarData from '../data/seminarData'
 import './SeminarSection.css'
 
+const getThumb = (videoId) =>
+  videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null
+
 export default function SeminarSection() {
   return (
     <section className="seminar">
-      {/* 타이틀 영역 */}
       <div className="seminar__head">
         <p className="seminar__label" data-aos="fade-up">INFO SESSION</p>
         <h2 className="seminar__title" data-aos="fade-up" data-aos-delay="100">교육 설명회</h2>
@@ -16,7 +18,6 @@ export default function SeminarSection() {
         </p>
       </div>
 
-      {/* 슬라이드 wrapper에만 AOS 적용 — track/slide 내부 제외 */}
       <div className="seminar__slider-wrap" data-aos="fade-up" data-aos-delay="250">
         <Swiper
           modules={[Autoplay]}
@@ -27,25 +28,35 @@ export default function SeminarSection() {
           autoplay={{ delay: 3500, disableOnInteraction: false }}
           className="seminar__swiper"
         >
-          {seminarData.map(item => (
-            <SwiperSlide key={item.id} className="seminar__slide">
-              <a
-                className="seminar__card"
-                href={item.youtubeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={item.title}
-              >
-                <div className="seminar__card-thumb">
-                  <img src={item.image} alt={item.title} className="seminar__card-img" />
-                </div>
-                <div className="seminar__card-body">
-                  <h3 className="seminar__card-title">{item.title}</h3>
-                  <p className="seminar__card-desc">{item.description}</p>
-                </div>
-              </a>
-            </SwiperSlide>
-          ))}
+          {seminarData.map(item => {
+            const thumb = getThumb(item.videoId)
+            const CardWrapper = item.youtubeUrl ? 'a' : 'div'
+            const linkProps = item.youtubeUrl
+              ? { href: item.youtubeUrl, target: '_blank', rel: 'noopener noreferrer' }
+              : {}
+            return (
+              <SwiperSlide key={item.id} className="seminar__slide">
+                <CardWrapper
+                  className="seminar__card"
+                  aria-label={item.title}
+                  {...linkProps}
+                >
+                  <div className="seminar__card-thumb">
+                    {thumb && (
+                      <img src={thumb} alt={item.title} className="seminar__card-img" />
+                    )}
+                    {!item.youtubeUrl && (
+                      <div className="seminar__card-coming">준비 중</div>
+                    )}
+                  </div>
+                  <div className="seminar__card-body">
+                    <h3 className="seminar__card-title">{item.title}</h3>
+                    <p className="seminar__card-desc">{item.description}</p>
+                  </div>
+                </CardWrapper>
+              </SwiperSlide>
+            )
+          })}
         </Swiper>
       </div>
     </section>

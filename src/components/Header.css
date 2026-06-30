@@ -399,16 +399,16 @@ button.header__button {
 }
 
 /* 데스크탑에서 모바일 메뉴 강제 숨김 */
-@media (min-width: 769px) {
+@media (min-width: 1025px) {
   .header__mobile-menu {
     display: none !important;
   }
 }
 
 /* ─────────────────────────────
-   Mobile (@media 768px)
+   Tablet & Mobile (@media 1024px)
 ───────────────────────────── */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .header__inner {
     padding: 0 20px;
   }

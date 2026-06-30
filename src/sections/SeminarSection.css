@@ -1,7 +1,7 @@
 .seminar {
   width: 100%;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: clip;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -85,6 +85,20 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* 준비 중 카드 */
+.seminar__card-coming {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f2f8;
+  color: #9ca3b0;
+  font-size: 15px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.05em;
 }
 
 /* 텍스트 영역 */

@@ -339,6 +339,17 @@ body:has(.login-page) {
   margin: 40px auto;
 }
 
+/* ── 태블릿 ── */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .login-page__body {
+    padding: 72px 24px 90px;
+  }
+
+  .login-page__wrap {
+    max-width: 480px;
+  }
+}
+
 /* ── 모바일 ── */
 @media (max-width: 768px) {
   .login-page__body {
