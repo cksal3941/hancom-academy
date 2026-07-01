@@ -3,6 +3,7 @@ import openingNewsData from '../../data/openingNewsData'
 import noticeData from '../../data/noticeData'
 import newsData from '../../data/newsData'
 import { fetchNotices, fetchOpeningNotices } from '../../services/noticeService'
+import { fetchNews } from '../../services/newsService'
 import NewsNoticeColumn from '../cards/NewsNoticeColumn'
 import './NewsNoticeSection.css'
 
@@ -10,16 +11,18 @@ export default function NewsNoticeSection() {
   const [activeTab, setActiveTab] = useState(0)
   const [latestNotices, setLatestNotices] = useState(noticeData)
   const [latestOpeningNotices, setLatestOpeningNotices] = useState(openingNewsData)
+  const [latestNews, setLatestNews] = useState(newsData)
 
   useEffect(() => {
     fetchNotices().then(setLatestNotices).catch(() => {})
     fetchOpeningNotices().then(setLatestOpeningNotices).catch(() => {})
+    fetchNews().then(setLatestNews).catch(() => {})
   }, [])
 
   const columns = [
     { title: '개강소식', data: latestOpeningNotices, linkPath: '/notice/start' },
     { title: '공지사항', data: latestNotices,         linkPath: '/notice'       },
-    { title: '뉴스',    data: newsData,               linkPath: '/news'         },
+    { title: '뉴스',    data: latestNews,             linkPath: '/news'         },
   ]
 
   return (
