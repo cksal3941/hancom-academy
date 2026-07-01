@@ -11,25 +11,14 @@ import {
   serverTimestamp,
   updateDoc,
 } from 'firebase/firestore'
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-import { db, isFirebaseConfigured, storage } from '../firebase/firebase'
+import { db, isFirebaseConfigured } from '../firebase/firebase'
+import { uploadImages } from './cloudinaryService'
 import noticeData from '../data/noticeData'
 import openingNewsData from '../data/openingNewsData'
 
 const COL = 'notices'
 const OPENING_COL = 'opening-notices'
 
-async function uploadImages(files) {
-  if (!storage) throw new Error('Firebase Storage가 설정되지 않았습니다.')
-
-  return Promise.all(
-    files.map(async (file) => {
-      const path = `notices/${Date.now()}_${file.name}`
-      const snapshot = await uploadBytes(ref(storage, path), file)
-      return getDownloadURL(snapshot.ref)
-    }),
-  )
-}
 
 export async function addNotice({ category, title, content, imageFiles = [] }) {
   if (!isFirebaseConfigured || !db) throw new Error('Firebase가 설정되지 않았습니다.')

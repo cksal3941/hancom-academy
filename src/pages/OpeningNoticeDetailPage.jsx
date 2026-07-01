@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { FiArrowLeft, FiHome, FiTrash2 } from 'react-icons/fi'
 import SubPageHero from '../components/common/SubPageHero'
+import NoticeImages from '../components/common/NoticeImages'
 import { deleteOpeningNotice, fetchOpeningNoticeById, incrementOpeningNoticeViews } from '../services/noticeService'
 import './NoticePage.css'
 
@@ -89,13 +90,7 @@ export default function OpeningNoticeDetailPage() {
               {paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
-              {notice.images?.length > 0 && (
-                <div className="notice-detail__images">
-                  {notice.images.map((url) => (
-                    <img key={url} src={url} alt="" className="notice-detail__img" />
-                  ))}
-                </div>
-              )}
+              <NoticeImages images={notice.images} />
             </div>
 
             <div className="notice-detail__actions">

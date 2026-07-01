@@ -1,8 +1,14 @@
 [
   {
-    "origin": ["http://localhost:5173", "https://hancom-academy.vercel.app", "https://*.vercel.app"],
+    "origin": ["http://localhost:5173", "https://hancom-academy.vercel.app"],
     "method": ["GET", "POST", "PUT", "DELETE", "HEAD"],
-    "responseHeader": ["Content-Type", "Authorization"],
-    "maxAgeSeconds": 3600
+    "maxAgeSeconds": 3600,
+    "responseHeader": [
+      "Content-Type",
+      "Authorization",
+      "Content-Length",
+      "User-Agent",
+      "x-goog-resumable"
+    ]
   }
 ]
