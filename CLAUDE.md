@@ -38,11 +38,12 @@ Single-page React 19 app built with Vite 8, written in plain JavaScript (no Type
 /about/teachers                 → TeachersPage
 /about/awards                   → AwardsPage
 /about/location                 → LocationPage
-/notice                         → NoticePage
-/notice/announcement            → NoticePage
-/notice/write                   → NoticeWritePage (admin only)
-/notice/:noticeId               → NoticeDetailPage
-/notice/:noticeId/edit          → NoticeEditPage (admin only)
+/courses/gifted                 → CoursesGiftedPage
+/notice                         → NoticePage (ProtectedRoute)
+/notice/announcement            → NoticePage (ProtectedRoute)
+/notice/write                   → NoticeWritePage (ProtectedRoute, admin only)
+/notice/:noticeId               → NoticeDetailPage (ProtectedRoute)
+/notice/:noticeId/edit          → NoticeEditPage (ProtectedRoute, admin only)
 /notice/start                   → OpeningNoticePage
 /notice/start/write             → OpeningNoticeWritePage (admin only)
 /notice/start/:openingNoticeId  → OpeningNoticeDetailPage
@@ -57,6 +58,8 @@ Single-page React 19 app built with Vite 8, written in plain JavaScript (no Type
 /opening-news/**                → ComingSoonPage
 *                               → ComingSoonPage
 ```
+
+`ProtectedRoute` in `router.jsx` wraps routes that require login — it reads `useAuth()` and redirects to `/login` with `state.from` if unauthenticated. Notice routes (`/notice`, `/notice/announcement`, `/notice/write`, `/notice/:noticeId`, `/notice/:noticeId/edit`) are all gated at the router level via `ProtectedRoute`.
 
 `App.jsx` derives `isAuthPage` (`/login`, `/signup`) to hide `FloatingQuickMenu` and `TopButton` on those routes. On sub-pages (non-`/`) `FloatingQuickMenu` receives `mobileOnly={true}`.
 
@@ -73,6 +76,8 @@ pages/
   AwardsPage.jsx     — scroll-driven timeline of competition awards; uses useTimelineProgress
                        and useActiveTimelineYear to sync a decade tab bar with scroll position
   LocationPage.jsx   — branch selector (LocationTabs) + info card + Leaflet map
+  CoursesGiftedPage.jsx — 영재고·과학고 내신 curriculum page; tabs reference /courses/olympiad
+                          and /courses/certification (→ ComingSoonPage); static image content
   NoticePage.jsx     — filterable notice board; category filter + keyword search across
                        title/content/author; admin write button shown to isAdminUser()
   NoticeDetailPage.jsx — single notice view; requires login; admin edit button shown to isAdminUser()
@@ -137,7 +142,7 @@ utils/
 
 ### Implementation status
 
-Fully implemented: `MainVisual`, `NewsNoticeSection`, `EducationFieldSection`, `AcademyIntroSection`, `LocationSection`, `FloatingQuickMenu`, `TopButton`, `Footer`, `AboutPage`, `TeachersPage`, `AwardsPage`, `LocationPage`, `NoticePage`, `NoticeDetailPage`, `NoticeWritePage`, `NoticeEditPage`, `OpeningNoticePage`, `OpeningNoticeDetailPage`, `OpeningNoticeWritePage`, `NewsPage`, `NewsDetailPage`, `NewsWritePage`, `NewsEditPage`, `LoginPage`, `SignUpPage`, `MobileMenu`.
+Fully implemented: `MainVisual`, `NewsNoticeSection`, `EducationFieldSection`, `AcademyIntroSection`, `LocationSection`, `FloatingQuickMenu`, `TopButton`, `Footer`, `AboutPage`, `TeachersPage`, `AwardsPage`, `LocationPage`, `NoticePage`, `NoticeDetailPage`, `NoticeWritePage`, `NoticeEditPage`, `OpeningNoticePage`, `OpeningNoticeDetailPage`, `OpeningNoticeWritePage`, `NewsPage`, `NewsDetailPage`, `NewsWritePage`, `NewsEditPage`, `LoginPage`, `SignUpPage`, `MobileMenu`, `CoursesGiftedPage`.
 
 Skeleton (`.ph` divs + `skeleton-tag` label): `SeminarSection`. When implementing a section, replace skeleton markup with real content.
 
