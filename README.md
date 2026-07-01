@@ -125,6 +125,9 @@ VITE_CLOUDINARY_UPLOAD_PRESET=your_upload_preset
 
 - 배포 링크: [https://hancom-academy.vercel.app/](https://hancom-academy.vercel.app/)
 - GitHub Repository: [https://github.com/cksal3941/hancom-academy](https://github.com/cksal3941/hancom-academy)
+- Figma 리뉴얼 기획서: [바로가기](https://www.figma.com/design/5G0rH9PZy5opNOfxU1aW8k/%ED%95%9C%EA%B8%80%EA%B3%BC-%EC%BB%B4%ED%93%A8%ED%84%B0-%EB%A6%AC%EB%89%B4%EC%96%BC-%EA%B8%B0%ED%9A%8D%EC%84%9C?node-id=91-241&t=vWFissi8QExe7XZp-1)
+- Figma 와이어프레임: [바로가기](https://www.figma.com/design/5G0rH9PZy5opNOfxU1aW8k/%ED%95%9C%EA%B8%80%EA%B3%BC-%EC%BB%B4%ED%93%A8%ED%84%B0-%EB%A6%AC%EB%89%B4%EC%96%BC-%EA%B8%B0%ED%9A%8D%EC%84%9C?node-id=0-1&t=vWFissi8QExe7XZp-1)
+- Figma 디자인: [바로가기](https://www.figma.com/design/5G0rH9PZy5opNOfxU1aW8k/%ED%95%9C%EA%B8%80%EA%B3%BC-%EC%BB%B4%ED%93%A8%ED%84%B0-%EB%A6%AC%EB%89%B4%EC%96%BC-%EA%B8%B0%ED%9A%8D%EC%84%9C?node-id=351-31&t=vWFissi8QExe7XZp-1)
 
 ## 8. 프로젝트 개요
 
