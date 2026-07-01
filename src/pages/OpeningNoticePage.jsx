@@ -83,14 +83,18 @@ export default function OpeningNoticePage() {
                 />
                 <FiSearch aria-hidden="true" />
               </label>
-              <Link to="/notice/start/write" className="notice-board__write">
-                <FiEdit3 aria-hidden="true" />
-                글쓰기
-              </Link>
             </div>
           </div>
 
           <div className="notice-board__table" role="table" aria-label="개강소식 목록">
+            <div className="notice-board__head" role="row">
+              <span className="notice-board__no">번호</span>
+              <span className="notice-board__category">구분</span>
+              <span className="notice-board__title">제목</span>
+              <span className="notice-board__author">작성자</span>
+              <span className="notice-board__views">조회수</span>
+              <span className="notice-board__date">등록일</span>
+            </div>
             {pagedData.map((item, index) => (
               <Link
                 key={item.id}
@@ -101,10 +105,8 @@ export default function OpeningNoticePage() {
                 <span className="notice-board__no">
                   {filteredData.length - (currentPage - 1) * PAGE_SIZE - index}
                 </span>
-                <span className="notice-board__title">
-                  <em>{item.category}</em>
-                  {item.title}
-                </span>
+                <span className="notice-board__category">{item.category}</span>
+                <span className="notice-board__title">{item.title}</span>
                 <span className="notice-board__author">{item.author}</span>
                 <span className="notice-board__views">{item.views}</span>
                 <time className="notice-board__date" dateTime={item.date}>
@@ -116,6 +118,13 @@ export default function OpeningNoticePage() {
             {filteredData.length === 0 && (
               <p className="notice-board__empty">검색 결과가 없습니다.</p>
             )}
+          </div>
+
+          <div className="notice-board__write-row">
+            <Link to="/notice/start/write" className="notice-board__write">
+              <FiEdit3 aria-hidden="true" />
+              글쓰기
+            </Link>
           </div>
 
           <div className="notice-board__pagination" aria-label="페이지">

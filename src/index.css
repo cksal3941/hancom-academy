@@ -11,6 +11,8 @@
   --color-brand-light: #B3B5CE;
   --color-point: #5689F1;
   --color-accent: #1e4fcc;
+  --color-accent-soft: rgba(86, 137, 241, 0.14);
+  --color-accent-soft-text: #123ca5;
   --color-accent-dark: #0a1f7a;
   --color-sky: #4ebbec;
   --color-bg: #F6F9FF;
@@ -151,6 +153,26 @@ html {
 .snap-section {
   scroll-snap-align: start;
   scroll-snap-stop: normal;
+}
+
+/* ── Tablet ── */
+@media (min-width: 769px) and (max-width: 1024px) {
+  html {
+    scroll-snap-type: none;
+  }
+
+  .snap-section {
+    scroll-snap-align: none;
+  }
+
+  :root {
+    --header-h: 80px;
+    --section-py: 64px;
+    --container-px: 24px;
+    --font-2xl: 36px;
+    --font-xl: 32px;
+    --font-lg: 26px;
+  }
 }
 
 /* ── Mobile ── */

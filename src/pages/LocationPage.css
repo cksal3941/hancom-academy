@@ -135,6 +135,25 @@ body:has(.location-page) main {
   color: #687083;
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+  .location-page__section {
+    padding: 80px 24px 100px;
+  }
+
+  .location-page__head {
+    margin-bottom: 56px;
+  }
+
+  .location-page__content {
+    grid-template-columns: minmax(300px, 420px) minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .location-page .mapbox-wrap {
+    min-height: 400px;
+  }
+}
+
 @media (max-width: 900px) {
   .location-page__content {
     grid-template-columns: 1fr;

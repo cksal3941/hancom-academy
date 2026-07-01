@@ -1,0 +1,32 @@
+.courses-gifted-page {
+  background: var(--color-surface);
+  min-height: 100vh;
+}
+
+.courses-gifted-page__body {
+  width: min(100%, 1400px);
+  margin: 0 auto;
+  padding: 80px 24px 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.courses-gifted-page__detail-img {
+  width: 100%;
+  max-width: 1200px;
+  display: block;
+  margin: 0 auto 100px;
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .courses-gifted-page__body {
+    padding: 60px 24px 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .courses-gifted-page__body {
+    padding: 40px 20px 80px;
+  }
+}

@@ -58,6 +58,26 @@
   letter-spacing: -0.02em;
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+  .edu-card {
+    padding: 32px 20px 28px;
+  }
+
+  .edu-card__img-wrap {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 16px;
+  }
+
+  .edu-card__title {
+    font-size: var(--font-md);
+  }
+
+  .edu-card__desc {
+    font-size: 15px;
+  }
+}
+
 @media (max-width: 768px) {
   .edu-card {
     padding: 0px 24px 0px;

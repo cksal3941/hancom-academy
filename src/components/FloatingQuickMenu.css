@@ -118,8 +118,34 @@ button.fqm__item {
   }
 }
 
-/* 모바일 메뉴 열림 시 숨김 */
-@media (max-width: 768px) {
+/* ── 태블릿: 사이드바 소형화 ── */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .fqm {
+    right: 16px;
+    padding: 14px 0;
+    gap: 2px;
+  }
+
+  .fqm__item {
+    padding: 10px 12px;
+    gap: 4px;
+  }
+
+  .fqm__icon {
+    font-size: 18px;
+  }
+
+  .fqm__label {
+    font-size: 11px;
+  }
+
+  .chatbot-panel {
+    right: 86px;
+  }
+}
+
+/* 모바일/태블릿 메뉴 열림 시 숨김 */
+@media (max-width: 1024px) {
   .mobile-menu-open .fqm {
     display: none;
   }

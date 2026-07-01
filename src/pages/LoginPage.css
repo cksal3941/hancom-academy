@@ -168,6 +168,33 @@ body:has(.login-page) {
 }
 
 /* ── 에러 / 성공 메시지 ── */
+.login-page__popup {
+  position: fixed;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: var(--color-brand);
+  color: #fff;
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  padding: 14px 28px;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(1, 8, 89, 0.25);
+  white-space: nowrap;
+  animation: popup-in 0.3s ease, popup-out 0.4s ease 4.6s forwards;
+}
+
+@keyframes popup-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes popup-out {
+  from { opacity: 1; transform: translateX(-50%) translateY(0); }
+  to   { opacity: 0; transform: translateX(-50%) translateY(-12px); }
+}
+
 .login-page__error {
   font-size: 13px;
   color: #d93025;
@@ -337,6 +364,17 @@ body:has(.login-page) {
   border-radius: 50%;
   animation: login-spin 0.75s linear infinite;
   margin: 40px auto;
+}
+
+/* ── 태블릿 ── */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .login-page__body {
+    padding: 72px 24px 90px;
+  }
+
+  .login-page__wrap {
+    max-width: 480px;
+  }
 }
 
 /* ── 모바일 ── */

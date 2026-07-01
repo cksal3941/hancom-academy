@@ -55,6 +55,29 @@
   padding: 0 20px;
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+  .edu-field__inner {
+    gap: 36px;
+  }
+
+  .edu-field__title {
+    font-size: var(--font-xl);
+  }
+
+  .edu-field__desc {
+    font-size: 15px;
+    margin-top: 18px;
+  }
+
+  .edu-field__cards {
+    gap: 16px;
+  }
+
+  .edu-card-aos-wrap {
+    padding: 0 6px;
+  }
+}
+
 @media (max-width: 768px) {
   .edu-field {
     min-height: auto;

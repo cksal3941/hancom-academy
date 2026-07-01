@@ -30,23 +30,32 @@ Single-page React 19 app built with Vite 8, written in plain JavaScript (no Type
 `src/router.jsx` uses `createBrowserRouter`. The layout shell (`App.jsx`) wraps all routes via `<Outlet>`. `LoginPage` is lazy-loaded with `Suspense`.
 
 ```
-/                        → HomePage
-/login                   → LoginPage (lazy)
-/signup                  → SignUpPage
-/about                   → AboutPage
-/about/intro             → AboutPage
-/about/teachers          → TeachersPage
-/about/awards            → AwardsPage
-/about/location          → LocationPage
-/notice                  → NoticePage
-/notice/announcement     → NoticePage
-/notice/start            → OpeningNoticePage
-/notice/write            → NoticeWritePage (admin only)
-/notice/news             → ComingSoonPage
-/notice/:noticeId        → NoticeDetailPage
-/opening-news/**         → ComingSoonPage
-/news/**                 → ComingSoonPage
-*                        → ComingSoonPage
+/                               → HomePage
+/login                          → LoginPage (lazy)
+/signup                         → SignUpPage
+/about                          → AboutPage
+/about/intro                    → AboutPage
+/about/teachers                 → TeachersPage
+/about/awards                   → AwardsPage
+/about/location                 → LocationPage
+/notice                         → NoticePage
+/notice/announcement            → NoticePage
+/notice/write                   → NoticeWritePage (admin only)
+/notice/:noticeId               → NoticeDetailPage
+/notice/:noticeId/edit          → NoticeEditPage (admin only)
+/notice/start                   → OpeningNoticePage
+/notice/start/write             → OpeningNoticeWritePage (admin only)
+/notice/start/:openingNoticeId  → OpeningNoticeDetailPage
+/notice/news                    → NewsPage
+/notice/news/write              → NewsWritePage
+/notice/news/:newsId            → NewsDetailPage
+/notice/news/:newsId/edit       → NewsEditPage
+/news                           → NewsPage
+/news/write                     → NewsWritePage
+/news/:newsId                   → NewsDetailPage
+/news/:newsId/edit              → NewsEditPage
+/opening-news/**                → ComingSoonPage
+*                               → ComingSoonPage
 ```
 
 `App.jsx` derives `isAuthPage` (`/login`, `/signup`) to hide `FloatingQuickMenu` and `TopButton` on those routes. On sub-pages (non-`/`) `FloatingQuickMenu` receives `mobileOnly={true}`.
@@ -66,15 +75,19 @@ pages/
   LocationPage.jsx   — branch selector (LocationTabs) + info card + Leaflet map
   NoticePage.jsx     — filterable notice board; category filter + keyword search across
                        title/content/author; admin write button shown to isAdminUser()
-  NoticeDetailPage.jsx — single notice view; requires login (redirects to /login with
-                         state.from); admin edit button shown to isAdminUser()
+  NoticeDetailPage.jsx — single notice view; requires login; admin edit button shown to isAdminUser()
+  NoticeWritePage.jsx  — admin write form for notices; uses addNotice() from noticeService
+  NoticeEditPage.jsx   — admin edit form for notices; uses fetchNoticeById() + updateNotice()
   OpeningNoticePage.jsx — opening-news board; same layout/CSS as NoticePage, no auth gate
+  OpeningNoticeDetailPage.jsx — single opening-news view; uses fetchOpeningNoticeById()
+  OpeningNoticeWritePage.jsx  — admin write form for opening-news; uses addOpeningNotice()
+  NewsPage.jsx       — news board; same layout as NoticePage; fetches from newsService
+  NewsDetailPage.jsx — single news view; uses fetchNewsById() + incrementNewsViews()
+  NewsWritePage.jsx  — write form for news; uses addNews() from newsService
+  NewsEditPage.jsx   — edit form for news; uses fetchNewsById() + updateNews()
   LoginPage.jsx      — email + Google + Apple sign-in (lazy loaded); single component
                        manages both 'login' and 'forgot' views via a `view` state string
   SignUpPage.jsx     — email registration
-  NoticeWritePage.jsx   — admin-only notice creation form; category select, title, content
-                          textarea, image upload (up to 5, stored in Firebase Storage);
-                          uses addNotice() from noticeService; reuses NoticePage.css
   ComingSoonPage.jsx — placeholder for unimplemented routes
 sections/            — full-viewport (100vh) blocks for HomePage only
                        (MainVisual, SeminarSection, LocationSection)
@@ -103,10 +116,11 @@ firebase/
 services/
   authService.js     — loginWithGoogle, loginWithApple, loginWithEmail, signUpWithEmail,
                        sendPasswordReset, logout; each calls ensureFirebaseConfigured() before use
-  noticeService.js   — addNotice(), fetchNotices(), fetchNoticeById(); Firestore collection
-                       'notices' ordered by createdAt desc; image files uploaded to Firebase
-                       Storage under notices/; falls back to static noticeData when Firebase
-                       is unconfigured
+  noticeService.js   — Firestore CRUD + Storage image upload for notices (collection `notices`)
+                       and opening-notices (collection `opening-notices`); falls back to static
+                       noticeData / openingNewsData when Firebase is unconfigured
+  newsService.js     — Firestore CRUD + Storage image upload for news (collection `news`);
+                       falls back to static newsData when Firebase is unconfigured
 hooks/
   useAuth.js              — useAuth() → { user, loading }; subscribes to onAuthStateChanged
   useTimelineProgress.js  — rAF scroll hook; returns 0–1 progress of containerRef through viewport
@@ -123,7 +137,7 @@ utils/
 
 ### Implementation status
 
-Fully implemented: `MainVisual`, `NewsNoticeSection`, `EducationFieldSection`, `AcademyIntroSection`, `LocationSection`, `FloatingQuickMenu`, `TopButton`, `Footer`, `AboutPage`, `TeachersPage`, `AwardsPage`, `LocationPage`, `NoticePage`, `NoticeDetailPage`, `NoticeWritePage`, `OpeningNoticePage`, `LoginPage`, `SignUpPage`, `MobileMenu`.
+Fully implemented: `MainVisual`, `NewsNoticeSection`, `EducationFieldSection`, `AcademyIntroSection`, `LocationSection`, `FloatingQuickMenu`, `TopButton`, `Footer`, `AboutPage`, `TeachersPage`, `AwardsPage`, `LocationPage`, `NoticePage`, `NoticeDetailPage`, `NoticeWritePage`, `NoticeEditPage`, `OpeningNoticePage`, `OpeningNoticeDetailPage`, `OpeningNoticeWritePage`, `NewsPage`, `NewsDetailPage`, `NewsWritePage`, `NewsEditPage`, `LoginPage`, `SignUpPage`, `MobileMenu`.
 
 Skeleton (`.ph` divs + `skeleton-tag` label): `SeminarSection`. When implementing a section, replace skeleton markup with real content.
 
@@ -133,13 +147,19 @@ All implemented sub-pages use `<SubPageHero eyebrow="..." title="..." tabs={hero
 
 Desktop nav and breadcrumb are separate sources of truth: `navItems` in `Header.jsx` (desktop) and `mobileMenuData` in `src/data/mobileMenuData.js` (mobile) must both be updated when adding new routes.
 
+### Notice / News boards
+
+All three boards (공지사항, 개강소식, 뉴스) share the same `NoticePage.css` and `notice-board__*` BEM block. Each has list → detail → write → edit pages backed by Firestore, with static data as fallback.
+
+- **noticeService.js**: Firestore collection `notices`; opening-notices use `opening-notices`. Both support image upload to Firebase Storage (path `notices/<timestamp>_<name>` or `news/...`). `fetchNotices()` merges Firestore docs (newest first) with static `noticeData`.
+- **newsService.js**: Firestore collection `news`; same merge pattern with static `newsData`.
+- Write forms use the `nw-form` BEM block (defined in `NoticeWritePage.css`). Image upload is limited to 5 files; previews use `URL.createObjectURL`. On submit, the form calls the service, shows a toast, then navigates back after 1.5 s.
+- `NoticeDetailPage` requires authentication (redirects to `/login` with `state.from`). `OpeningNoticeDetailPage` and `NewsDetailPage` have no auth gate. All detail pages call `increment*Views()` to bump the Firestore view count (skipped for static-data items).
+- The write button on `NewsPage` is always visible (no `isAdminUser` guard). The write/edit buttons on notice and opening-notice pages are guarded by `isAdminUser`.
+
 ### Awards page
 
 `AwardsPage` drives a scroll-synced timeline. `awardsData` in `src/data/awardsData.js` is an array of `{ year, decade, competitions[] }` where each competition has `{ title, notes[], categories[] }` and each category has `{ title, awards[] }` with `{ rank, winners[] }`. `decades` (also exported) is a derived list of unique decade strings (e.g. `'2020s'`). The `DecadeTabs` component scrolls to the first year of that decade via `yearRefs`.
-
-### Notice board
-
-`noticeData` items: `{ id, category, title, author, views, date, summary, content[], path }`. The `path` field must be `/notice/:id`. `NoticeDetailPage` requires the user to be logged in — unauthenticated visitors see a lock screen with a link to `/login` (passes `state.from` so login can redirect back). Admin users (checked via `isAdminUser`) see a write/edit button.
 
 ### MainVisual (Swiper)
 

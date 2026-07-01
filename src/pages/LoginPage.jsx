@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5'
 import { FaApple } from 'react-icons/fa'
 import { loginWithEmail, loginWithGoogle, loginWithApple, sendPasswordReset } from '../services/authService'
@@ -11,6 +11,8 @@ import './LoginPage.css'
 export default function LoginPage() {
   const { user, loading } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from ?? '/'
 
   const [view, setView]             = useState('login') // 'login' | 'forgot'
   const [email, setEmail]           = useState('')
@@ -20,17 +22,24 @@ export default function LoginPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError]           = useState('')
   const [success, setSuccess]       = useState('')
+  const [showHint, setShowHint]     = useState(from.startsWith('/notice'))
 
   useEffect(() => {
-    if (!loading && user) navigate('/', { replace: true })
-  }, [user, loading, navigate])
+    if (!loading && user) navigate(from, { replace: true })
+  }, [user, loading, navigate, from])
+
+  useEffect(() => {
+    if (!showHint) return
+    const timer = setTimeout(() => setShowHint(false), 5000)
+    return () => clearTimeout(timer)
+  }, [showHint])
 
   const run = async (fn) => {
     setError('')
     setSubmitting(true)
     try {
       await fn()
-      navigate('/', { replace: true })
+      navigate(from, { replace: true })
     } catch (err) {
       setError(getFirebaseErrorMessage(err))
     } finally {
@@ -75,6 +84,11 @@ export default function LoginPage() {
 
   return (
     <div className="login-page">
+      {showHint && (
+        <div className="login-page__popup" role="alert">
+          공지사항은 로그인 후 확인하실 수 있습니다.
+        </div>
+      )}
       <div className="login-page__body">
         <div className="login-page__wrap">
 
@@ -120,6 +134,7 @@ export default function LoginPage() {
             <>
               <h1 className="login-page__title">로그인</h1>
               <p className="login-page__subtitle">계정 정보를 입력해 주세요.</p>
+
 
               <form onSubmit={handleEmailLogin} className="login-page__form" noValidate>
                 {/* 이메일 */}

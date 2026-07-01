@@ -102,24 +102,6 @@
   stroke: var(--color-surface);
 }
 
-/* ── Footer 진입 시 고대비 다크 스타일 ── */
-.top-button--dark {
-  background: var(--topbtn-hover-bg);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
-}
-
-.top-button--dark .top-button__icon {
-  color: var(--topbtn-hover-icon);
-}
-
-.top-button--dark .top-button__track {
-  stroke: rgba(255, 255, 255, 0.25);
-}
-
-.top-button--dark .top-button__bar {
-  stroke: var(--color-surface);
-}
-
 /* ── 프로그레스 완료: 원형 테두리 제거 ── */
 .top-button--complete .top-button__progress {
   opacity: 0;
@@ -133,6 +115,34 @@
   color: var(--topbtn-hover-icon);
 }
 
+/* ── Footer 진입 시 고대비 다크 스타일 (complete·hover보다 뒤에 위치해 우선 적용) ── */
+.top-button--dark,
+.top-button--dark:hover,
+.top-button--dark.top-button--complete {
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.top-button--dark .top-button__icon,
+.top-button--dark:hover .top-button__icon,
+.top-button--dark.top-button--complete .top-button__icon {
+  color: var(--color-brand);
+}
+
+.top-button--dark .top-button__track,
+.top-button--dark:hover .top-button__track {
+  stroke: rgba(1, 8, 89, 0.15);
+}
+
+.top-button--dark .top-button__bar,
+.top-button--dark:hover .top-button__bar {
+  stroke: var(--color-brand);
+}
+
+.top-button--dark.top-button--complete .top-button__progress {
+  opacity: 0;
+}
+
 @media (max-width: 768px) {
   .mobile-menu-open .top-button {
     display: none;
@@ -141,7 +151,7 @@
   .top-button {
     --topbtn-size: 46px;
     right: 16px;
-    bottom: 89px;
+    bottom: 99px;
     z-index: 310;
   }
 

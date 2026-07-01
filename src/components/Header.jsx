@@ -44,24 +44,24 @@ const navItems = [
     submenu: [
       {
         label: '영재고·과학고 내신 대비',
-        href: 'https://www.youtube.com/hancomacademy',
+        href: 'https://www.youtube.com/watch?v=wgILcdxNVhQ&t=890s',
         external: true,
       },
       {
         label: '정보올림피아드',
-        href: 'https://www.youtube.com/hancomacademy',
+        href: 'https://www.youtube.com/watch?v=WESC7LC5GZU&t=154s',
         external: true,
       },
       {
         label: '코딩교육',
-        href: 'https://www.youtube.com/hancomacademy',
+        href: 'https://www.youtube.com/watch?v=gWoDEWFKAe4&t=1428s',
         external: true,
       },
     ],
   },
 ]
 
-const zoomUrl = 'https://zoom.us'
+const zoomUrl = 'https://us02web.zoom.us/j/8440631454?pwd=bW5mTmpqRkh6MUJ6RXdxNWVYSGNOdz09#success'
 
 export default function Header() {
   const location = useLocation()
@@ -133,7 +133,7 @@ export default function Header() {
 
   useEffect(() => {
     const onResize = () => {
-      if (window.innerWidth > 768) setIsMobileMenuOpen(false)
+      if (window.innerWidth > 1024) setIsMobileMenuOpen(false)
     }
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)

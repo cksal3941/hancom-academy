@@ -9,7 +9,7 @@ import './NoticePage.css'
 const heroTabs = [
   { label: '공지사항', to: '/notice' },
   { label: '개강소식', to: '/notice/start' },
-  { label: '뉴스', to: '/news', active: true },
+  { label: '뉴스', to: '/notice/news', active: true },
 ]
 
 const categoryOptions = ['전체', '수상소식', '인터뷰', '학원소식', '미디어']
@@ -19,7 +19,7 @@ const searchOptions = [
   { label: '작성자', value: 'author' },
 ]
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 9
 
 export default function NewsPage() {
   const [news, setNews] = useState(newsData)
@@ -53,7 +53,7 @@ export default function NewsPage() {
     .filter((p) => Math.abs(p - currentPage) <= 2)
 
   return (
-    <div className="notice-page">
+    <div className="notice-page notice-page--news">
       <SubPageHero eyebrow="공지 및 소식" title="뉴스" tabs={heroTabs} />
 
       <div className="subpage-breadcrumb">
@@ -91,31 +91,44 @@ export default function NewsPage() {
                 />
                 <FiSearch aria-hidden="true" />
               </label>
-              <Link to="/news/write" className="notice-board__write">
-                <FiEdit3 aria-hidden="true" />
-                글쓰기
-              </Link>
             </div>
           </div>
 
-          <div className="notice-board__table" role="table" aria-label="뉴스 목록">
-            {pagedNews.map((item, index) => (
-              <Link key={item.id} to={item.path} className="notice-board__row" role="row">
-                <span className="notice-board__no">
-                  {filtered.length - (currentPage - 1) * PAGE_SIZE - index}
-                </span>
-                <span className="notice-board__title">
-                  <em>{item.category}</em>
-                  {item.title}
-                </span>
-                <span className="notice-board__author">{item.author}</span>
-                <span className="notice-board__views">{item.views}</span>
-                <time className="notice-board__date" dateTime={item.date}>{item.date}</time>
-              </Link>
-            ))}
+          <div className="news-card-grid" aria-label="뉴스 목록">
+            {pagedNews.map((item) => {
+              const imageSrc = item.images?.[0] ?? item.thumbnail ?? item.image
+              const itemPath = item.path?.startsWith('/notice/news') ? item.path : `/notice/news/${item.id}`
+
+              return (
+                <Link key={item.id} to={itemPath} className="news-card">
+                  <span className="news-card__media" aria-hidden={!imageSrc}>
+                    {imageSrc ? (
+                      <img src={imageSrc} alt={item.title} loading="lazy" />
+                    ) : (
+                      <span className="news-card__placeholder" />
+                    )}
+                  </span>
+                  <span className="news-card__content">
+                    <strong>{item.title}</strong>
+                    <span className="news-card__meta">
+                      <span>{item.author}</span>
+                      <span>조회 {item.views}</span>
+                      <time dateTime={item.date}>{item.date}</time>
+                    </span>
+                  </span>
+                </Link>
+              )
+            })}
             {filtered.length === 0 && (
-              <p className="notice-board__empty">검색 결과가 없습니다.</p>
+              <p className="notice-board__empty news-card-grid__empty">검색 결과가 없습니다.</p>
             )}
+          </div>
+
+          <div className="notice-board__write-row">
+            <Link to="/notice/news/write" className="notice-board__write">
+              <FiEdit3 aria-hidden="true" />
+              글쓰기
+            </Link>
           </div>
 
           <div className="notice-board__pagination" aria-label="페이지">

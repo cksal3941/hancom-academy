@@ -4,9 +4,10 @@
 
 .nw-form__row {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  gap: 24px;
-  padding: 28px 0;
+  gap: 14px;
+  padding: 34px 0;
   border-bottom: 1px solid #b8bcc9;
 }
 
@@ -15,8 +16,7 @@
 }
 
 .nw-form__row--full {
-  flex-direction: column;
-  gap: 8px;
+  gap: 14px;
 }
 
 .nw-form__row--full .nw-form__label {
@@ -30,10 +30,10 @@
 
 .nw-form__label {
   flex-shrink: 0;
-  width: 80px;
-  padding-top: 12px;
+  width: auto;
+  padding-top: 0;
   color: #1a1a2e;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
 }
 
@@ -48,18 +48,24 @@
   width: 100%;
   height: 48px;
   padding: 0 16px;
-  border: 1.5px solid #9aa0b2;
+  border: 1.5px solid #7f8798;
   border-radius: 4px;
   background: #fff;
   color: #151823;
   font: inherit;
-  font-size: 15px;
+  font-size: 16px;
   outline: none;
   transition: border-color .15s ease;
 }
 
+.nw-form__input::placeholder,
+.nw-form__textarea::placeholder {
+  color: #7b8190;
+}
+
 .nw-form__select {
-  max-width: 200px;
+  width: min(100%, 320px);
+  max-width: none;
   appearance: none;
   -webkit-appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236f7481' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
@@ -88,7 +94,7 @@
 .nw-form__error {
   margin-top: 6px;
   color: #e03c3c;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .nw-form__error--global {
@@ -111,7 +117,7 @@
   min-height: 46px;
   padding: 0 24px;
   border-radius: 4px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   cursor: pointer;
   transition: opacity .15s ease;
@@ -123,7 +129,7 @@
 }
 
 .nw-form__btn--cancel {
-  border: 1.5px solid #9aa0b2;
+  border: 1.5px solid #7f8798;
   background: #fff;
   color: #3b3f4a;
 }
@@ -150,13 +156,13 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  height: 42px;
-  padding: 0 18px;
-  border: 1.5px dashed #8a91a3;
+  height: 44px;
+  padding: 0 20px;
+  border: 1.5px dashed #7f8798;
   border-radius: 4px;
-  background: #f8f9fc;
-  color: #3b3f4a;
-  font-size: 14px;
+  background: #f2f4f8;
+  color: #2f3542;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: border-color .15s, background .15s;
@@ -212,9 +218,13 @@
 }
 
 .nw-images__hint {
-  margin-top: 8px;
-  color: #9fa5b0;
-  font-size: 13px;
+  margin-top: 10px;
+  color: #737b8c;
+  font-size: 14px;
+}
+
+.nw-form__input {
+  max-width: 760px;
 }
 
 /* 등록 완료 토스트 */
@@ -286,9 +296,19 @@
 }
 
 .nw-done p {
-  color: #8c929d;
+  color: #747b88;
   font-size: 16px;
   margin-bottom: 8px;
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .nw-form__textarea {
+    height: 300px;
+  }
+
+  .nw-form__actions {
+    margin-top: 24px;
+  }
 }
 
 @media (max-width: 768px) {

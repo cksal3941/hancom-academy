@@ -13,9 +13,9 @@ const mobileMenuData = [
     id: 'education',
     label: '교육과정',
     children: [
-      { id: 'gifted-science', label: '영재고/과학고 대비', path: '/education/gifted-science' },
-      { id: 'olympiad', label: '정보올림피아드', path: '/education/olympiad' },
-      { id: 'certification', label: 'OA 및 자격증', path: '/education/certification' },
+      { id: 'gifted-science', label: '영재고·과학고 내신', path: '/courses/gifted' },
+      { id: 'olympiad', label: '정보올림피아드', path: '/courses/olympiad' },
+      { id: 'certification', label: 'OA·자격증', path: '/courses/certification' },
     ],
   },
   {

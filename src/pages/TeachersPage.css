@@ -317,6 +317,20 @@ body:has(.teachers-page) main {
   transform: translateY(0);
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+  .teachers-list {
+    padding: 80px 24px 100px;
+  }
+
+  .teachers-list__heading {
+    margin-bottom: 40px;
+  }
+
+  .teachers-grid {
+    gap: 36px 32px;
+  }
+}
+
 @media (max-width: 900px) {
   .teachers-grid {
     grid-template-columns: 1fr;
