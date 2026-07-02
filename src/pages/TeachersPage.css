@@ -1,7 +1,7 @@
 .teachers-page {
   width: 100%;
   min-height: 100vh;
-  overflow-x: clip;
+  overflow-x: hidden;
   background: #fff;
   color: #151823;
 }
@@ -81,6 +81,7 @@ body:has(.teachers-page) main {
   border: 1px solid rgba(255, 255, 255, .3);
   border-radius: 4px;
   background: rgba(255, 255, 255, .22);
+  -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
 }
 
@@ -285,6 +286,7 @@ body:has(.teachers-page) main {
   text-align: center;
   opacity: 0;
   transform: translateY(8px);
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   transition: opacity .3s ease, transform .3s ease;
 }

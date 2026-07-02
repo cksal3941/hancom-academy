@@ -13,6 +13,7 @@
 
   padding: 20px 0;
   background: rgba(255, 255, 255, 0.2);
+  -webkit-backdrop-filter: blur(0px);
   backdrop-filter: blur(0px);
   border-radius: 9999px;
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -29,6 +30,7 @@
 @media (min-width: 769px) {
   .fqm {
     background: rgba(255, 255, 255, 0.2);
+    -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow:

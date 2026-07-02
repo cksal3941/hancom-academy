@@ -15,15 +15,22 @@ No test framework is configured.
 
 ## Environment variables
 
-Copy `.env.example` to `.env` and fill in Firebase credentials. All vars are prefixed `VITE_FIREBASE_*`. The app gracefully degrades when Firebase is unconfigured — `isFirebaseConfigured` (exported from `src/firebase/firebase.js`) is `false` and auth features are disabled without throwing.
+Copy `.env.example` to `.env`. All Firebase vars are prefixed `VITE_FIREBASE_*`. The app gracefully degrades when Firebase is unconfigured — `isFirebaseConfigured` (exported from `src/firebase/firebase.js`) is `false` and auth features are disabled without throwing.
 
-`VITE_FIREBASE_ENABLE_APPLE=true` must be set explicitly to expose Apple sign-in; it defaults to `false`.
+| Variable | Purpose |
+|---|---|
+| `VITE_FIREBASE_*` | Firebase project credentials (API key, auth domain, project ID, etc.) |
+| `VITE_FIREBASE_ENABLE_APPLE` | Set `true` to expose Apple sign-in (defaults to `false`) |
+| `VITE_ADMIN_EMAILS` | Comma-separated admin emails; `isAdminUser()` checks this to show write/edit controls |
+| `VITE_KAKAO_MAP_APP_KEY` | Kakao Developers JavaScript key for the branch location map |
+| `VITE_CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name for image uploads |
+| `VITE_CLOUDINARY_UPLOAD_PRESET` | Cloudinary unsigned upload preset name |
 
-`VITE_ADMIN_EMAILS` — comma-separated list of admin email addresses (e.g. `admin@example.com,dev@example.com`). Used by `isAdminUser()` in `src/utils/admin.js` to show admin-only UI (write/edit buttons in notice pages).
+For `VITE_KAKAO_MAP_APP_KEY`, register `http://localhost:5173` and `http://127.0.0.1:5173` as Web platform domains in the Kakao Developers console.
 
 ## Architecture
 
-Single-page React 19 app built with Vite 8, written in plain JavaScript (no TypeScript). Korean-language academy (한컴아카데미) website. Uses react-router-dom v7, Swiper v12, Firebase v12, AOS, react-icons, @shadergradient/react (+ three / @react-three/fiber), and Leaflet.
+Single-page React 19 app built with Vite 8, written in plain JavaScript (no TypeScript). Korean-language academy (한컴아카데미) website. Uses react-router-dom v7, Swiper v12, Firebase v12, AOS, react-icons, @shadergradient/react (+ three / @react-three/fiber), Cloudinary (image upload), and Kakao Maps SDK (branch map).
 
 ### Routing
 
@@ -75,7 +82,7 @@ pages/
   TeachersPage.jsx   — teacher grid rendered from teacherData; shares hero/tabs pattern
   AwardsPage.jsx     — scroll-driven timeline of competition awards; uses useTimelineProgress
                        and useActiveTimelineYear to sync a decade tab bar with scroll position
-  LocationPage.jsx   — branch selector (LocationTabs) + info card + Leaflet map
+  LocationPage.jsx   — branch selector (LocationTabs) + info card + Kakao Maps
   CoursesGiftedPage.jsx — 영재고·과학고 내신 curriculum page; tabs reference /courses/olympiad
                           and /courses/certification (→ ComingSoonPage); static image content
   NoticePage.jsx     — filterable notice board; category filter + keyword search across
@@ -119,13 +126,13 @@ firebase/
   firebase.js        — initialises Firebase only when all env vars are present;
                        exports auth, db, storage, isFirebaseConfigured, isAppleAuthEnabled
 services/
-  authService.js     — loginWithGoogle, loginWithApple, loginWithEmail, signUpWithEmail,
-                       sendPasswordReset, logout; each calls ensureFirebaseConfigured() before use
-  noticeService.js   — Firestore CRUD + Storage image upload for notices (collection `notices`)
-                       and opening-notices (collection `opening-notices`); falls back to static
-                       noticeData / openingNewsData when Firebase is unconfigured
-  newsService.js     — Firestore CRUD + Storage image upload for news (collection `news`);
-                       falls back to static newsData when Firebase is unconfigured
+  authService.js       — loginWithGoogle, loginWithApple, loginWithEmail, signUpWithEmail,
+                         sendPasswordReset, logout; each calls ensureFirebaseConfigured() before use
+  noticeService.js     — Firestore CRUD for notices (`notices`) and opening-notices (`opening-notices`);
+                         image upload via cloudinaryService; falls back to static data when unconfigured
+  newsService.js       — Firestore CRUD for news (`news`); image upload via cloudinaryService;
+                         falls back to static newsData when unconfigured
+  cloudinaryService.js — uploadImages(files[]) → secure_url[]; requires Cloudinary env vars
 hooks/
   useAuth.js              — useAuth() → { user, loading }; subscribes to onAuthStateChanged
   useTimelineProgress.js  — rAF scroll hook; returns 0–1 progress of containerRef through viewport
@@ -142,9 +149,7 @@ utils/
 
 ### Implementation status
 
-Fully implemented: `MainVisual`, `NewsNoticeSection`, `EducationFieldSection`, `AcademyIntroSection`, `LocationSection`, `FloatingQuickMenu`, `TopButton`, `Footer`, `AboutPage`, `TeachersPage`, `AwardsPage`, `LocationPage`, `NoticePage`, `NoticeDetailPage`, `NoticeWritePage`, `NoticeEditPage`, `OpeningNoticePage`, `OpeningNoticeDetailPage`, `OpeningNoticeWritePage`, `NewsPage`, `NewsDetailPage`, `NewsWritePage`, `NewsEditPage`, `LoginPage`, `SignUpPage`, `MobileMenu`, `CoursesGiftedPage`.
-
-Skeleton (`.ph` divs + `skeleton-tag` label): `SeminarSection`. When implementing a section, replace skeleton markup with real content.
+All sections are fully implemented. Unimplemented routes point to `ComingSoonPage` (`/courses/olympiad`, `/courses/certification`, `/opening-news/**`).
 
 ### Sub-page layout pattern
 
@@ -156,8 +161,10 @@ Desktop nav and breadcrumb are separate sources of truth: `navItems` in `Header.
 
 All three boards (공지사항, 개강소식, 뉴스) share the same `NoticePage.css` and `notice-board__*` BEM block. Each has list → detail → write → edit pages backed by Firestore, with static data as fallback.
 
-- **noticeService.js**: Firestore collection `notices`; opening-notices use `opening-notices`. Both support image upload to Firebase Storage (path `notices/<timestamp>_<name>` or `news/...`). `fetchNotices()` merges Firestore docs (newest first) with static `noticeData`.
-- **newsService.js**: Firestore collection `news`; same merge pattern with static `newsData`.
+- **noticeService.js**: Firestore collection `notices`; opening-notices use `opening-notices`. Images are uploaded to **Cloudinary** via `cloudinaryService.js` (`uploadImages()`). `fetchNotices()` merges Firestore docs (newest first) with static `noticeData`. Also exports `deleteNotice()` and `deleteOpeningNotice()`.
+- **newsService.js**: Firestore collection `news`; same Cloudinary upload pattern and merge with static `newsData`. Also exports `deleteNews()`.
+- **cloudinaryService.js**: `uploadImages(files[])` — uploads to Cloudinary using unsigned preset; returns array of `secure_url` strings. Requires `VITE_CLOUDINARY_CLOUD_NAME` and `VITE_CLOUDINARY_UPLOAD_PRESET`.
+- Content is stored as a `string[]` (paragraphs split on `\n`, trimmed, empty lines dropped). A `summary` field holds the first 80 chars of the first paragraph.
 - Write forms use the `nw-form` BEM block (defined in `NoticeWritePage.css`). Image upload is limited to 5 files; previews use `URL.createObjectURL`. On submit, the form calls the service, shows a toast, then navigates back after 1.5 s.
 - `NoticeDetailPage` requires authentication (redirects to `/login` with `state.from`). `OpeningNoticeDetailPage` and `NewsDetailPage` have no auth gate. All detail pages call `increment*Views()` to bump the Firestore view count (skipped for static-data items).
 - The write button on `NewsPage` is always visible (no `isAdminUser` guard). The write/edit buttons on notice and opening-notice pages are guarded by `isAdminUser`.
@@ -168,7 +175,11 @@ All three boards (공지사항, 개강소식, 뉴스) share the same `NoticePage
 
 ### MainVisual (Swiper)
 
-`MainVisual.jsx` uses **Swiper** with `Autoplay` and `EffectFade` modules. Each slide entry requires both a desktop (`_d.png`) and a mobile (`_m.png`) image rendered via `<picture><source media="(max-width: 768px)">`. Each slide has a `theme` (`'light'` or `'dark'`) dispatched as a `header-theme` CustomEvent so `Header` and `FloatingQuickMenu` can adapt their appearance.
+`MainVisual.jsx` uses **Swiper** with `Autoplay` and `EffectFade` modules. Each slide entry requires both a desktop (`_d.jpg`) and a mobile (`_m.png`) image rendered via `<picture><source media="(max-width: 768px)">`. Each slide has a `theme` (`'light'` or `'dark'`) dispatched as a `header-theme` CustomEvent so `Header` and `FloatingQuickMenu` can adapt their appearance.
+
+### SeminarSection (Swiper)
+
+`SeminarSection.jsx` renders YouTube seminar cards in a Swiper carousel (`slidesPerView="auto"`, centred, looping). Data comes from `src/data/seminarData.js` — each entry has `{ id, videoId, title, description, youtubeUrl }`. Thumbnails are fetched from `https://img.youtube.com/vi/{videoId}/maxresdefault.jpg`. Cards with a `youtubeUrl` render as `<a target="_blank">`; cards without render as `<div>` with a "준비 중" overlay.
 
 ### Cross-component theme communication
 
@@ -190,7 +201,7 @@ Has a CSS marquee (`academy-intro__marquee-track`) running vertically in the bac
 
 ### MapBox
 
-`src/components/location/MapBox.jsx` uses **Leaflet** (`import L from 'leaflet'`). It patches the default marker icon paths at module load to fix Vite's asset URL resolution — do not remove that setup block or markers will be broken.
+`src/components/location/MapBox.jsx` uses the **Kakao Maps SDK** (not Leaflet — the CLAUDE.md previously said Leaflet, but the map has been replaced). The SDK script is loaded dynamically via a singleton promise (`loadKakaoScript`) keyed to `VITE_KAKAO_MAP_APP_KEY`. It renders in an idle → loading → ready/error state. Props: `lat`, `lng`, `name`.
 
 ### teacherData shape
 

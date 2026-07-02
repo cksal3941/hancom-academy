@@ -1,7 +1,7 @@
 .about-page {
   width: 100%;
   min-height: 100vh;
-  overflow-x: clip;
+  overflow-x: hidden;
   overflow-y: visible;
   background: #fff;
   color: #111827;
@@ -89,6 +89,7 @@ body:has(.about-page) main {
   border: 1px solid rgba(255, 255, 255, .3);
   border-radius: 4px;
   background: rgba(255, 255, 255, .22);
+  -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
 }
 
@@ -223,6 +224,7 @@ body:has(.about-page) main {
   padding: 18px 20px;
   background: rgba(1, 8, 89, .84);
   color: #fff;
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 }
 

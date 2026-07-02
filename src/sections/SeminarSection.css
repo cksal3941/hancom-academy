@@ -1,7 +1,7 @@
 .seminar {
   width: 100%;
   min-height: 100vh;
-  overflow-x: clip;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;

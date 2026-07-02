@@ -12,4 +12,21 @@ export default defineConfig({
     // @react-three/fiber ships its own React copy — dedupe forces one instance
     dedupe: ['react', 'react-dom'],
   },
+  build: {
+    rolldownOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/three') || id.includes('@react-three') || id.includes('@shadergradient')) {
+            return 'three'
+          }
+          if (id.includes('node_modules/firebase')) {
+            return 'firebase'
+          }
+          if (id.includes('node_modules/swiper')) {
+            return 'swiper'
+          }
+        },
+      },
+    },
+  },
 })

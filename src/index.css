@@ -116,6 +116,7 @@ ul { list-style: none; }
 /* ── Glassmorphism ── */
 .glassmorphism {
   background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   border-radius: var(--glass-radius);
   border: var(--glass-border);
