@@ -13,9 +13,9 @@ export default function AcademyIntroShader() {
         cDistance={2.8}
         cPolarAngle={80}
         cameraZoom={9.1}
-        color1="#606080"
-        color2="#8d7dca"
-        color3="#212121"
+        color1="#2a3f8f"
+        color2="#5689F1"
+        color3="#0a1440"
         destination="onCanvas"
         embedMode="off"
         envPreset="city"

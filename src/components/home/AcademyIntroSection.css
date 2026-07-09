@@ -1,7 +1,7 @@
 .academy-intro {
   position: relative;
   min-height: 100vh;
-  background: radial-gradient(ellipse at 65% 40%, #8d7dca 0%, #606080 45%, #212121 85%);
+  background: radial-gradient(ellipse at 65% 40%, #5689F1 0%, #2a3f8f 45%, #0a1440 85%);
 }
 
 .academy-intro__canvas-wrap {

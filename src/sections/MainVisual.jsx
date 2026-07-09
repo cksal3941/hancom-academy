@@ -16,12 +16,38 @@ import slideM3 from '../assets/main_slide3_m.png'
 import slideM4 from '../assets/main_slide4_m.png'
 import slideM5 from '../assets/main_slide5_m.png'
 
+// 배경 이미지: main_slide{n}_bg_d.webp / _m.webp 파일이 준비되면 아래 import 경로를 교체
 const slides = [
-  { src: slide1, mobileSrc: slideM1, theme: 'light' },
-  { src: slide2, mobileSrc: slideM2, theme: 'dark' },
-  { src: slide3, mobileSrc: slideM3, theme: 'dark' },
-  { src: slide4, mobileSrc: slideM4, theme: 'dark' },
-  { src: slide5, mobileSrc: slideM5, theme: 'dark' },
+  {
+    src: slide1, mobileSrc: slideM1, theme: 'light', align: 'left',
+    eyebrow: 'HANCOM ACADEMY',
+    title: '미래를 이끄는\n인재를 키웁니다',
+    desc: '영재고·과학고부터 정보올림피아드까지\n체계적인 커리큘럼으로 함께합니다',
+  },
+  {
+    src: slide2, mobileSrc: slideM2, theme: 'dark', align: 'left',
+    eyebrow: '영재고 · 과학고 내신',
+    title: '상위 1%를 위한\n특별한 교육',
+    desc: '알고리즘 사고력과 문제 해결력\n집중 심화 과정으로 목표를 달성합니다',
+  },
+  {
+    src: slide3, mobileSrc: slideM3, theme: 'dark', align: 'right',
+    eyebrow: '정보올림피아드',
+    title: '전국 대회 수상\n명문 학원',
+    desc: '체계적인 대회 준비와 실전 경험으로\n전국 최상위 성과를 만들어갑니다',
+  },
+  {
+    src: slide4, mobileSrc: slideM4, theme: 'dark', align: 'left',
+    eyebrow: '맞춤형 학습',
+    title: '1:1 개인 맞춤\n커리큘럼',
+    desc: '학생 수준별로 설계된 맞춤 과정\n확실한 실력 향상을 보장합니다',
+  },
+  {
+    src: slide5, mobileSrc: slideM5, theme: 'dark', align: 'right',
+    eyebrow: 'OA · 자격증',
+    title: '자격증 취득부터\n실무 능력까지',
+    desc: '컴퓨터 활용능력 자격증 취득\n실무 중심 체계적 교육 과정',
+  },
 ]
 
 const dispatchTheme = (swiper) => {
@@ -86,8 +112,17 @@ export default function MainVisual() {
               <div className="main-visual__slide">
                 <picture>
                   <source media="(max-width: 768px)" srcSet={slide.mobileSrc} />
-                  <img src={slide.src} alt={`메인 슬라이드 ${index + 1}`} />
+                  <img
+                    src={slide.src}
+                    alt={`메인 슬라이드 ${index + 1}`}
+                    fetchPriority={index === 0 ? 'high' : undefined}
+                  />
                 </picture>
+                <div className={`main-visual__copy main-visual__copy--${slide.align ?? 'left'} main-visual__copy--${slide.theme}`}>
+                  {slide.eyebrow && <p className="main-visual__copy-eyebrow">{slide.eyebrow}</p>}
+                  {slide.title && <h2 className="main-visual__copy-title">{slide.title}</h2>}
+                  {slide.desc && <p className="main-visual__copy-desc">{slide.desc}</p>}
+                </div>
               </div>
             </SwiperSlide>
           ))}

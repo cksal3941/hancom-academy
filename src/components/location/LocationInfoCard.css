@@ -123,7 +123,10 @@
   font-size: 13px;
   font-weight: var(--fw-semibold);
   text-decoration: none;
-  transition: opacity 0.2s ease, transform 0.15s ease;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
 }
 
 .location-card__nav-btn-icon {
@@ -136,29 +139,19 @@
 }
 
 .location-card__nav-btn:hover {
-  opacity: 0.85;
+  background: rgba(86, 137, 241, 0.3);
+  border-color: rgba(86, 137, 241, 0.6);
+  color: #fff;
   transform: translateY(-2px);
 }
 
-.location-card__nav-btn--kakao {
-  background: #391B1B;
-  color: #FEE500;
-}
-
-.location-card__nav-btn--naver {
-  background: #03C75A;
-  color: #fff;
-}
-
-.location-card__nav-btn--google {
-  background: #fff;
-  color: #4285F4;
-  border: 1px solid var(--border-color);
-}
-
+.location-card__nav-btn--kakao,
+.location-card__nav-btn--naver,
+.location-card__nav-btn--google,
 .location-card__nav-btn--tmap {
-  background: #11AAE1;
-  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {

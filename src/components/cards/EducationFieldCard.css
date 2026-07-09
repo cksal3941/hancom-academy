@@ -7,10 +7,10 @@
   justify-content: center;
   text-align: center;
   padding: 48px 36px 40px;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.88);
   border-radius: 10px;
-  border: 1px solid #ffffff;
-  box-shadow: 0 4px 24px rgba(1, 8, 89, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 24px rgba(1, 8, 89, 0.08);
   text-decoration: none;
   transition: transform var(--transition), box-shadow var(--transition);
 }
@@ -43,9 +43,9 @@
 }
 
 .edu-card__desc {
-  font-size: 18px;
-  font-weight: var(--fw-medium);
-  color: var(--color-brand-mid);
+  font-size: 17px;
+  font-weight: var(--fw-semibold);
+  color: var(--color-accent);
   margin-bottom: 10px;
   line-height: 1.5;
 }
@@ -80,7 +80,7 @@
 
 @media (max-width: 768px) {
   .edu-card {
-    padding: 0px 24px 0px;
+    padding: 28px 24px;
   }
 
   .edu-card:hover {
