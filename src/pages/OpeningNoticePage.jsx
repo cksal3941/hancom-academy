@@ -4,6 +4,8 @@ import { FiEdit3, FiHome, FiSearch } from 'react-icons/fi'
 import SubPageHero from '../components/common/SubPageHero'
 import openingNewsData from '../data/openingNewsData'
 import { fetchOpeningNotices } from '../services/noticeService'
+import { useAuth } from '../hooks/useAuth'
+import { isAdminUser } from '../utils/admin'
 import './NoticePage.css'
 
 const heroTabs = [
@@ -20,6 +22,7 @@ const searchOptions = [
 const PAGE_SIZE = 10
 
 export default function OpeningNoticePage() {
+  const { user } = useAuth()
   const [items, setItems] = useState(openingNewsData)
   const [searchField, setSearchField] = useState('title')
   const [keyword, setKeyword] = useState('')
@@ -120,12 +123,14 @@ export default function OpeningNoticePage() {
             )}
           </div>
 
-          <div className="notice-board__write-row">
-            <Link to="/notice/start/write" className="notice-board__write">
-              <FiEdit3 aria-hidden="true" />
-              글쓰기
-            </Link>
-          </div>
+          {isAdminUser(user) && (
+            <div className="notice-board__write-row">
+              <Link to="/notice/start/write" className="notice-board__write">
+                <FiEdit3 aria-hidden="true" />
+                글쓰기
+              </Link>
+            </div>
+          )}
 
           <div className="notice-board__pagination" aria-label="페이지">
             <button

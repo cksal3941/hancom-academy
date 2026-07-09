@@ -4,6 +4,8 @@ import { FiEdit3, FiHome, FiSearch } from 'react-icons/fi'
 import SubPageHero from '../components/common/SubPageHero'
 import newsData from '../data/newsData'
 import { fetchNews } from '../services/newsService'
+import { useAuth } from '../hooks/useAuth'
+import { isAdminUser } from '../utils/admin'
 import './NoticePage.css'
 
 const heroTabs = [
@@ -22,6 +24,7 @@ const searchOptions = [
 const PAGE_SIZE = 9
 
 export default function NewsPage() {
+  const { user } = useAuth()
   const [news, setNews] = useState(newsData)
   const [category, setCategory] = useState('전체')
   const [searchField, setSearchField] = useState('title')
@@ -124,12 +127,14 @@ export default function NewsPage() {
             )}
           </div>
 
-          <div className="notice-board__write-row">
-            <Link to="/notice/news/write" className="notice-board__write">
-              <FiEdit3 aria-hidden="true" />
-              글쓰기
-            </Link>
-          </div>
+          {isAdminUser(user) && (
+            <div className="notice-board__write-row">
+              <Link to="/notice/news/write" className="notice-board__write">
+                <FiEdit3 aria-hidden="true" />
+                글쓰기
+              </Link>
+            </div>
+          )}
 
           <div className="notice-board__pagination" aria-label="페이지">
             <button

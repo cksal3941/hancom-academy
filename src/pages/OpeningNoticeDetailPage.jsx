@@ -4,6 +4,8 @@ import { FiArrowLeft, FiHome, FiTrash2 } from 'react-icons/fi'
 import SubPageHero from '../components/common/SubPageHero'
 import NoticeImages from '../components/common/NoticeImages'
 import { deleteOpeningNotice, fetchOpeningNoticeById, incrementOpeningNoticeViews } from '../services/noticeService'
+import { useAuth } from '../hooks/useAuth'
+import { isAdminUser } from '../utils/admin'
 import './NoticePage.css'
 
 const heroTabs = [
@@ -15,6 +17,7 @@ const heroTabs = [
 export default function OpeningNoticeDetailPage() {
   const { openingNoticeId } = useParams()
   const navigate = useNavigate()
+  const { user } = useAuth()
   const [notice, setNotice] = useState(null)
   const [loading, setLoading] = useState(true)
   const viewedRef = useRef(false)
@@ -98,10 +101,12 @@ export default function OpeningNoticeDetailPage() {
                 <FiArrowLeft aria-hidden="true" />
                 목록으로
               </Link>
-              <button type="button" className="notice-board__delete" onClick={handleDelete}>
-                <FiTrash2 aria-hidden="true" />
-                삭제하기
-              </button>
+              {isAdminUser(user) && (
+                <button type="button" className="notice-board__delete" onClick={handleDelete}>
+                  <FiTrash2 aria-hidden="true" />
+                  삭제하기
+                </button>
+              )}
             </div>
           </article>
         </div>

@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { createBrowserRouter, Navigate, useLocation } from 'react-router-dom'
 import App from './App'
 import HomePage from './pages/HomePage'
+import ErrorPage from './pages/ErrorPage'
 import ComingSoonPage from './pages/ComingSoonPage'
 import SignUpPage from './pages/SignUpPage'
 import AboutPage from './pages/AboutPage'
@@ -21,6 +22,7 @@ import NewsDetailPage from './pages/NewsDetailPage'
 import NewsEditPage from './pages/NewsEditPage'
 import CoursesGiftedPage from './pages/CoursesGiftedPage'
 import { useAuth } from './hooks/useAuth'
+import { isAdminUser } from './utils/admin'
 
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 
@@ -33,10 +35,21 @@ function ProtectedRoute({ children }) {
   return children
 }
 
+function AdminRoute({ children, fallback = '/' }) {
+  const { user, loading } = useAuth()
+  const location = useLocation()
+
+  if (loading) return null
+  if (!user) return <Navigate to="/login" state={{ from: location.pathname }} replace />
+  if (!isAdminUser(user)) return <Navigate to={fallback} replace />
+  return children
+}
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
       {
@@ -65,28 +78,43 @@ const router = createBrowserRouter([
         element: <ProtectedRoute><NoticePage /></ProtectedRoute>,
       },
       { path: 'notice/start', element: <OpeningNoticePage /> },
-      { path: 'notice/start/write', element: <OpeningNoticeWritePage /> },
+      {
+        path: 'notice/start/write',
+        element: <AdminRoute fallback="/notice/start"><OpeningNoticeWritePage /></AdminRoute>,
+      },
       { path: 'notice/start/:openingNoticeId', element: <OpeningNoticeDetailPage /> },
       {
         path: 'notice/write',
-        element: <ProtectedRoute><NoticeWritePage /></ProtectedRoute>,
+        element: <AdminRoute fallback="/notice"><NoticeWritePage /></AdminRoute>,
       },
       { path: 'notice/news', element: <NewsPage /> },
-      { path: 'notice/news/write', element: <NewsWritePage /> },
+      {
+        path: 'notice/news/write',
+        element: <AdminRoute fallback="/notice/news"><NewsWritePage /></AdminRoute>,
+      },
       { path: 'notice/news/:newsId', element: <NewsDetailPage /> },
-      { path: 'notice/news/:newsId/edit', element: <NewsEditPage /> },
+      {
+        path: 'notice/news/:newsId/edit',
+        element: <AdminRoute fallback="/notice/news"><NewsEditPage /></AdminRoute>,
+      },
       {
         path: 'notice/:noticeId',
         element: <ProtectedRoute><NoticeDetailPage /></ProtectedRoute>,
       },
       {
         path: 'notice/:noticeId/edit',
-        element: <ProtectedRoute><NoticeEditPage /></ProtectedRoute>,
+        element: <AdminRoute fallback="/notice"><NoticeEditPage /></AdminRoute>,
       },
       { path: 'news', element: <NewsPage /> },
-      { path: 'news/write', element: <NewsWritePage /> },
+      {
+        path: 'news/write',
+        element: <AdminRoute fallback="/news"><NewsWritePage /></AdminRoute>,
+      },
       { path: 'news/:newsId', element: <NewsDetailPage /> },
-      { path: 'news/:newsId/edit', element: <NewsEditPage /> },
+      {
+        path: 'news/:newsId/edit',
+        element: <AdminRoute fallback="/news"><NewsEditPage /></AdminRoute>,
+      },
       { path: '*', element: <ComingSoonPage /> },
     ],
   },
