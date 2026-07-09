@@ -60,7 +60,7 @@
 }
 
 .main-visual__copy-eyebrow {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.2em;
   margin-bottom: 14px;
@@ -75,7 +75,7 @@
 }
 
 .main-visual__copy-title {
-  font-size: clamp(30px, 3.8vw, 56px);
+  font-size: clamp(36px, 3.8vw, 56px);
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.03em;
@@ -92,7 +92,7 @@
 
 .main-visual__copy-desc {
   margin-top: 20px;
-  font-size: clamp(14px, 1.3vw, 17px);
+  font-size: clamp(20px, 1.3vw, 22px);
   line-height: 1.85;
   white-space: pre-line;
   opacity: 0;
@@ -207,11 +207,11 @@
   }
 
   .main-visual__copy-title {
-    font-size: clamp(26px, 7vw, 34px);
+    font-size: clamp(28px, 7vw, 36px);
   }
 
   .main-visual__copy-desc {
-    font-size: 14px;
+    font-size: 20px;
     margin-top: 12px;
   }
 

@@ -1,6 +1,13 @@
-import { SiKakaotalk, SiNaver, SiGoogle } from 'react-icons/si'
-import { IoNavigate } from 'react-icons/io5'
+import { SiKakaotalk, SiNaver, SiGooglemaps } from 'react-icons/si'
 import './LocationInfoCard.css'
+
+const TmapIcon = () => (
+  <svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true">
+    <rect x="10" y="16" width="80" height="18" rx="7" />
+    <rect x="41" y="16" width="18" height="54" rx="7" />
+    <circle cx="50" cy="78" r="8" />
+  </svg>
+)
 
 const IconPin = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -58,13 +65,13 @@ export default function LocationInfoCard({ location }) {
       label: '구글지도',
       href: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
       mod: 'google',
-      icon: <SiGoogle />,
+      icon: <SiGooglemaps />,
     },
     {
       label: '티맵',
       href: `tmap://route?goalname=${encodeURIComponent(name)}&goalx=${lng}&goaly=${lat}`,
       mod: 'tmap',
-      icon: <IoNavigate />,
+      icon: <TmapIcon />,
     },
   ]
 
