@@ -66,7 +66,7 @@ Single-page React 19 app built with Vite 8, written in plain JavaScript (no Type
 *                               → ComingSoonPage
 ```
 
-`ProtectedRoute` in `router.jsx` wraps routes that require login — it reads `useAuth()` and redirects to `/login` with `state.from` if unauthenticated. Notice routes (`/notice`, `/notice/announcement`, `/notice/write`, `/notice/:noticeId`, `/notice/:noticeId/edit`) are all gated at the router level via `ProtectedRoute`.
+`ProtectedRoute` in `router.jsx` wraps routes that require login — it reads `useAuth()` and redirects to `/login` with `state.from` if unauthenticated. `AdminRoute` (also in `router.jsx`) additionally checks `isAdminUser()` and redirects non-admins to a `fallback` path. All write/edit routes (`/notice/write`, `/notice/:noticeId/edit`, `/notice/start/write`, `/notice/news/write`, `/notice/news/:newsId/edit`, `/news/write`, `/news/:newsId/edit`) are wrapped in `AdminRoute`; `/notice`, `/notice/announcement`, and `/notice/:noticeId` use `ProtectedRoute` (login only).
 
 `App.jsx` derives `isAuthPage` (`/login`, `/signup`) to hide `FloatingQuickMenu` and `TopButton` on those routes. On sub-pages (non-`/`) `FloatingQuickMenu` receives `mobileOnly={true}`.
 
@@ -102,7 +102,8 @@ pages/
   SignUpPage.jsx     — email registration
   ComingSoonPage.jsx — placeholder for unimplemented routes
 sections/            — full-viewport (100vh) blocks for HomePage only
-                       (MainVisual, SeminarSection, LocationSection)
+                       (MainVisual, SeminarSection); note: src/sections/LocationSection.jsx exists
+                       but is unused — HomePage imports LocationSection from components/home/
 components/
   Header.jsx         — desktop megamenu dropdown + hamburger trigger for MobileMenu
   Footer.jsx
@@ -120,6 +121,10 @@ components/
   awards/
     AwardsTimeline.jsx — scroll-animated vertical timeline grouped by year
     DecadeTabs.jsx     — sticky decade filter tabs (e.g. "2020s", "2010s")
+  common/
+    NoticeImages.jsx  — image thumbnail grid + lightbox for detail pages; supports zoom
+                        (1×/1.5×/2×/3×) via scroll-wheel and pointer drag; ESC/click to close;
+                        used by NoticeDetailPage, OpeningNoticeDetailPage, NewsDetailPage
   auth/
     GoogleLoginButton.jsx
 firebase/
@@ -167,7 +172,8 @@ All three boards (공지사항, 개강소식, 뉴스) share the same `NoticePage
 - Content is stored as a `string[]` (paragraphs split on `\n`, trimmed, empty lines dropped). A `summary` field holds the first 80 chars of the first paragraph.
 - Write forms use the `nw-form` BEM block (defined in `NoticeWritePage.css`). Image upload is limited to 5 files; previews use `URL.createObjectURL`. On submit, the form calls the service, shows a toast, then navigates back after 1.5 s.
 - `NoticeDetailPage` requires authentication (redirects to `/login` with `state.from`). `OpeningNoticeDetailPage` and `NewsDetailPage` have no auth gate. All detail pages call `increment*Views()` to bump the Firestore view count (skipped for static-data items).
-- The write button on `NewsPage` is always visible (no `isAdminUser` guard). The write/edit buttons on notice and opening-notice pages are guarded by `isAdminUser`.
+- Write buttons on all three list pages and edit/delete buttons on all three detail pages are hidden unless `isAdminUser(user)` is true. Router-level `AdminRoute` enforces the same on direct URL access.
+- `firestore.rules` (deployed via `firebase deploy --only firestore:rules`; see `firebase.json`) is the actual write authorization — the admin email list there must be kept in sync with `VITE_ADMIN_EMAILS`. Non-admins may only update the `views` field by +1.
 
 ### Awards page
 
@@ -197,7 +203,7 @@ All three boards (공지사항, 개강소식, 뉴스) share the same `NoticePage
 
 ### AcademyIntroSection
 
-Has a CSS marquee (`academy-intro__marquee-track`) running vertically in the background. The section background uses `<ShaderGradientCanvas>` / `<ShaderGradient>` from `@shadergradient/react` (backed by Three.js) for an animated gradient effect.
+Has a CSS marquee (`academy-intro__marquee-track`) running vertically in the background. The animated shader background lives in `AcademyIntroShader.jsx` (`@shadergradient/react`, backed by Three.js) and is loaded via `React.lazy` only after the section first scrolls into view — this keeps the ~280 kB (gzip) three.js chunk out of the initial bundle. A matching CSS `radial-gradient` on `.academy-intro` serves as the visual fallback while the chunk loads. Do not import `@shadergradient/react` or `three` statically anywhere, and do not re-add a `three` entry to `manualChunks` in `vite.config.js` — either would pull the chunk back into the eager load path.
 
 ### MapBox
 
@@ -237,3 +243,4 @@ Skeleton utilities also live in `index.css`: `.ph` (dark placeholder), `.ph--lig
 - `@types/react` and `@types/react-dom` are devDependencies for IDE/JSDoc type hints only — no TypeScript.
 - ESLint uses **flat config** (`eslint.config.js`, ESLint 10). Plugins: `eslint-plugin-react-hooks` and `eslint-plugin-react-refresh`.
 - `src/App.css` is currently unused.
+- `leaflet` and `@google-cloud/storage` are listed in `package.json` but are not imported anywhere — unused remnants that can be removed.

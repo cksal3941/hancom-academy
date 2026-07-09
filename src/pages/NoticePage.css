@@ -299,7 +299,9 @@ body:has(.notice-page) main {
 }
 
 .news-card__placeholder {
-  background: #d9d9d9;
+  background:
+    url('/images/hancom_logo_w.png') center / 46% auto no-repeat,
+    linear-gradient(135deg, #1c2f70 0%, var(--color-brand) 55%, #0a1240 100%);
 }
 
 .news-card__content {

@@ -27,6 +27,12 @@ export default function App() {
     AOS.refresh()
   }, [location.pathname])
 
+  // 모바일 하단 고정 퀵바 높이만큼 페이지 하단 여백 확보 (index.css 참조)
+  useEffect(() => {
+    document.body.classList.toggle('has-quickbar', !isAuthPage)
+    return () => document.body.classList.remove('has-quickbar')
+  }, [isAuthPage])
+
   return (
     <>
       <Header />

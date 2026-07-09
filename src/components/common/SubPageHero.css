@@ -174,6 +174,16 @@
     font-size: 15px;
   }
 
+  /* 2열 그리드에서 탭 수가 홀수면 마지막 탭이 전체 폭을 차지해 빈 칸 방지 */
+  .subpage-hero__tab:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  /* 둘째 줄부터 상단 구분선 */
+  .subpage-hero__tab:nth-child(n + 3) {
+    border-top: 1px solid rgba(255, 255, 255, .2);
+  }
+
   .subpage-breadcrumb__inner {
     padding-left: 20px;
     padding-right: 20px;
