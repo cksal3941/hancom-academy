@@ -1,6 +1,8 @@
 .academy-intro {
   position: relative;
   min-height: 100vh;
+  overflow: hidden;
+  clip-path: inset(0);
   background: radial-gradient(ellipse at 65% 40%, #5689F1 0%, #2a3f8f 45%, #0a1440 85%);
 }
 
