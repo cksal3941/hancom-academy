@@ -48,6 +48,17 @@ const items = [
 export default function LocationInfoCard({ location }) {
   const { lat, lng, name, address } = location
 
+  const handleTmap = (e) => {
+    e.preventDefault()
+    const appUrl = `tmap://route?goalname=${encodeURIComponent(name)}&goalx=${lng}&goaly=${lat}`
+    const fallbackUrl = `https://map.naver.com/v5/search/${encodeURIComponent(name)}`
+    window.location.href = appUrl
+    // 앱 미설치 시 페이지가 숨겨지지 않으므로 네이버지도 웹으로 폴백
+    setTimeout(() => {
+      if (!document.hidden) window.open(fallbackUrl, '_blank')
+    }, 1500)
+  }
+
   const mapLinks = [
     {
       label: '카카오맵',
@@ -57,19 +68,20 @@ export default function LocationInfoCard({ location }) {
     },
     {
       label: '네이버지도',
-      href: `https://map.naver.com/v5/search/${encodeURIComponent(address)}`,
+      href: `https://map.naver.com/v5/search/${encodeURIComponent(name)}`,
       mod: 'naver',
       icon: <SiNaver />,
     },
     {
       label: '구글지도',
-      href: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
+      href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + address)}`,
       mod: 'google',
       icon: <SiGooglemaps />,
     },
     {
       label: '티맵',
-      href: `tmap://route?goalname=${encodeURIComponent(name)}&goalx=${lng}&goaly=${lat}`,
+      href: '#',
+      onClick: handleTmap,
       mod: 'tmap',
       icon: <TmapIcon />,
     },
@@ -93,11 +105,12 @@ export default function LocationInfoCard({ location }) {
 
       <div className="location-card__nav">
         <div className="location-card__nav-buttons">
-          {mapLinks.map(({ label, href, mod, icon }) => (
+          {mapLinks.map(({ label, href, onClick, mod, icon }) => (
             <a
               key={mod}
               href={href}
-              target="_blank"
+              onClick={onClick}
+              target={onClick ? undefined : '_blank'}
               rel="noopener noreferrer"
               className={`location-card__nav-btn location-card__nav-btn--${mod}`}
             >
