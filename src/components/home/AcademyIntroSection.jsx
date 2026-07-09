@@ -1,18 +1,28 @@
-import { useEffect, useRef, useState } from 'react'
-import { ShaderGradientCanvas, ShaderGradient } from '@shadergradient/react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import academyIntroData from '../../data/academyIntroData'
 import AcademyIntroCard from '../cards/AcademyIntroCard'
 import './AcademyIntroSection.css'
+
+// 셰이더는 장식용 배경이므로 청크 로드 실패 시 앱을 죽이지 않고
+// CSS radial-gradient 폴백만 남긴다
+const AcademyIntroShader = lazy(() =>
+  import('./AcademyIntroShader').catch(() => ({ default: () => null }))
+)
 
 const MARQUEE_ITEMS = Array.from({ length: 16 }, (_, i) => i)
 
 export default function AcademyIntroSection() {
   const sectionRef = useRef(null)
   const [visible, setVisible] = useState(false)
+  const [shaderLoaded, setShaderLoaded] = useState(false)
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([entry]) => setVisible(entry.isIntersecting),
+      ([entry]) => {
+        setVisible(entry.isIntersecting)
+        // 섹션이 한 번이라도 보이면 셰이더 청크(three.js) 로딩 시작
+        if (entry.isIntersecting) setShaderLoaded(true)
+      },
       { threshold: 0.1 }
     )
     if (sectionRef.current) obs.observe(sectionRef.current)
@@ -22,49 +32,11 @@ export default function AcademyIntroSection() {
   return (
     <section className="academy-intro" ref={sectionRef}>
       <div className={`academy-intro__canvas-wrap${visible ? ' academy-intro__canvas-wrap--visible' : ''}`}>
-        <ShaderGradientCanvas style={{ width: '100%', height: '100%' }}>
-          <ShaderGradient
-            animate="on"
-            axesHelper="off"
-            brightness={1}
-            cAzimuthAngle={180}
-            cDistance={2.8}
-            cPolarAngle={80}
-            cameraZoom={9.1}
-            color1="#606080"
-            color2="#8d7dca"
-            color3="#212121"
-            destination="onCanvas"
-            embedMode="off"
-            envPreset="city"
-            format="gif"
-            fov={45}
-            frameRate={10}
-            gizmoHelper="hide"
-            grain="on"
-            lightType="3d"
-            pixelDensity={1}
-            positionX={0}
-            positionY={0}
-            positionZ={0}
-            range="disabled"
-            rangeEnd={40}
-            rangeStart={0}
-            reflection={0.1}
-            rotationX={50}
-            rotationY={0}
-            rotationZ={-60}
-            shader="defaults"
-            type="waterPlane"
-            uAmplitude={0}
-            uDensity={1.5}
-            uFrequency={0}
-            uSpeed={0.3}
-            uStrength={1.5}
-            uTime={8}
-            wireframe={false}
-          />
-        </ShaderGradientCanvas>
+        {shaderLoaded && (
+          <Suspense fallback={null}>
+            <AcademyIntroShader />
+          </Suspense>
+        )}
       </div>
 
       <div className="academy-intro__overlay" aria-hidden="true" />
