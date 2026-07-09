@@ -53,9 +53,10 @@ export default function LocationInfoCard({ location }) {
     const appUrl = `tmap://route?goalname=${encodeURIComponent(name)}&goalx=${lng}&goaly=${lat}`
     const fallbackUrl = `https://map.naver.com/v5/search/${encodeURIComponent(name)}`
     window.location.href = appUrl
-    // 앱 미설치 시 페이지가 숨겨지지 않으므로 네이버지도 웹으로 폴백
+    // 앱이 열리면 document.hidden === true → 폴백 안 함
+    // 앱 미설치(데스크톱 포함)면 현재 탭을 네이버지도 웹으로 이동
     setTimeout(() => {
-      if (!document.hidden) window.open(fallbackUrl, '_blank')
+      if (!document.hidden) window.location.href = fallbackUrl
     }, 1500)
   }
 
