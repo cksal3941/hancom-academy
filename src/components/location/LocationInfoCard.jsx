@@ -48,18 +48,6 @@ const items = [
 export default function LocationInfoCard({ location }) {
   const { lat, lng, name, address } = location
 
-  const handleTmap = (e) => {
-    e.preventDefault()
-    const appUrl = `tmap://route?goalname=${encodeURIComponent(name)}&goalx=${lng}&goaly=${lat}`
-    const fallbackUrl = `https://map.naver.com/v5/search/${encodeURIComponent(name)}`
-    window.location.href = appUrl
-    // 앱이 열리면 document.hidden === true → 폴백 안 함
-    // 앱 미설치(데스크톱 포함)면 현재 탭을 네이버지도 웹으로 이동
-    setTimeout(() => {
-      if (!document.hidden) window.location.href = fallbackUrl
-    }, 1500)
-  }
-
   const mapLinks = [
     {
       label: '카카오맵',
@@ -75,14 +63,13 @@ export default function LocationInfoCard({ location }) {
     },
     {
       label: '구글지도',
-      href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + address)}`,
+      href: `https://maps.google.com/maps?q=${encodeURIComponent(name + ' ' + address)}`,
       mod: 'google',
       icon: <SiGooglemaps />,
     },
     {
       label: '티맵',
-      href: '#',
-      onClick: handleTmap,
+      href: `tmap://route?goalname=${encodeURIComponent(name)}&goalx=${lng}&goaly=${lat}`,
       mod: 'tmap',
       icon: <TmapIcon />,
     },
@@ -106,12 +93,11 @@ export default function LocationInfoCard({ location }) {
 
       <div className="location-card__nav">
         <div className="location-card__nav-buttons">
-          {mapLinks.map(({ label, href, onClick, mod, icon }) => (
+          {mapLinks.map(({ label, href, mod, icon }) => (
             <a
               key={mod}
               href={href}
-              onClick={onClick}
-              target={onClick ? undefined : '_blank'}
+              target="_blank"
               rel="noopener noreferrer"
               className={`location-card__nav-btn location-card__nav-btn--${mod}`}
             >
