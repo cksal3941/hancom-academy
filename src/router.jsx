@@ -21,6 +21,8 @@ import NewsWritePage from './pages/NewsWritePage'
 import NewsDetailPage from './pages/NewsDetailPage'
 import NewsEditPage from './pages/NewsEditPage'
 import CoursesGiftedPage from './pages/CoursesGiftedPage'
+import CoursesOlympiadPage from './pages/CoursesOlympiadPage'
+import CoursesCertificationPage from './pages/CoursesCertificationPage'
 import { useAuth } from './hooks/useAuth'
 import { isAdminUser } from './utils/admin'
 
@@ -66,7 +68,10 @@ const router = createBrowserRouter([
       { path: 'about/teachers', element: <TeachersPage /> },
       { path: 'about/awards', element: <AwardsPage /> },
       { path: 'about/location', element: <LocationPage /> },
+      { path: 'courses', element: <Navigate to="/courses/gifted" replace /> },
       { path: 'courses/gifted', element: <CoursesGiftedPage /> },
+      { path: 'courses/olympiad', element: <CoursesOlympiadPage /> },
+      { path: 'courses/certification', element: <CoursesCertificationPage /> },
       { path: 'opening-news', element: <ComingSoonPage /> },
       { path: 'opening-news/*', element: <ComingSoonPage /> },
       {

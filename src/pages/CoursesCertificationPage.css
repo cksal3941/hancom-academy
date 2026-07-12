@@ -1,0 +1,530 @@
+.courses-cert-page {
+  min-height: 100vh;
+  background: #fff;
+  color: #151823;
+}
+
+.courses-cert-page__body {
+  width: min(100%, 1240px);
+  margin: 0 auto;
+  padding: 132px 24px 164px;
+}
+
+/* ── 인트로 ── */
+.ca-intro {
+  max-width: 1040px;
+  margin: 0 auto 164px;
+}
+
+.ca-intro__lead {
+  margin-bottom: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid #dfe4f0;
+}
+
+.ca-kicker {
+  margin-bottom: 16px;
+  color: var(--color-accent);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+}
+
+.ca-intro h2 {
+  margin: 0;
+  color: #151823;
+  font-size: clamp(30px, 3.6vw, 50px);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.ca-intro__body {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 52px;
+  align-items: start;
+}
+
+.ca-intro__copy {
+  display: grid;
+  gap: 18px;
+  color: #3b3f4a;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.9;
+  word-break: keep-all;
+}
+
+.ca-intro__callout {
+  position: relative;
+  padding: 36px 32px 32px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #1e4fcc 0%, #0a1f7a 100%);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.8;
+  word-break: keep-all;
+  overflow: hidden;
+}
+
+.ca-intro__callout::before {
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  color: rgba(255, 255, 255, 0.12);
+  font-size: 96px;
+  font-weight: 900;
+  line-height: 1;
+  content: "\201C";
+  pointer-events: none;
+}
+
+/* ── 공통 섹션 ── */
+.ca-section {
+  margin-top: 164px;
+}
+
+.ca-section__head {
+  max-width: 760px;
+  margin: 0 auto 70px;
+  text-align: center;
+}
+
+.ca-section__head span {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--color-accent);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ca-section__head h2 {
+  color: #151823;
+  font-size: clamp(30px, 3vw, 42px);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.ca-section__head h2::after {
+  display: block;
+  width: 28px;
+  height: 3px;
+  margin: 22px auto 0;
+  border-radius: 999px;
+  background: var(--color-point);
+  content: "";
+}
+
+.ca-section__head p {
+  margin-top: 24px;
+  color: #3b3f4a;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+/* ── 자격증 카드 ── */
+.ca-certs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.ca-cert__card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 36px 32px;
+  border: 1px solid #dfe4f0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 16px 38px rgba(1, 8, 89, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.ca-cert__card:hover {
+  border-color: rgba(86, 137, 241, 0.3);
+  box-shadow: 0 24px 54px rgba(1, 8, 89, 0.09);
+  transform: translateY(-4px);
+}
+
+.ca-cert__badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+
+.ca-cert__card--blue   .ca-cert__badge { background: rgba(86, 137, 241, 0.12); color: var(--color-accent); }
+.ca-cert__card--green  .ca-cert__badge { background: rgba(22, 131, 59, 0.12);  color: #16833b; }
+.ca-cert__card--purple .ca-cert__badge { background: rgba(111, 70, 199, 0.12); color: #6f46c7; }
+.ca-cert__card--orange .ca-cert__badge { background: rgba(217, 119, 6, 0.12);  color: #b45309; }
+
+.ca-cert__card h3 {
+  color: #151823;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.ca-cert__card > p {
+  color: #3b3f4a;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.8;
+  word-break: keep-all;
+}
+
+.ca-cert__card ul {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 16px;
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px solid #eef1f8;
+}
+
+.ca-cert__card li {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  color: #3b3f4a;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  word-break: keep-all;
+}
+
+.ca-cert__card li svg {
+  position: relative;
+  top: 2px;
+  flex: 0 0 auto;
+  font-size: 13px;
+}
+
+.ca-cert__card--blue   li svg { color: var(--color-accent); }
+.ca-cert__card--green  li svg { color: #16833b; }
+.ca-cert__card--purple li svg { color: #6f46c7; }
+.ca-cert__card--orange li svg { color: #b45309; }
+
+/* ── 단계별 교육과정 ── */
+.ca-process {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.ca-process__item {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 30px 22px;
+  border: 1px solid #dfe4f0;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(1, 8, 89, 0.04);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ca-process__item:hover {
+  border-color: rgba(86, 137, 241, 0.3);
+  box-shadow: 0 20px 48px rgba(1, 8, 89, 0.08);
+  transform: translateY(-4px);
+}
+
+.ca-process__item em {
+  display: inline-grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.ca-process__item h3 {
+  color: #151823;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.35;
+  word-break: keep-all;
+}
+
+.ca-process__item p {
+  color: #3b3f4a;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+/* ── 노트 ── */
+.ca-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: min(100%, 800px);
+  min-height: 64px;
+  margin: 72px auto 0;
+  padding: 14px 24px;
+  border-radius: 6px;
+  background: #f4f7fc;
+  color: #151823;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.55;
+  text-align: center;
+  word-break: keep-all;
+}
+
+.ca-note svg {
+  flex: 0 0 auto;
+  color: var(--color-accent);
+  font-size: 24px;
+}
+
+/* ── 자격증이 필요한 이유 ── */
+.ca-reasons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.ca-reason__card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 36px 28px;
+  border: 1px solid #dfe4f0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 16px 38px rgba(1, 8, 89, 0.04);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ca-reason__card:hover {
+  border-color: rgba(86, 137, 241, 0.3);
+  box-shadow: 0 24px 54px rgba(1, 8, 89, 0.09);
+  transform: translateY(-4px);
+}
+
+.ca-reason__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: rgba(86, 137, 241, 0.1);
+  color: var(--color-accent);
+  font-size: 26px;
+}
+
+.ca-reason__card h3 {
+  color: #151823;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.ca-reason__card p {
+  color: #3b3f4a;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.75;
+  word-break: keep-all;
+}
+
+/* ── 수업 운영 방식 ── */
+.ca-section--operation {
+  padding-top: 84px;
+}
+
+.ca-operation {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.ca-operation__card {
+  min-height: 292px;
+  padding: 30px 18px 26px;
+  border: 1px solid #dfe4f0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 16px 38px rgba(1, 8, 89, 0.04);
+  text-align: center;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ca-operation__card:hover {
+  border-color: rgba(86, 137, 241, 0.34);
+  box-shadow: 0 22px 52px rgba(1, 8, 89, 0.08);
+  transform: translateY(-4px);
+}
+
+.ca-operation__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 66px;
+  height: 66px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: rgba(86, 137, 241, 0.11);
+  color: var(--color-accent);
+  font-size: 30px;
+}
+
+.ca-operation__card strong {
+  display: block;
+  color: #7da1f5;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.ca-operation__card h3 {
+  min-height: 48px;
+  margin-top: 10px;
+  color: #151823;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.45;
+  word-break: keep-all;
+}
+
+.ca-operation__card span {
+  display: block;
+  width: 24px;
+  height: 3px;
+  margin: 18px auto;
+  border-radius: 999px;
+  background: var(--color-point);
+}
+
+.ca-operation__card p {
+  color: #3b3f4a;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.65;
+  word-break: keep-all;
+}
+
+.ca-note--operation {
+  width: min(100%, 930px);
+  background: linear-gradient(90deg, #f5f8ff, #eef4ff);
+}
+
+/* ── 반응형 ── */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .courses-cert-page__body {
+    padding: 96px 24px 132px;
+  }
+
+  .ca-intro {
+    margin-bottom: 0;
+  }
+
+  .ca-intro__body {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .ca-section {
+    margin-top: 124px;
+  }
+
+  .ca-certs {
+    grid-template-columns: 1fr;
+  }
+
+  .ca-process {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .ca-reasons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ca-operation {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .courses-cert-page__body {
+    padding: 74px 20px 104px;
+  }
+
+  .ca-intro {
+    margin-bottom: 0;
+  }
+
+  .ca-intro__lead {
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+  }
+
+  .ca-intro__body {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .ca-kicker {
+    font-size: 15px;
+  }
+
+  .ca-intro__copy {
+    font-size: 16px;
+  }
+
+  .ca-intro__callout {
+    font-size: 15px;
+    padding: 28px 24px 24px;
+  }
+
+  .ca-section {
+    margin-top: 104px;
+  }
+
+  .ca-section__head {
+    margin-bottom: 42px;
+  }
+
+  .ca-section__head h2 {
+    font-size: 28px;
+  }
+
+  .ca-certs,
+  .ca-process,
+  .ca-reasons,
+  .ca-operation {
+    grid-template-columns: 1fr;
+  }
+
+  .ca-cert__card ul {
+    grid-template-columns: 1fr;
+  }
+
+  .ca-operation__card {
+    min-height: auto;
+  }
+
+  .ca-note {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
