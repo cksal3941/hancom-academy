@@ -40,11 +40,6 @@
   font-weight: var(--fw-bold);
   color: var(--color-accent);
   text-decoration: none;
-  transition: gap var(--transition);
-}
-
-.news-notice-col__more:hover {
-  gap: 12px;
 }
 
 .news-notice-col__more-icon {
@@ -56,6 +51,11 @@
   border: 1.5px solid var(--color-accent);
   border-radius: 50%;
   font-size: 10px;
+  transition: transform var(--transition);
+}
+
+.news-notice-col__more:hover .news-notice-col__more-icon {
+  transform: translateX(4px);
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {

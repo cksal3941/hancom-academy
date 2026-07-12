@@ -74,7 +74,9 @@ Single-page React 19 app built with Vite 8, written in plain JavaScript (no Type
 
 ```
 App.jsx              — layout shell: Header + <Outlet> + Footer + FloatingQuickMenu + TopButton
-                       initialises AOS once; refreshes on route change
+                       initialises AOS once on mount; on every route change: scrolls to top,
+                       refreshes AOS, and toggles body.has-quickbar (present on non-auth pages,
+                       provides bottom padding for the mobile fixed quick bar)
 pages/
   HomePage.jsx       — composes sections: MainVisual, NewsNoticeSection (above-fold 100vh),
                        EducationFieldSection, AcademyIntroSection, SeminarSection, LocationSection
@@ -101,6 +103,7 @@ pages/
                        manages both 'login' and 'forgot' views via a `view` state string
   SignUpPage.jsx     — email registration
   ComingSoonPage.jsx — placeholder for unimplemented routes
+  ErrorPage.jsx      — react-router errorElement for the root route; shows reload + home buttons
 sections/            — full-viewport (100vh) blocks for HomePage only
                        (MainVisual, SeminarSection); note: src/sections/LocationSection.jsx exists
                        but is unused — HomePage imports LocationSection from components/home/
@@ -203,7 +206,7 @@ All three boards (공지사항, 개강소식, 뉴스) share the same `NoticePage
 
 ### AcademyIntroSection
 
-Has a CSS marquee (`academy-intro__marquee-track`) running vertically in the background. The animated shader background lives in `AcademyIntroShader.jsx` (`@shadergradient/react`, backed by Three.js) and is loaded via `React.lazy` only after the section first scrolls into view — this keeps the ~280 kB (gzip) three.js chunk out of the initial bundle. A matching CSS `radial-gradient` on `.academy-intro` serves as the visual fallback while the chunk loads. Do not import `@shadergradient/react` or `three` statically anywhere, and do not re-add a `three` entry to `manualChunks` in `vite.config.js` — either would pull the chunk back into the eager load path.
+Has a CSS marquee (`academy-intro__marquee-track`) running vertically in the background. The animated shader background lives in `src/components/home/AcademyIntroShader.jsx` (`@shadergradient/react`, backed by Three.js) and is loaded via `React.lazy` only after the section first scrolls into view — this keeps the ~280 kB (gzip) three.js chunk out of the initial bundle. A matching CSS `radial-gradient` on `.academy-intro` serves as the visual fallback while the chunk loads. Do not import `@shadergradient/react` or `three` statically anywhere, and do not re-add a `three` entry to `manualChunks` in `vite.config.js` — either would pull the chunk back into the eager load path.
 
 ### MapBox
 
@@ -244,3 +247,4 @@ Skeleton utilities also live in `index.css`: `.ph` (dark placeholder), `.ph--lig
 - ESLint uses **flat config** (`eslint.config.js`, ESLint 10). Plugins: `eslint-plugin-react-hooks` and `eslint-plugin-react-refresh`.
 - `src/App.css` is currently unused.
 - `leaflet` and `@google-cloud/storage` are listed in `package.json` but are not imported anywhere — unused remnants that can be removed.
+- **Vite 8 / Rolldown**: `vite.config.js` uses `rolldownOptions` (not `rollupOptions`) for `manualChunks` — Vite 8 switched to the Rolldown bundler. `resolve.dedupe: ['react', 'react-dom']` forces a single React instance because `@react-three/fiber` ships its own copy. `optimizeDeps.include: ['@shadergradient/react']` pre-bundles it at dev startup to prevent mid-session re-optimisation when the lazy chunk is first loaded.

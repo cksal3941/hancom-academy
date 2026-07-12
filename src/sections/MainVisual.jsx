@@ -5,7 +5,7 @@ import 'swiper/css'
 import 'swiper/css/effect-fade'
 import './MainVisual.css'
 
-import slide1 from '../assets/main_slide1_d.jpg'
+import slide1 from '../assets/hero_slide1.png'
 import slide2 from '../assets/main_slide2_d.jpg'
 import slide3 from '../assets/main_slide3_d.jpg'
 import slide4 from '../assets/main_slide4_d.jpg'

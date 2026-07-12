@@ -76,6 +76,7 @@ export default function FloatingQuickMenu({ mobileOnly = false }) {
   const academyRef = useRef(null)
   const locationRef = useRef(null)
   const visualRef = useRef(null)
+  const menuRef = useRef(null)
   const inputRef = useRef(null)
   const logRef = useRef(null)
   const nextMessageIdRef = useRef(2)
@@ -100,15 +101,21 @@ export default function FloatingQuickMenu({ mobileOnly = false }) {
       const vh = window.innerHeight
 
       if (footerEl) {
-        const r = footerEl.getBoundingClientRect()
-        setHidden(r.top < vh * 0.95)
+        const footerRect = footerEl.getBoundingClientRect()
+        const menuEl = menuRef.current
+        const menuBottom = menuEl
+          ? menuEl.getBoundingClientRect().bottom + 16
+          : vh * 0.75
+        setHidden(footerRect.top < menuBottom)
       }
 
+      // fqm is fixed at top:45% translateY(-50%), so its center is always at vh*0.45.
+      // Switch theme exactly when the dark section boundary crosses that point.
+      const fqmCenter = vh * 0.45
       const inSec = (el) => {
         if (!el) return false
         const r = el.getBoundingClientRect()
-        const visible = Math.min(r.bottom, vh) - Math.max(r.top, 0)
-        return visible >= vh * 0.95
+        return r.top <= fqmCenter && r.bottom >= fqmCenter
       }
       setAcademy(inSec(academyEl))
       setLocation(inSec(locationEl))
@@ -193,6 +200,7 @@ export default function FloatingQuickMenu({ mobileOnly = false }) {
   return (
     <>
       <aside
+        ref={menuRef}
         className={[
           'fqm',
           mobileOnly ? 'fqm--mobile-only' : '',
