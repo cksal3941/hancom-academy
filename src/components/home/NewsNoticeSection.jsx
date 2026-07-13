@@ -48,8 +48,6 @@ export default function NewsNoticeSection() {
             title={title}
             items={data.slice(0, 2)}
             linkPath={linkPath}
-            data-aos="fade-up"
-            data-aos-delay={i * 100}
             className={activeTab !== i ? 'news-notice-col--hidden-mobile' : ''}
           />
         ))}

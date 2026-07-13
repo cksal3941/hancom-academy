@@ -1,7 +1,7 @@
 /* ── 캡슐 컨테이너 ── */
 .fqm {
   position: fixed;
-  right: 30px;
+  right: 40px;
   top: 45%;
   transform: translateY(-50%);
   z-index: 200;
@@ -123,7 +123,7 @@ button.fqm__item {
 /* ── 태블릿: 사이드바 소형화 ── */
 @media (min-width: 769px) and (max-width: 1024px) {
   .fqm {
-    right: 16px;
+    right: 40px;
     padding: 14px 0;
     gap: 2px;
   }

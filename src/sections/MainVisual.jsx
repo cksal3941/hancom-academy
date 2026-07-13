@@ -10,39 +10,43 @@ import slide2 from '../assets/hero_slide2.png'
 import slide3 from '../assets/hero_slide3.png'
 import slide4 from '../assets/hero_slide4.png'
 import slide5 from '../assets/hero_slide5.png'
+import slide1m from '../assets/hero_slide1_m.png'
+import slide2m from '../assets/hero_slide2_m.png'
+import slide3m from '../assets/hero_slide3_m.png'
+import slide4m from '../assets/hero_slide4_m.png'
+import slide5m from '../assets/hero_slide5_m.png'
 
-// 배경 이미지: main_slide{n}_bg_d.webp / _m.webp 파일이 준비되면 아래 import 경로를 교체
 const slides = [
   {
-    src: slide1, mobileSrc: slide1, theme: 'light', align: 'left',
+    src: slide1, mobileSrc: slide1m, theme: 'light', align: 'left',
     objectPosition: 'right center',
     eyebrow: 'HANCOM ACADEMY',
     title: '미래를 이끄는\n인재를 키웁니다',
     desc: '영재고·과학고부터 정보올림피아드까지\n체계적인 커리큘럼으로 함께합니다',
   },
   {
-    src: slide2, mobileSrc: slide2, theme: 'dark', align: 'left',
+    src: slide2, mobileSrc: slide2m, theme: 'dark', align: 'left',
     objectPosition: 'center 30%',
     eyebrow: '영재고 · 과학고 내신',
     title: '상위 1%를 위한\n특별한 교육',
     desc: '알고리즘 사고력과 문제 해결력\n집중 심화 과정으로 목표를 달성합니다',
   },
   {
-    src: slide3, mobileSrc: slide3, theme: 'dark', align: 'right',
+    src: slide3, mobileSrc: slide3m, theme: 'dark', align: 'right',
     objectPosition: 'center center',
     eyebrow: '정보올림피아드',
     title: '전국 대회 수상\n명문 학원',
     desc: '체계적인 대회 준비와 실전 경험으로\n전국 최상위 성과를 만들어갑니다',
   },
   {
-    src: slide4, mobileSrc: slide4, theme: 'dark', align: 'left',
+    src: slide4, mobileSrc: slide4m, theme: 'dark', align: 'left',
     objectPosition: 'center 85%',
     eyebrow: '맞춤형 학습',
     title: '1:1 개인 맞춤\n커리큘럼',
     desc: '학생 수준별로 설계된 맞춤 과정\n확실한 실력 향상을 보장합니다',
   },
   {
-    src: slide5, mobileSrc: slide5, theme: 'dark', align: 'right',
+    src: slide5, mobileSrc: slide5m, theme: 'dark', align: 'right',
     objectPosition: 'center center',
     eyebrow: 'OA · 자격증',
     title: '자격증 취득부터\n실무 능력까지',

@@ -5,7 +5,6 @@
   border-bottom: 1px solid var(--border-brand);
 }
 
-
 .news-notice-item__title {
   font-size: 16px;
   font-weight: var(--fw-medium);
@@ -30,6 +29,17 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* 데스크탑·태블릿: 요약 1줄로 고정 (높이 절약) */
+@media (min-width: 769px) {
+  .news-notice-item {
+    padding: 8px 0;
+  }
+
+  .news-notice-item__summary {
+    -webkit-line-clamp: 1;
+  }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {

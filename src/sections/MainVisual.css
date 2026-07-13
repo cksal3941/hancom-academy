@@ -211,6 +211,17 @@
   animation-play-state: paused;
 }
 
+/* 노트북 (1025–1600px): 텍스트 하단 여백·컨트롤 위치 조정 */
+@media (min-width: 1025px) and (max-width: 1600px) {
+  .main-visual__copy {
+    padding-bottom: 80px;
+  }
+
+  .main-visual__controls {
+    bottom: 24px;
+  }
+}
+
 @media (min-width: 769px) and (max-width: 1024px) {
   .main-visual__controls {
     bottom: 28px;

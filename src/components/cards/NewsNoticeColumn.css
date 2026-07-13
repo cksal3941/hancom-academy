@@ -58,6 +58,31 @@
   transform: translateX(4px);
 }
 
+/* 노트북 (1025–1600px): 컬럼 간 패딩 축소 */
+@media (min-width: 1025px) and (max-width: 1600px) {
+  .news-notice-col {
+    padding: 0 28px;
+  }
+
+  .news-notice-col:first-child {
+    padding-left: 0;
+  }
+
+  .news-notice-col:last-child {
+    padding-right: 0;
+  }
+
+  .news-notice-col__title {
+    font-size: 20px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+  }
+
+  .news-notice-col__more {
+    margin-top: 10px;
+  }
+}
+
 @media (min-width: 769px) and (max-width: 1024px) {
   .news-notice-col {
     padding: 14px 0 0;
