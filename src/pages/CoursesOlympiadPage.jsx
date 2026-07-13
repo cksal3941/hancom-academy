@@ -137,7 +137,7 @@ export default function CoursesOlympiadPage() {
         <section className="co-intro" aria-labelledby="olympiad-intro-title">
           <div className="co-intro__lead" data-aos="fade-up">
             <p className="co-kicker">알고리즘 실력은 문제를 많이 푼다고 완성되지 않습니다</p>
-            <h2 id="olympiad-intro-title">정답이 아니라 문제를 해결하는 힘을 기릅니다</h2>
+            <h2 id="olympiad-intro-title">정답이 아니라 문제를 해결하는 힘을 기릅니다.</h2>
           </div>
           <div className="co-intro__body">
             <div className="co-intro__copy" data-aos="fade-up" data-aos-delay="150">
