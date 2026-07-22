@@ -45,7 +45,10 @@ Single-page React 19 app built with Vite 8, written in plain JavaScript (no Type
 /about/teachers                 → TeachersPage
 /about/awards                   → AwardsPage
 /about/location                 → LocationPage
+/courses                        → redirect to /courses/gifted
 /courses/gifted                 → CoursesGiftedPage
+/courses/olympiad               → CoursesOlympiadPage
+/courses/certification          → CoursesCertificationPage
 /notice                         → NoticePage (ProtectedRoute)
 /notice/announcement            → NoticePage (ProtectedRoute)
 /notice/write                   → NoticeWritePage (ProtectedRoute, admin only)
@@ -85,8 +88,11 @@ pages/
   AwardsPage.jsx     — scroll-driven timeline of competition awards; uses useTimelineProgress
                        and useActiveTimelineYear to sync a decade tab bar with scroll position
   LocationPage.jsx   — branch selector (LocationTabs) + info card + Kakao Maps
-  CoursesGiftedPage.jsx — 영재고·과학고 내신 curriculum page; tabs reference /courses/olympiad
-                          and /courses/certification (→ ComingSoonPage); static image content
+  CoursesGiftedPage.jsx — 영재고·과학고 내신 curriculum page; static image content
+  CoursesOlympiadPage.jsx — 정보올림피아드 page; contest cards (KOI/IOI/NYPC/USACO), 5-step
+                            curriculum (BASIC→NATIONAL), operation method cards; all data inlined
+  CoursesCertificationPage.jsx — OA·자격증 page; cert cards (컴활/ITQ/MOS/워드), 5-step process,
+                                 reasons section, operation cards; all data inlined
   NoticePage.jsx     — filterable notice board; category filter + keyword search across
                        title/content/author; admin write button shown to isAdminUser()
   NoticeDetailPage.jsx — single notice view; requires login; admin edit button shown to isAdminUser()
@@ -157,7 +163,7 @@ utils/
 
 ### Implementation status
 
-All sections are fully implemented. Unimplemented routes point to `ComingSoonPage` (`/courses/olympiad`, `/courses/certification`, `/opening-news/**`).
+All sections are fully implemented. The only unimplemented routes are `/opening-news/**` (→ `ComingSoonPage`).
 
 ### Sub-page layout pattern
 

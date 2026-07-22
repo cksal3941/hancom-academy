@@ -68,6 +68,7 @@
   line-height: 1.8;
   word-break: keep-all;
   overflow: hidden;
+  margin-bottom: 50px;
 }
 
 .co-intro__callout::before {

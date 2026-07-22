@@ -416,6 +416,10 @@ button.header__button {
     padding: 0 var(--container-px);
   }
 
+  .header__logo-img {
+    max-width: 150px;
+  }
+
   .header__nav,
   .header__actions,
   .header__dropdown {
